@@ -106,6 +106,7 @@ dist
 
 # RStudio
 *.Rproj
+.Rhistory
 
 # LaTeX
 auto/
@@ -113,3 +114,4 @@ auto/
 *.pdf
 *.tex
 *.synctex.gz
+
