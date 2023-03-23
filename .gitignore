@@ -106,3 +106,10 @@ dist
 
 # RStudio
 *.Rproj
+
+# LaTeX
+auto/
+*.bbl
+*.pdf
+*.tex
+*.synctex.gz
