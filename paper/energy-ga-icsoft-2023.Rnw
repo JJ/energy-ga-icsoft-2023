@@ -35,12 +35,12 @@
 \section{\uppercase{Introduction}}
 \label{sec:introduction}
 
+\section{State of the art}
+
+Since metaheuristics are so extensively used in machine learning environments, its interest in research has grown in parallel to its number of applications. Many papers focus on measuring different aspects of the algorithm and how it impacts energy consumption \cite{diaz2022population}
 
 \section*{\uppercase{Acknowledgements}}
 
-If any, should be placed before the references section
-without numbering. To do so please use the following command:
-\textit{$\backslash$section*\{ACKNOWLEDGEMENTS\}}
 
 
 \bibliographystyle{apalike}
