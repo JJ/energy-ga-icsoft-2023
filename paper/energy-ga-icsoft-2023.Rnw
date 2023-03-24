@@ -18,7 +18,7 @@
 
 \title{Authors' Instructions: Preparation of Camera-Ready Contributions to SCITEPRESS Proceedings}
 
-\author{\authorname{Juan J. Merelo-Guervós\sup{1}\orcidAuthor{0000-0002-1385-9741}, Second Author Name\sup{2}\orcidAuthor{0000-0002-2593-1114} and Third Author Name\sup{2}\orcidAuthor{0000-0000-0000-0000}}
+\author{\authorname{Juan J. Merelo-Guervós\sup{1}\orcidAuthor{0000-0002-1385-9741} and Mario García-Valdez\sup{2}\orcidAuthor{0000-0002-2593-1114}}
 \affiliation{\sup{1}Department of Computer Engineering, Automatics and Robotics, University of Granada, Granada, Spain}
 \affiliation{\sup{2}Department of Graduate Studies, National Technological Institute of Mexico, Tijuana, Mexico}
 \email{\{f\_author, s\_author\}@ips.xyz.edu, t\_author@dc.mu.edu}
@@ -40,7 +40,7 @@
 Since metaheuristics are so extensively used in machine learning environments,
 its interest in research has grown in parallel to its number of applications.
 Many papers focus on measuring different aspects of the algorithm and how it
-impacts energy consumption \cite{diaz2022population}
+impacts energy consumption \cite{diaz2022population}.
 
 \section*{\uppercase{Acknowledgements}}
 
