@@ -44,6 +44,7 @@ impacts energy consumption \cite{diaz2022population}.
 
 \section*{\uppercase{Acknowledgements}}
 
+This work is supported by the Ministerio espa\~{n}ol de Econom\'{\i}a y Competitividad under project PID2020-115570GB-C22 (DemocratAI::UGR).
 
 
 \bibliographystyle{apalike}
