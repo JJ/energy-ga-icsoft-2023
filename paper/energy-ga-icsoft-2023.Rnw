@@ -35,6 +35,8 @@
 \section{\uppercase{Introduction}}
 \label{sec:introduction}
 
+The rest of the paper follows this plan: next we will present the state of the art; then we will describe the experimental setup in Section \ref{sec:setup}; results will be presented next in Section \ref{sec:res}, and we will end with a discussion of results, conclusions and future lines of work.
+
 \section{State of the art}
 
 Since metaheuristics are so extensively used in machine learning environments,
