@@ -35,7 +35,9 @@
 \section{\uppercase{Introduction}}
 \label{sec:introduction}
 
-From a language designed for simple browser widgets in the nineties \cite{goodman2007javascript,flanagan1998javascript,ecma1999262}, 
+From a language designed for simple browser widgets in the nineties \cite{goodman2007javascript,flanagan1998javascript,ecma1999262}, JavaScript is nowadays the most popular language among developers \cite{ogrady22:ranking}, since it occupied that position in 2014 \cite{ogrady14:ranking}, mainly due to the fact that it is almost exclusively the language needed for front-end programming (competing only with languages used for apps, such as Swift or Kotlin, or languages transpiled to JavaScript, such as Dart), while at the same time being very strong in the server component of applications, as well as middleware or other applications.
+
+
 The rest of the paper follows this plan: next we will present the state of the art; then we will describe the experimental setup in Section \ref{sec:setup}; results will be presented next in Section \ref{sec:res}, and we will end with a discussion of results, conclusions and future lines of work.
 
 \section{State of the art}
