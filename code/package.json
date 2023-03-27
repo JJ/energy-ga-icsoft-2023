@@ -1,0 +1,21 @@
+{
+  "name": "icsoft-2023",
+  "version": "0.0.1",
+  "description": "Code for benchmarking in different VMs",
+  "main": "sets.js",
+  "scripts": {
+    "test": "echo \"Error: no test specified\" && exit 1"
+  },
+  "keywords": [
+    "green",
+    "computing",
+    "bun",
+    "deno",
+    "nodejs"
+  ],
+  "author": "JJ Merelo",
+  "license": "GPL-3.0",
+  "dependencies": {
+    "saco-js": "^0.0.2"
+  }
+}
