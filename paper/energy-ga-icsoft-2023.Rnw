@@ -47,7 +47,7 @@ The rest of the paper follows this plan: next we will present the state of the a
 
 \section{State of the art}
 
-Since metaheuristics are so extensively used in machine learning environments,
+Since metaheuristics are so extensively used in machine learning applications,
 its interest in research has grown in parallel to its number of applications.
 Many papers focus on measuring different aspects of the algorithm and how it
 impacts energy consumption \cite{diaz2022population}.
