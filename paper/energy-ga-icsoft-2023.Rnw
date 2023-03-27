@@ -12,7 +12,7 @@
 \usepackage{apalike}
 \usepackage[bottom]{footmisc}
 \usepackage{SCITEPRESS}     % Please add other packages that you may need BEFORE the SCITEPRESS.sty package.
-
+\usepackage{hyperref}
 
 \begin{document}
 
@@ -35,8 +35,9 @@
 \section{\uppercase{Introduction}}
 \label{sec:introduction}
 
-From a language designed for simple browser widgets in the nineties \cite{goodman2007javascript,flanagan1998javascript,ecma1999262}, JavaScript is nowadays the most popular language among developers \cite{ogrady22:ranking}, since it occupied that position in 2014 \cite{ogrady14:ranking}, mainly due to the fact that it is almost exclusively the language needed for front-end programming (competing only with languages used for apps, such as Swift or Kotlin, or languages transpiled to JavaScript, such as Dart), while at the same time being very strong in the server component of applications, as well as middleware or other applications.
+From a language designed for simple browser widgets in the nineties \cite{goodman2007javascript,flanagan1998javascript}, JavaScript is nowadays the most popular language among developers \cite{ogrady22:ranking}, since it occupied that position in 2014 \cite{ogrady14:ranking}, mainly due to the fact that it is almost exclusively the language needed for front-end programming (competing only with languages used for apps, such as Swift or Kotlin, or languages transpiled to JavaScript, such as Dart), while at the same time being very strong in the server component of applications, as well as middleware or other applications. Due to its popularity and the fact that it is based in a standard \cite{ecma1999262} that evolves continuously, it has traditionally had different virtual machines (or interpreters) that are able to run their programs. During the first years, the only running platform available were the browsers; however, the introduction of Node.js \cite{5617064} gave it the popularity it has got today; this popularity, in turn, has made it spawn new interpreters like {\sf deno} \cite{runtimeintroducing} (which is written in Rust) and {\sf bun} \cite{bun} which is written in the relatively unknown language Zig.
 
+Since implementation matters \cite{DBLP:conf/iwann/MereloRACML11}, choosing the right interpreter is going to have a big impact on the performance of any workload.
 
 The rest of the paper follows this plan: next we will present the state of the art; then we will describe the experimental setup in Section \ref{sec:setup}; results will be presented next in Section \ref{sec:res}, and we will end with a discussion of results, conclusions and future lines of work.
 
@@ -54,7 +55,7 @@ This work is supported by the Ministerio espa\~{n}ol de Econom\'{\i}a y Competit
 
 \bibliographystyle{apalike}
 {\small
-\bibliography{energy,javascript}}
+\bibliography{energy,javascript,geneura}}
 
 
 \end{document}
