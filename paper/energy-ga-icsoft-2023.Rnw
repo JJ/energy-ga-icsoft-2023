@@ -55,7 +55,7 @@ its interest in research has grown in parallel to its number of applications.
 Many papers focus on measuring different aspects of the algorithm and how it
 impacts energy consumption \cite{diaz2022population}.
 
-\section*{\uppercase{Acknowledgements}}
+\section*{Acknowledgements}
 
 This work is supported by the Ministerio espa\~{n}ol de Econom\'{\i}a y Competitividad (Spanish Ministry of Competitivity and Economy) under project PID2020-115570GB-C22 (DemocratAI::UGR).
 
