@@ -4,7 +4,7 @@
   "description": "Code for benchmarking in different VMs",
   "main": "sets.js",
   "scripts": {
-    "test": "echo \"Error: no test specified\" && exit 1"
+    "test": "node --test"
   },
   "keywords": [
     "green",

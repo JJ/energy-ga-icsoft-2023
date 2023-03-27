@@ -1,0 +1,24 @@
+name: lint and test with node
+on:
+  push:
+    paths:
+      - "**/*.js"
+      - "package.*"
+  pull_request:
+    paths:
+      - "**/*.js"
+jobs:
+  testingWithNode:
+    strategy:
+      matrix:
+        version: [18, latest]
+    runs-on: ubuntu-latest
+    steps:
+      - name: Working version
+        uses: actions/setup-node@v3
+        with:
+          node-version: ${{ matrix.version }}
+      - name: Fuentes
+        uses: actions/checkout@v3
+      - name: test
+        run: cd code && npm test
