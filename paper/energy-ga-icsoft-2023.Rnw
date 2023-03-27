@@ -21,7 +21,7 @@
 \author{\authorname{Juan J. Merelo-Guervós\sup{1}\orcidAuthor{0000-0002-1385-9741} and Mario García-Valdez\sup{2}\orcidAuthor{0000-0002-2593-1114}}
 \affiliation{\sup{1}Department of Computer Engineering, Automatics and Robotics, University of Granada, Granada, Spain}
 \affiliation{\sup{2}Department of Graduate Studies, National Technological Institute of Mexico, Tijuana, Mexico}
-\email{\{f\_author, s\_author\}@ips.xyz.edu, t\_author@dc.mu.edu}
+\email{jmerelo@ugr.es, mario@tectijuana.edu.mx}
 }
 
 \keywords{Green computing, metaheuristics, JavaScript}
