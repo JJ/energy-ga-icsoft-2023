@@ -111,7 +111,12 @@ that contain information on wattage drawn by different parts of the
 architecture; the content of these registers will be processed (through the
 corresponding library) and consumed by different command line utilities. We will
 use these command line utilities, since they produce an output that can be
-automatically processed and evaluated, which is what we are looking for in this paper.
+automatically processed and evaluated, which is what we are looking for in this
+paper\footnote{AMD have a similar power profiling architecture called AMP with
+  its corresponding command line tool. However, it was not well documented and
+  we found it excessively complicated for the purposes of this article. Although
+  not as complete, AMD processors also include the aforementioned MSRs so
+  RAPL-based utilities can run on them}.
 
 \section*{Acknowledgements}
 
