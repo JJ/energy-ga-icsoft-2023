@@ -136,8 +136,18 @@ compiling its source code. \begin{itemize}
 \item {\sf pinpoint}~\cite{9307947} (available from
   \url{https://github.com/osmhpi/pinpoint}) is a tool that uses the RAPL
   interface, as well as the NVIDIA registers to report the the power consumed by
-  these devices.
-\item {\sf perf} is a tool
+  these devices. In this paper, we will use it since it is the only one out of
+  the three tools that is able to show the GPU consumption.
+\item {\sf
+    perf}\footnote{\url{https://perf.wiki.kernel.org/index.php/Main_Page}}~\cite{treibig2010likwid} is a
+  system tool that measures all kinds of performance events, including power
+  consumption. It will be used mainly for the  \texttt{pkg} domain; this is a
+  domain that is measured by all tools, but all of them would process device
+  readings in a different way, so it will provide us with alternate measurements.
+\item {\sf likwid-powermeter}\footnote{\url{https://github.com/RRZE-HPC/likwid}}
+  measures the \texttt{CORE} as well as the \texttt{PKG} domain, which includes
+  the former together with the so-called ``uncore'' components.
+  
   \end{itemize}
 
 \section*{Acknowledgements}
