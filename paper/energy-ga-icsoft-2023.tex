@@ -118,6 +118,14 @@ paper\footnote{AMD have a similar power profiling architecture called AMP with
   not as complete, AMD processors also include the aforementioned MSRs so
   RAPL-based utilities can run on them}.
 
+Energy profiling, as measured by RAPL or other APIs, includes different
+\emph{domains}, essentially computing devices or peripherals that are actually
+requiring the reported amount of energy. DRAM or dynamic RAM, CORE or GPU will
+report what happens on those specific devices, with a core being every one of
+the computing units within the central processing unit; other domains, like PKG or
+package, will report what happens in the ``package'', or CPU together with other
+devices in the chipset. 
+
 \section*{Acknowledgements}
 
 This work is supported by the Ministerio espa\~{n}ol de Econom\'{\i}a y
