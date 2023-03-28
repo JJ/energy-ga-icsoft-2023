@@ -103,20 +103,21 @@ On the other hand, energy profilers are programs that draw information from
 hardware sensors \cite{sinha2001jouletrack}, generally exposed through kernel
 calls or higher level wrapper libraries, to pinpoint consumption during a period
 of time of by specific processes. Tools that give these measures either a
-graphic  or a command line interface have been available for some time already,
+graphic or a command line interface have been available for some time already,
 and have become popular lately. One of the mainstream processor architectures,
-Intel, includes an interface called RAPL, or Running Average Power
-Limit \cite{rapl}. Essentially, it consists on a series of machine specific registers (MSRs)
-that contain information on wattage drawn by different parts of the
+Intel, includes an interface called RAPL, or Running Average Power Limit
+\cite{rapl}. Essentially, it consists on a series of machine specific registers
+(MSRs) that contain information on wattage drawn by different parts of the
 architecture; the content of these registers will be processed (through the
 corresponding library) and consumed by different command line utilities. We will
 use these command line utilities, since they produce an output that can be
 automatically processed and evaluated, which is what we are looking for in this
-paper\footnote{AMD have a similar power profiling architecture called AMP with
-  its corresponding command line tool. However, it was not well documented and
-  we found it excessively complicated for the purposes of this article. Although
-  not as complete, AMD processors also include the aforementioned MSRs so
-  RAPL-based utilities can run on them}.
+paper\footnote{Systems based on the AMD architecture have a similar power
+  profiling architecture called AMP with its corresponding command line
+  tool. However, it was not well documented and we found it excessively
+  complicated for the purposes of this article. Although not as complete, AMD
+  processors also include the aforementioned MSRs so RAPL-based utilities can
+  run on them}.
 
 Energy profiling, as measured by RAPL or other APIs, includes different
 \emph{domains}, essentially computing devices or peripherals that are actually
