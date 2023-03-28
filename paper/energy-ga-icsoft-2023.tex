@@ -94,7 +94,17 @@ impacts energy consumption \cite{diaz2022population}.
 There are many ways to measure the consumption of applications running in a
 computer; besides measuring directly from the power intake, those running as
 applications and tapping the computer sensors fall roughly into two fields:
-power monitors and energy profilers \cite{cruz21}.
+power monitors and energy profilers \cite{cruz21}. Power monitors need
+additional hardware to measure the actual power drawn by the whole machine;
+besides being expensive, they have a difficult set up, as well as being
+complicated to measure exactly what a specific process is consuming.
+
+On the other hand, energy profilers are programs that draw information from
+hardware sensors \cite{sinha2001jouletrack}, generally exposed through kernel
+calls or higher level wrapper libraries, to pinpoint consumption during a period
+of time of by specific processes. Tools that give these measures either a
+graphic  or a command line interface have been available for some time already,
+and have become popular lately.
 
 \section*{Acknowledgements}
 
