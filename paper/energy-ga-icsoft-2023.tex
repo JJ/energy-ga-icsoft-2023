@@ -125,7 +125,20 @@ requiring the reported amount of energy. DRAM or dynamic RAM, CORE or GPU will
 report what happens on those specific devices, with a core being every one of
 the computing units within the central processing unit; other domains, like PKG or
 package, will report what happens in the ``package'', or CPU together with other
-devices in the chipset. 
+devices in the chipset.
+
+Taking into account that the system available has an AMD architecture, which is
+roughly compatible wi the RAPL architecture, we will use two command line
+utilities, the only existing that are able to wrap the execution of a command
+and report on consumption for that specific command. These are open source tools
+that can be obtained directly from the repositories, or by downloading and
+compiling its source code. \begin{itemize}
+\item {\sf pinpoint}\cite{9307947} (available from
+  \url{https://github.com/osmhpi/pinpoint}) is a tool that uses the RAPL
+  interface, as well as the NVIDIA registers to report the the power consumed by
+  these devices.
+\item {\sf perf} is a tool
+  \end{itemize}
 
 \section*{Acknowledgements}
 
