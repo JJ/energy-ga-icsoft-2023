@@ -114,4 +114,6 @@ auto/
 *.pdf
 *.tex
 *.synctex.gz
-
+*.aux
+*.out
+*.blg
