@@ -38,7 +38,24 @@
 % About popularity the TIOBE index is more complete, there JS ranks in 7h. - M
 % We could explain a bit about the ogrady ranking, that is based on github repos. - M
 
-From a language designed in the nineties for simple browser widgets and client-side validations \cite{goodman2007javascript,flanagan1998javascript}, JavaScript is nowadays the most popular language among developers \cite{ogrady22:ranking}, occupying this position since 2014 \cite{ogrady14:ranking}, mainly because it is almost exclusively the language needed for front-end programming (competing only with app development languages, such as Swift or Kotlin, or languages transpiled to JavaScript, such as Dart), while at the same time being strong for full-stack development, with solid support for the back end, including application servers, middleware, and database programming. Due to its popularity and the fact that it has a continuously evolving standard \cite{ecma1999262}, traditionally, there have been different virtual machines (or interpreters) to run its programs. During the first years, browsers were the only running platform available; however, the introduction of Node.js running on the V8 JavaScript Engine \cite{5617064} gave it the popularity it has today; this popularity, in turn, provoked new interpreters to spawn like {\sf deno} \cite{runtimeintroducing} (written in Rust) and {\sf bun} \cite{bun} programmed in the relatively unknown language Zig.
+From a language designed in the nineties for simple browser widgets and
+client-side validations \cite{goodman2007javascript,flanagan1998javascript},
+JavaScript is nowadays the most popular language among developers
+\cite{ogrady22:ranking}, occupying this position since 2014
+\cite{ogrady14:ranking}, mainly because it is almost exclusively the language
+needed for front-end programming (competing only with app development languages,
+such as Swift or Kotlin, or languages transpiled to JavaScript, such as Dart),
+while at the same time being strong for full-stack development, with solid
+support for the back end, including application servers, middleware, and
+database programming. Due to its popularity and the fact that it has a
+continuously evolving standard \cite{ecma1999262}, traditionally, there have
+been different virtual machines (or interpreters) to run its programs. During
+the first years, browsers were the only running platform available; however, the
+introduction of Node.js running on the V8 JavaScript Engine \cite{5617064} gave
+it the popularity it has today; this popularity, in turn, provoked new
+interpreters to spawn like {\sf deno} \cite{runtimeintroducing} (written in
+Rust) and {\sf bun} \cite{bun} programmed in the relatively unknown language
+Zig.
 
 No wonder, then, that JavaScript is also a popular language for implementing metaheuristics, especially evolutionary algorithms, since early implementations in the browser \cite{smith1996ga,jesusIWANN99,langdon2004global}, whole libraries \cite{EvoStar2014:jsEO}, through complete implementations geared towards volunteer computing \cite{2016arXiv160101607M}. But one of the criticisms leveraged towards these implementations of evolutionary algorithms is the (possible) lack of speed of the language compared to other compiled languages (mainly Java, very popular with metaheuristics implementations, or C++).
 
@@ -59,6 +76,13 @@ Since metaheuristics are so extensively used in machine learning applications,
 its interest in research has grown in parallel to its number of applications.
 Many papers focus on measuring different aspects of the algorithm and how it
 impacts energy consumption \cite{diaz2022population}.
+
+\section{Methodology}
+
+There are many ways to measure the consumption of applications running in a
+computer; besides measuring directly from the power intake, those running as
+applications and tapping the computer sensors fall roughly into two fields:
+power monitors and energy profilers \cite{cruz21}.
 
 \section*{Acknowledgements}
 
