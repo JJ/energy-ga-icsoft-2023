@@ -43,7 +43,7 @@ for my $l ( qw(1024 2048 4096) ) {
     my $gpu_diff = $gpu_pkg[0] - $gpu;
     say $fh "pinpoint, $l, ",
       $gpu_diff > 0 ?$gpu_diff:0,  ", " ,
-      $gpu_pkg[1]-$pkg,
+      $gpu_pkg[1]-$pkg,", "
       $gpu_pkg[2];
   }
 }
