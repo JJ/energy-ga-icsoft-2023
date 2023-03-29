@@ -36,18 +36,29 @@
 \label{sec:introduction}
 
 % About popularity the TIOBE index is more complete, there JS ranks in 7h. - M
-% We could explain a bit about the ogrady ranking, that is based on github repos. - M
+% Added - JJ
+% We could explain a bit about the ogrady ranking, that is based on github
+% repos. - M
+% Done - JJ
+
 
 From a language designed in the nineties for simple browser widgets and
 client-side validations \cite{goodman2007javascript,flanagan1998javascript},
-JavaScript is nowadays the most popular language among developers
-\cite{ogrady22:ranking}, occupying this position since 2014
+JavaScript is nowadays the language most widely used by developers in their
+GitHub repositories \cite{ogrady22:ranking}, occupying this position since 2014
 \cite{ogrady14:ranking}, mainly because it is almost exclusively the language
 needed for front-end programming (competing only with app development languages,
 such as Swift or Kotlin, or languages transpiled to JavaScript, such as Dart),
 while at the same time being strong for full-stack development, with solid
 support for the back end, including application servers, middleware, and
-database programming. Due to its popularity and the fact that it has a
+database programming. Other popularity indices, such as
+TIOBE\footnote{\url{https://www.tiobe.com/tiobe-index/}}, that take other
+factors into account besides raw production of lines of code, rank it as the seventh
+currently (2023), although it was also the most popular language in 2014. It can
+be claimed, then, that it is among the most popular, if not the most popular
+language.
+
+Due to its popularity and the fact that it has a
 continuously evolving standard \cite{ecma1999262}, traditionally, there have
 been different virtual machines (or interpreters) to run its programs. During
 the first years, browsers were the only running platform available; however, the
@@ -100,24 +111,26 @@ discussion of results, conclusions and future lines of work.
 % First, CPU and general algorithmic impact on power consumption
 
 The power efficiency of CPUs (computations per kilowatt-hour) has doubled
-roughly every year and a half from 1946 to 2009 \cite{koomey2011web}, this improvement
-has been mainly a by-product of Moore's law, the trend of chip manufacturers to
-decrease in half the size and distance between transistors every two
-years. But, unfortunately, it is expected that physical limits of electronics will slow down this
-miniaturization in the near future. Nonetheless, energy efficiency is becoming the most important
-metric of performance and selling point in hardware development, and it is an important driver
-for current innovation. The challenge of building more power-efficient systems, can also
-be tackled from other fronts, in this paper we focus our attention on the development 
-of applications that require less energy to execute. The current state of the art on 
-energy efficiency uses different strategies, one important venue is algorithm design. In this 
-approach, designers consider the physics of computation models, to improve the algorithm's 
-power consumption.  For instance, Demaine et~al. \cite{demaine2016energy} 
-propose the energy complexity as a new dimension of performance, together
-with the traditional time and space complexities. Using principles in physics to give a lower
-bound on the amount of energy dissipated when destroying information in RAM, they propose 
-sorting and other basic algorithms that reduce the number of deletions with the aim of reducing energy consumption.
+roughly every year and a half from 1946 to 2009 \cite{koomey2011web}, this
+improvement has been mainly a by-product of Moore's law, the trend of chip
+manufacturers to decrease in half the size and distance between transistors
+every two years. But, unfortunately, it is expected that physical limits of
+electronics will slow down this miniaturization in the near future. Nonetheless,
+energy efficiency is becoming the most important metric of performance and
+selling point in hardware development, and it is an important driver for current
+innovation. The challenge of building more power-efficient systems, can also be
+tackled from other fronts, in this paper we focus our attention on the
+development of applications that require less energy to execute. The current
+state of the art on energy efficiency uses different strategies, one important
+venue is algorithm design. In this approach, designers consider the physics of
+computation models, to improve the algorithm's power consumption.  For instance,
+Demaine et~al. \cite{demaine2016energy} propose the energy complexity as a new
+dimension of performance, together with the traditional time and space
+complexities. Using principles in physics to give a lower bound on the amount of
+energy dissipated when destroying information in RAM, they propose sorting and
+other basic algorithms that reduce the number of deletions with the aim of
+reducing energy consumption.
 
- 
 Since metaheuristics are so extensively used in machine learning applications,
 its interest in research has grown in parallel to its number of applications.
 Many papers focus on measuring different aspects of the algorithm and how it
@@ -178,7 +191,10 @@ compiling its source code. \begin{itemize}
   system tool that measures all kinds of performance events, including power
   consumption. It will be used mainly for the  \texttt{pkg} domain; this is a
   domain that it is measured by all tools, but all of them would process device
-    readings differently, so it will provide us with alternative measurements. % it will provide (the domain? of the tools?)   
+    readings differently, so it will provide us with alternative estimations of
+    the consumption.. % it will provide (the domain? of the tools?)
+    % The tool will provide a different estimation from the MSR reading; this is
+    % what I understood, at least. - JJ
 \item {\sf likwid-powermeter}\footnote{\url{https://github.com/RRZE-HPC/likwid}}
   measures the \texttt{CORE} as well as the \texttt{PKG} domain, which includes
   the former together with the so-called ``uncore'' components.
