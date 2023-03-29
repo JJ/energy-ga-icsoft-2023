@@ -57,17 +57,48 @@ interpreters to spawn like {\sf deno} \cite{runtimeintroducing} (written in
 Rust) and {\sf bun} \cite{bun} programmed in the relatively unknown language
 Zig.
 
-No wonder, then, that JavaScript is also a popular language for implementing metaheuristics, especially evolutionary algorithms, since early implementations in the browser \cite{smith1996ga,jesusIWANN99,langdon2004global}, whole libraries \cite{EvoStar2014:jsEO}, through complete implementations geared towards volunteer computing \cite{2016arXiv160101607M}. But one of the criticisms leveraged towards these implementations of evolutionary algorithms is the (possible) lack of speed of the language compared to other compiled languages (mainly Java, very popular with metaheuristics implementations, or C++).
+No wonder, then, that JavaScript is also a popular language for implementing
+metaheuristics, especially evolutionary algorithms, since early implementations
+in the browser \cite{smith1996ga,jesusIWANN99,langdon2004global}, whole
+libraries \cite{EvoStar2014:jsEO}, through complete implementations geared
+towards volunteer computing \cite{2016arXiv160101607M}. But one of the
+criticisms leveraged towards these implementations of evolutionary algorithms
+is the (possible) lack of speed of the language compared to other compiled
+languages (mainly Java, very popular with metaheuristics implementations, or
+C++).
 
-This is why, since implementation matters \cite{DBLP:conf/iwann/MereloRACML11}, choosing the right interpreter is going to have a big impact on the performance of any workload; if you decide to choose JavaScript for any reason (such as seamless client/server integration, or be able to run your algorithm either on the browser or from the command line if desired) knowing which VM delivers the best performance is essential, either from the scientific point of view, or from the software engineering point of view.
+This is why, since implementation matters \cite{DBLP:conf/iwann/MereloRACML11},
+choosing the right interpreter is going to have a big impact on the performance
+of any workload; if you decide to choose JavaScript for any reason (such as
+seamless client/server integration, or be able to run your algorithm either on
+the browser or from the command line if desired) knowing which VM delivers the
+best performance is essential, either from the scientific point of view, or
+from the software engineering point of view.
 
-At the same time, with the advent of the concept of green computing \cite{kurp2008green}, it becomes increasingly important to measure not only the raw wall clock performance (which was the focus of papers such as \cite{DBLP:conf/evoW/GuervosBCRGRVHR17}), but also to achieve a certain level of performance with a certain amount of energy consumption, or else to minimize the consumption needed to run a certain workload. This will be the main focus of this paper; since the core of the different JS virtual machines is different, and are created with languages with different focus (Rust is focused on memory safety \cite{noseda2022rust}, Zig based on simplicity and performance \cite{zig}), different consumption should be expected. Since all three languages can (roughly) run the same, unmodified source code, what we intend with this paper is to advise on which JS interpreter might give the lowest power consumption, the maximum performance, or both, so that evolutionary algorithm practitioners can target it for their development.
+At the same time, with the advent of the concept of green computing
+\cite{kurp2008green}, it becomes increasingly important to measure not only the
+raw wall clock performance (which was the focus of papers such as
+\cite{DBLP:conf/evoW/GuervosBCRGRVHR17}), but also to achieve a certain level
+of performance with a certain amount of energy consumption, or else to minimize
+the consumption needed to run a certain workload. This will be the main focus
+of this paper; since the core of the different JS virtual machines is
+different, and are created with languages with different focus (Rust is focused
+on memory safety \cite{noseda2022rust}, Zig based on simplicity and performance
+\cite{zig}), different consumption should be expected. Since all three
+languages can (roughly) run the same, unmodified source code, what we intend
+with this paper is to advise on which JS interpreter might give the lowest
+power consumption, the maximum performance, or both, so that evolutionary
+algorithm practitioners can target it for their development.
 
-The rest of the paper follows this plan: next we will present the state of the art; then we will describe the experimental setup in Section \ref{sec:setup}; results will be presented next in Section \ref{sec:res}, and we will end with a discussion of results, conclusions and future lines of work.
+The rest of the paper follows this plan: next we will present the state of the
+art; then we will describe the experimental setup in Section \ref{sec:setup};
+results will be presented next in Section \ref{sec:res}, and we will end with a
+discussion of results, conclusions and future lines of work.
 
 \section{State of the art}
 
 % First, CPU and general algorithmic impact on power consumption
+
 The power efficiency of CPUs (computations per kilowatt-hour) has doubled
 roughly every year and a half from 1946 to 2009 \cite{koomey2011web}, this trend
 has been mainly a by-product of Moore's law, the trend of chip manufacturers
@@ -78,8 +109,7 @@ metric and selling point in hardware development, and it is an important driver
 for innovation. The challenge of building more power-efficient systems, can also
 be tackled from the software development side, by reducing the complexity of
 algorithms to require less energy. Algorithm design can even consider the
-physics of computation models, for instance Demaine et
-al. \cite{demaine2016energy} propose the study of the energy complexity together
+physics of computation models, for instance Demaine et~al. \cite{demaine2016energy} propose the study of the energy complexity together
 with the time and space complexities using principles in physics to give a lower
 bound on the amount of energy dissipated when destroying information in RAM.
 
@@ -102,9 +132,9 @@ complicated to measure exactly what a specific process is consuming.
 On the other hand, energy profilers are programs that draw information from
 hardware sensors \cite{sinha2001jouletrack}, generally exposed through kernel
 calls or higher level wrapper libraries, to pinpoint consumption during a period
-of time of by specific processes. Tools that give these measures either a
+of time of by specific processes. Tools that give these measures either with a
 graphic or a command line interface have been available for some time already,
-and have become popular lately. One of the mainstream processor architectures,
+and lately become more popular. One of the mainstream processor architectures,
 Intel, includes an interface called RAPL, or Running Average Power Limit
 \cite{rapl}. Essentially, it consists on a series of machine specific registers
 (MSRs) that contain information on wattage drawn by different parts of the
@@ -114,7 +144,7 @@ use these command line utilities, since they produce an output that can be
 automatically processed and evaluated, which is what we are looking for in this
 paper\footnote{Systems based on the AMD architecture have a similar power
   profiling architecture called AMP with its corresponding command line
-  tool. However, it was not well documented and we found it excessively
+  tool. However, it was not well documented, and we found it excessively
   complicated for the purposes of this article. Although not as complete, AMD
   processors also include the aforementioned MSRs so RAPL-based utilities can
   run on them}.
@@ -127,23 +157,23 @@ with a core being every one of the computing units within the central processing
 unit; other domains, like PKG or package, will report what happens in the
 ``package'', or CPU together with other devices in the chipset.
 
-Taking into account that the system available has an AMD architecture, which is
-roughly compatible wi the RAPL architecture, we will use two command line
-utilities, the only existing that are able to wrap the execution of a command
+Taking into account that the available system has an AMD architecture, which is
+roughly compatible with the RAPL architecture, we will use two command line
+utilities, as they are the only ones available that are able to wrap the execution of a command
 and report on consumption for that specific command. These are open source tools
-that can be obtained directly from the repositories, or by downloading and
+that can be obtained directly from the corresponding repositories, or by downloading and
 compiling its source code. \begin{itemize}
 \item {\sf pinpoint}~\cite{9307947} (available from
   \url{https://github.com/osmhpi/pinpoint}) is a tool that uses the RAPL
-  interface, as well as the NVIDIA registers to report the the power consumed by
+  interface, as well as the NVIDIA registers to report the power consumed by
   these devices. In this paper, we will use it since it is the only one out of
   the three tools that is able to show the GPU consumption.
 \item {\sf
     perf}\footnote{\url{https://perf.wiki.kernel.org/index.php/Main_Page}}~\cite{treibig2010likwid} is a
   system tool that measures all kinds of performance events, including power
   consumption. It will be used mainly for the  \texttt{pkg} domain; this is a
-  domain that is measured by all tools, but all of them would process device
-  readings in a different way, so it will provide us with alternate measurements.
+  domain that it is measured by all tools, but all of them would process device
+    readings differently, so it will provide us with alternative measurements. % it will provide (the domain? of the tools?)   
 \item {\sf likwid-powermeter}\footnote{\url{https://github.com/RRZE-HPC/likwid}}
   measures the \texttt{CORE} as well as the \texttt{PKG} domain, which includes
   the former together with the so-called ``uncore'' components.
