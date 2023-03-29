@@ -126,7 +126,7 @@ computer; besides measuring directly from the power intake, those running as
 applications and tapping the computer sensors fall roughly into two fields:
 power monitors and energy profilers \cite{cruz21}. Power monitors need
 additional hardware to measure the actual power drawn by the whole machine;
-besides being expensive, they have a difficult set up, as well as being
+besides being expensive, they have a difficult set-up, as well as being
 complicated to measure exactly what a specific process is consuming.
 
 On the other hand, energy profilers are programs that draw information from
@@ -136,7 +136,7 @@ of time of by specific processes. Tools that give these measures either with a
 graphic or a command line interface have been available for some time already,
 and lately become more popular. One of the mainstream processor architectures,
 Intel, includes an interface called RAPL, or Running Average Power Limit
-\cite{rapl}. Essentially, it consists on a series of machine specific registers
+\cite{rapl}. Essentially, it consists of a series of machine-specific registers
 (MSRs) that contain information on wattage drawn by different parts of the
 architecture; the content of these registers will be processed (through the
 corresponding library) and consumed by different command line utilities. We will
@@ -152,22 +152,22 @@ paper\footnote{Systems based on the AMD architecture have a similar power
 Energy profiling, as measured by RAPL or other APIs, includes different
 \emph{domains} \cite{khan2015energy}, essentially computing devices or
 peripherals that are actually requiring the reported amount of energy. DRAM or
-dynamic RAM, CORE or GPU will report what happens on those specific devices,
+dynamic RAM, CORE, or GPU will report what happens on those specific devices,
 with a core being every one of the computing units within the central processing
 unit; other domains, like PKG or package, will report what happens in the
 ``package'', or CPU together with other devices in the chipset.
 
 Taking into account that the available system has an AMD architecture, which is
 roughly compatible with the RAPL architecture, we will use two command line
-utilities, as they are the only ones available that are able to wrap the execution of a command
+utilities, as they are the only ones available that can wrap the execution of a command
 and report on consumption for that specific command. These are open source tools
 that can be obtained directly from the corresponding repositories, or by downloading and
 compiling its source code. \begin{itemize}
 \item {\sf pinpoint}~\cite{9307947} (available from
   \url{https://github.com/osmhpi/pinpoint}) is a tool that uses the RAPL
-  interface, as well as the NVIDIA registers to report the power consumed by
+  interface, as well as the NVIDIA registers, to report the power consumed by
   these devices. In this paper, we will use it since it is the only one out of
-  the three tools that is able to show the GPU consumption.
+  the three tools that can show the GPU consumption.
 \item {\sf
     perf}\footnote{\url{https://perf.wiki.kernel.org/index.php/Main_Page}}~\cite{treibig2010likwid} is a
   system tool that measures all kinds of performance events, including power
