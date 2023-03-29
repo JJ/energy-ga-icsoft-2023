@@ -12,9 +12,10 @@ my $ITERATIONS = 15;
 my ($mon,$day,$hh,$mm,$ss) = localtime() =~ /(\w+)\s+(\d+)\s+(\d+)\:(\d+)\:(\d+)/;
 my $suffix = "$day-$mon-$hh-$mm-$ss";
 
-open my $fh, ">", "data/pinpoint-$suffix.csv";
-for my $l ( qw(1024,2048,4096) ) {
-  say $fh "Tool,Size,GPU,PKG";
+open my $fh, ">", "data/pinpoint-sets-$suffix.csv";
+say $fh "Tool,Size,GPU,PKG";
+
+for my $l ( qw(1024 2048 4096) ) {
   my $total_seconds;
   my $successful = 0;
   my @results;
