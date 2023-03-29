@@ -114,27 +114,32 @@ The power efficiency of CPUs (computations per kilowatt-hour) has doubled
 roughly every year and a half from 1946 to 2009 \cite{koomey2011web}, this
 improvement has been mainly a by-product of Moore's law, the trend of chip
 manufacturers to decrease in half the size and distance between transistors
-every two years. But, unfortunately, it is expected that physical limits of
-electronics will slow down this miniaturization in the near future. Nonetheless,
-energy efficiency is becoming the most important metric of performance and
-selling point in hardware development, and it is an important driver for current
-innovation. The challenge of building more power-efficient systems, can also be
-tackled from other fronts, in this paper we focus our attention on the
-development of applications that require less energy to execute. The current
-state of the art on energy efficiency uses different strategies, one important
-venue is algorithm design. In this approach, designers consider the physics of
-computation models, to improve the algorithm's power consumption.  For instance,
-Demaine et~al. \cite{demaine2016energy} propose the energy complexity as a new
-dimension of performance, together with the traditional time and space
-complexities. Using principles in physics to give a lower bound on the amount of
-energy dissipated when destroying information in RAM, they propose sorting and
-other basic algorithms that reduce the number of deletions with the aim of
-reducing energy consumption.
+every two years. Unfortunately, it is expected that physical limits of
+electronics will slow down this miniaturization in the near future.
+Nonetheless, energy efficiency is becoming the most important metric of
+performance and selling point in hardware development, and it is an important
+driver for current innovation. The challenge of building more power-efficient
+systems, can be addressed at the hardware and sofware levels. In the software
+level, developers focus their attention on the energy consumption of sofware,
+proposing optimizations for more energy-efficient algorithm implementations.
+Algorithm comparatives nowdays include power efficency as a performance metric,
+these include encryption algorithms
+\cite{mota2017comparative,thakor2021lightweight}, and estimation models for
+machine learning applications \cite{garcia2019estimation} and genetic
+programming (GP) \cite{diaz2018fuzzy}. Since metaheuristics are so extensively
+used in machine learning applications, its interest in research has grown in
+parallel to its number of applications. Many papers focus on analyzing how
+certain parameters of the metaheuristic have an impact energy consumption.
+Díaz-Álvarez et al. \cite{diaz2022population} studies how the populations size
+of evolutionary algorithms (EAs) influences power consumption. In GAs, the
+mutation operator appears to be a power-hungry component according to
+Abdelhafez et al. \cite{abdelhafez2019component}, in their paper they also
+report that in a distributed evaluation setting, the comminication scheme has a
+grater impact. Fernández de Vega et al. \cite{10.1007/978-3-319-45823-6_51}
+experimented with different parameters for a GP algorithm and concluded that
+hand-held devices and single-board computers (SBCs) required an order of
+magnitude less energy to run the same algorithm. 
 
-Since metaheuristics are so extensively used in machine learning applications,
-its interest in research has grown in parallel to its number of applications.
-Many papers focus on measuring different aspects of the algorithm and how it
-impacts energy consumption \cite{diaz2022population}.
 
 \section{Methodology and experimental setup}
 \label{sec:setup}
