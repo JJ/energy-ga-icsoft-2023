@@ -14,12 +14,13 @@ my $suffix = "$day-$mon-$hh-$mm-$ss";
 my $tool = "likwid-powermeter";
 
 open my $fh, ">", "data/likwid-sets-$suffix.csv";
-say $fh "Tool,size,GPU,PKG,seconds";
+say $fh "Tool,size,CORE,PKG,seconds";
 
-for my $l ( qw(1024) ) {
+for my $l ( qw(1024 2048 4096) ) {
   my $total_seconds;
   my @results;
   my $command = $command_lines{'deno'}." ". $l;
+  say $command;
   for (my $i = 0; $i <= $ITERATIONS; $i++ ) {
     my $output = `$tool $command 2>&1`;
     my ( $core, $pkg ) = $output =~ /(\d+\.\d+)\s+Joules/g;
