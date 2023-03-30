@@ -208,8 +208,18 @@ compiling its source code. \begin{itemize}
 \item {\sf likwid-powermeter}\footnote{\url{https://github.com/RRZE-HPC/likwid}}
   measures the \texttt{CORE} as well as the \texttt{PKG} domain, which includes
   the former together with the so-called ``uncore'' components.
-  
 \end{itemize}
+
+On the JavaScript side, we used three different interpreters:\begin{itemize}
+\item \texttt{bun} version 0.5.8
+\item \texttt{deno} version 1.32.1, which includes the v8 library version
+  11.2.214.9 and typescript 5.0.2
+\item  \texttt{node.js} version 18.5.0
+\end{itemize}
+
+These were runnning in an Ubuntu version 20.04.1 with kernel version
+5.15.0-69. The processor is a AMD Ryzen 9 3950X 16-Core.
+    
 
 \section{Experimental results}
 \label{sec:res}
