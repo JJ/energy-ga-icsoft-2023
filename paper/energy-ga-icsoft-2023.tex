@@ -124,16 +124,21 @@ level, developers focus their attention on the energy consumption of software,
 proposing optimizations for more energy-efficient algorithm implementations.
 Algorithm comparatives nowadays include power efficiency as a performance metric,
 these include encryption algorithms
-\cite{mota2017comparative,thakor2021lightweight}, and estimation models for
+\cite{mota2017comparative,thakor2021lightweight}, estimation models for
 machine learning applications \cite{garcia2019estimation} and genetic
-programming (GP) \cite{diaz2018fuzzy}. Since metaheuristics are so extensively
+programming (GP) \cite{diaz2018fuzzy}, and code refactoring \cite{ournani2021tales}. Since metaheuristics are so extensively
 used in machine learning applications, its interest in research has grown in
 parallel to its number of applications. Many papers focus on analyzing how
 certain metaheuristics parameters have an impact on energy consumption.
 Díaz-Álvarez et al. \cite{diaz2022population} studies how the populations size
-of evolutionary algorithms (EAs) influences power consumption. In genetic algorithms (GAs), the
-mutation operator appears to be a power-hungry component according to
-Abdelhafez et al. \cite{abdelhafez2019component}, in their paper they also
+of evolutionary algorithms (EAs) influences power consumption. In an earlier work 
+centered on genetic algorithms (GAs) \cite{10.1007/978-3-030-45715-0_8} power-consumption of battery-powered
+devices was measured for varioud parameter configurations including chromosome and population sizes. The
+experiments used the onemax and trap function benchmark problems, they concluded 
+that execution time and energy consumption do not linearly correlate and there
+is a connection between the GA parameters and power consumption.
+In GAs, the mutation operator appears to be a power-hungry component according
+to Abdelhafez et al. \cite{abdelhafez2019component}, in their paper they also
 report that in a distributed evaluation setting, the communication scheme has a
 grater impact. Fernández de Vega et al. \cite{10.1007/978-3-319-45823-6_51}
 experimented with different parameters for a GP algorithm and concluded that
