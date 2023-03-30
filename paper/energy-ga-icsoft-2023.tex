@@ -219,7 +219,15 @@ On the JavaScript side, we used three different interpreters:\begin{itemize}
 
 These were runnning in an Ubuntu version 20.04.1 with kernel version
 5.15.0-69. The processor is a AMD Ryzen 9 3950X 16-Core.
-    
+
+
+To perform tne experiments, a Perl script was created; it launched the scripts
+and collected results by analyzing the standard output and putting it in a CSV
+format that would allow examination of the experiments.
+
+The initial experiment consisted in a script that used the \texttt{saco-js}
+library to perform the union of ``bags'', sets that can hold several copies of
+the same item. 1024 sets were generated; these sets had 1024, 2048, 4096 elements.
 
 \section{Experimental results}
 \label{sec:res}
