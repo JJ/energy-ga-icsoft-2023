@@ -62,9 +62,9 @@ interpreters to spawn like {\sf deno} \cite{runtimeintroducing} (written in
 Rust) and {\sf bun} \cite{bun} programmed in the relatively unknown language
 Zig.
 
-No wonder, then, that JavaScript is also a popular language for implementing
 metaheuristics, especially evolutionary algorithms, since early implementations
 in the browser \cite{smith1996ga,jesusIWANN99,langdon2004global}, whole
+No wonder, then, that JavaScript is also a popular language for implementing
 libraries \cite{EvoStar2014:jsEO}, through complete implementations geared
 towards volunteer computing \cite{2016arXiv160101607M}. But one of the
 criticisms leveraged towards these implementations of evolutionary algorithms
@@ -262,6 +262,19 @@ Experimenting with this simple program will mainly allow us to calibrate the
 different tools in order to pick only one, if possible, as well as validate the
 program and iron out all possible errors in the program itself or in the
 processing scripts.
+
+<<r pinpoint, echo=F>>=
+library(ggplot2)
+test.pinpoint <- read.csv("../code/data/pinpoint-sets-29-Mar-21-06-12.csv")
+@
+
+
+<<r pinpoint.gpu, echo=F, fig.cap="Measurements of energy expenditures by the GPU in the sets problem.\\protect\\label{fig:gpu}">>=
+test.pinpoint$size <- as.factor(test.pinpoint$size)
+ggplot(test.pinpoint, aes(x=size,y=GPU,group=size))+geom_boxplot()
+@
+
+One of the first observations we can draw from these initial experiments is whether it is interesting to measure how much energy the GPU spends. Since \texttt{pinpoint} is the only tool able to measure this, we will use it. We show the results in Figure ref{fig:gpu}.
 
 \section{Experimental results}
 \label{sec:res}
