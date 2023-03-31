@@ -154,22 +154,22 @@ There are many ways to measure the consumption of applications running in a
 computer; besides measuring directly from the power intake, those running as
 applications and tapping the computer sensors fall roughly into two fields:
 power monitors and energy profilers \cite{cruz21}. Power monitors need
-additional hardware to measure the actual power drawn by the whole machine;
-besides being expensive, they have a difficult set-up, as well as being
-complicated to measure exactly what a specific process is consuming.
+additional hardware to measure the power drawn by the whole machine;
+besides being expensive, their setup is difficult, and it is complicated 
+to measure precisely how much a specific process consumes.
 
 On the other hand, energy profilers are programs that draw information from
 hardware sensors \cite{sinha2001jouletrack}, generally exposed through kernel
-calls or higher level wrapper libraries, to pinpoint consumption during a period
-of time of by specific processes. Tools that give these measures either with a
-graphic or a command line interface have been available for some time already,
-and lately become more popular. One of the mainstream processor architectures,
+calls or higher-level wrapper libraries, to pinpoint consumption during a period
+of time of by specific processes. Tools that give these measures, either with a
+graphic or a command line interface, have been available for some time already,
+and have become more popular lately. One of the mainstream processor architectures,
 Intel, includes an interface called RAPL, or Running Average Power Limit
 \cite{rapl}. Essentially, it consists of a series of machine-specific registers
-(MSRs) that contain information on wattage drawn by different parts of the
+(MSRs) that contain information on the wattage drawn by different parts of the
 architecture; the content of these registers will be processed (through the
 corresponding library) and consumed by different command line utilities. We will
-use these command line utilities, since they produce an output that can be
+use these command line utilities since they produce an output that can be
 automatically processed and evaluated, which is what we are looking for in this
 paper\footnote{Systems based on the AMD architecture have a similar power
   profiling system called AMP with its corresponding command line
@@ -179,19 +179,19 @@ paper\footnote{Systems based on the AMD architecture have a similar power
   run on them}.
 
 Energy profiling, as measured by RAPL or other APIs, includes different
-\emph{domains} \cite{khan2015energy}, essentially computing devices or
-peripherals that are actually requiring the reported amount of energy. DRAM or
-dynamic RAM, CORE, or GPU will report what happens on those specific devices,
+\emph{domains} \cite{khan2015energy}, essentially the computing devices or
+peripherals requiring the reported amount of energy.
+DRAM or dynamic RAM, CORE, or GPU will report what happens on those specific devices,
 with a core being every one of the computing units within the central processing
 unit; other domains, like PKG or package, will report what happens in the
 ``package'', or CPU together with other devices in the chipset.
 
-Taking into account that the available system has an AMD architecture, which is
+Considering that the available system has an AMD architecture, which is
 roughly compatible with the RAPL architecture, we will use two command line
 utilities, as they are the only ones available that can wrap the execution of a command
 and report on consumption for that specific command. These are open source tools
-that can be obtained directly from the corresponding repositories, or by downloading and
-compiling its source code. \begin{itemize}
+that can be obtained directly from the corresponding repositories or by downloading and
+compiling their source code. \begin{itemize}
 \item {\sf pinpoint}~\cite{9307947} (available from
   \url{https://github.com/osmhpi/pinpoint}) is a tool that uses the RAPL
   interface, as well as the NVIDIA registers, to report the power consumed by
@@ -218,33 +218,33 @@ On the JavaScript side, we used three different interpreters:\begin{itemize}
 \item  \texttt{node.js} version 18.5.0
 \end{itemize}
 
-\texttt{bun} and \texttt{nodejs} are totally compatible, so they run exactly the
+\texttt{bun} and \texttt{nodejs} are fully compatible, so they run exactly the
 same code. The code for \texttt{deno} needed a small modification: the path to
 the library had to be changed (since it does not use the \texttt{node\_modules}
-to host installed modules), and processing the command line arguments used a
-different library. Other than that, the business logic was exactly the same.
+to host installed modules), and it uses a different library for processing 
+the command line arguments. Other than that, the business logic was exactly the same.
 
-These were runnning in an Ubuntu version 20.04.1 with kernel version
-5.15.0-69. The processor is a AMD Ryzen 9 3950X 16-Core. Since we will
+These were running in an Ubuntu version 20.04.1 with kernel version
+5.15.0-69. The processor is an AMD Ryzen 9 3950X 16-Core. Since we will
 not be testing in a pure Intel architecture, the complete RAPL API is
 not going to be available; that is also why we will be experimenting
-with different tools so that we are able to have an adequate coverage
+with different tools so that we can have an adequate coverage
 of energy consumption for the commands we will be measuring.
 
-To perform the experiments, a Perl script was created; it launched the scripts
+A Perl script was created to perform the experiments; it launched the scripts
 and collected results by analyzing the standard output and putting it in a CSV
 format that would allow examination of the experiments.
 
 The initial experiment consisted in a script that used the \texttt{saco-js}
 library to perform the union of ``bags'', sets that can hold several copies of
 the same item. 1024 sets were generated; these sets had 1024, 2048, 4096
-elements. Then, then, an union of bags was performed on pairs of sets until
+elements. Then, a union of bags was performed on pairs of sets until
 there was only one left. This is similar to some operations performed by
 evolutionary algorithms, mainly related to merging populations. They do not
 involve floating point operations in any way.
 
 The scripts to launch every kind of tool were slightly different, mainly because
-the output needed to be processed in different ways (and different kind of
+the output needed to be processed in different ways (and different kinds of
 information extracted). Additionally, \texttt{pinpoint}, which is the only tool
 that does not need superuser privileges, sometimes returned 0 in energy
 measures. This was an error, and those runs were discarded.
@@ -254,13 +254,13 @@ disaggregate the readings for our program from the energy consumed by other
 processes running at the same time, what we did was to run every program 15
 times, compute the average time, and then use the same tool to measure the
 energy consumption for the \texttt{sleep} program during the average amount of
-time. The energy readings shown are the result of substracting this measurement
-from every one of the 15 other measurements taken, so that we can really analyze
-the differential of energy that has been actually consumed by our programs.
+time. The energy readings shown are the result of subtracting this measurement
+from every one of the 15 other measurements taken, so that we can analyze
+the differential of energy that has been consumed by our programs.
 
 Experimenting with this simple program will mainly allow us to calibrate the
-different tools in order to pick only one if possible, as well as validate the
-program and iron out all possible errors, in the program itself or in the
+different tools in order to pick only one, if possible, as well as validate the
+program and iron out all possible errors in the program itself or in the
 processing scripts.
 
 \section{Experimental results}
