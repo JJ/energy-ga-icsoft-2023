@@ -36,13 +36,6 @@
 \section{\uppercase{Introduction}}
 \label{sec:introduction}
 
-% About popularity the TIOBE index is more complete, there JS ranks in 7h. - M
-% Added - JJ
-% We could explain a bit about the ogrady ranking, that is based on github
-% repos. - M
-% Done - JJ
-
-
 From a language designed in the nineties for simple browser widgets and
 client-side validations \cite{goodman2007javascript,flanagan1998javascript},
 JavaScript is nowadays the language most widely used by developers in their
@@ -111,40 +104,47 @@ discussion of results, conclusions and future lines of work.
 
 % First, CPU and general algorithmic impact on power consumption
 
-The power efficiency of CPUs (computations per kilowatt-hour) has doubled
-roughly every year and a half from 1946 to 2009 \cite{koomey2011web}, this
-improvement has been mainly a by-product of Moore's law, the trend of chip
-manufacturers to decrease in half the size and distance between transistors
-every two years. Unfortunately, it is expected that physical limits of
+The power efficiency of CPUs (computations per kilowatt-hour) has
+doubled roughly every year and a half from 1946 to 2009
+\cite{koomey2011web}, this improvement has been mainly a by-product
+of Moore's law, the trend of chip manufacturers to decrease in half
+the size and distance between transistors every two
+years. Unfortunately, it is expected that physical limits of
 electronics will slow down this miniaturization in the near future.
-Nonetheless, energy efficiency is becoming the most important metric of
-performance and selling point in hardware development, and it is an important
-driver for current innovation. The challenge of building more power-efficient
-systems, can be addressed at the hardware and software levels. In the software
-level, developers focus their attention on the energy consumption of software,
-proposing optimizations for more energy-efficient algorithm implementations.
-Algorithm comparatives nowadays include power efficiency as a performance metric,
-these include encryption algorithms
-\cite{mota2017comparative,thakor2021lightweight}, estimation models for
-machine learning applications \cite{garcia2019estimation} and genetic
-programming (GP) \cite{diaz2018fuzzy}, and code refactoring \cite{ournani2021tales}. Since metaheuristics are so extensively
-used in machine learning applications, its interest in research has grown in
-parallel to its number of applications. Many papers focus on analyzing how
-certain metaheuristics parameters have an impact on energy consumption.
-Díaz-Álvarez et al. \cite{diaz2022population} studies how the populations size
-of evolutionary algorithms (EAs) influences power consumption. In an earlier work 
-centered on genetic algorithms (GAs) \cite{10.1007/978-3-030-45715-0_8} power-consumption of battery-powered
-devices was measured for various parameter configurations including chromosome and population sizes. The
-experiments used the one max and trap function benchmark problems, they concluded 
-that execution time and energy consumption do not linearly correlate and there
-is a connection between the GA parameters and power consumption.
-In GAs, the mutation operator appears to be a power-hungry component according
-to Abdelhafez et al. \cite{abdelhafez2019component}, in their paper they also
-report that in a distributed evaluation setting, the communication scheme has a
-grater impact. Fernández de Vega et al. \cite{10.1007/978-3-319-45823-6_51}
-experimented with different parameters for a GP algorithm and concluded that
-hand-held devices and single-board computers (SBCs) required an order of
-magnitude less energy to run the same algorithm. 
+Nonetheless, energy efficiency is becoming the most important metric
+of performance and selling point in hardware development, and it is an
+important driver for current innovation. The challenge of building
+more power-efficient systems, can be addressed at the hardware and
+software levels. In the software level, developers focus their
+attention on the energy consumption of software, proposing
+optimizations for more energy-efficient algorithm implementations.
+Algorithm comparatives nowadays include power efficiency as a
+performance metric, these include encryption algorithms
+\cite{mota2017comparative,thakor2021lightweight}, estimation models
+for machine learning applications \cite{garcia2019estimation} and
+genetic programming (GP) \cite{diaz2018fuzzy}, and code refactoring
+\cite{ournani2021tales}. Since metaheuristics are so extensively used
+in machine learning applications, its interest in research has grown
+in parallel to its number of applications. Many papers focus on
+analyzing how certain metaheuristics parameters have an impact on
+energy consumption.  Díaz-Álvarez et al. \cite{diaz2022population}
+studies how the populations size of evolutionary algorithms (EAs)
+influences power consumption. In an earlier work centered on genetic
+algorithms (GAs) \cite{10.1007/978-3-030-45715-0_8} power-consumption
+of battery-powered devices was measured for various parameter
+configurations including chromosome and population sizes. The
+experiments used the one max and trap function benchmark problems,
+they concluded that execution time and energy consumption do not
+linearly correlate and there is a connection between the GA parameters
+and power consumption.  In GAs, the mutation operator appears to be a
+power-hungry component according to Abdelhafez et
+al. \cite{abdelhafez2019component}, in their paper they also report
+that in a distributed evaluation setting, the communication scheme has
+a grater impact. Fernández de Vega et
+al. \cite{10.1007/978-3-319-45823-6_51} experimented with different
+parameters for a GP algorithm and concluded that hand-held devices and
+single-board computers (SBCs) required an order of magnitude less
+energy to run the same algorithm.
 
 
 \section{Methodology and experimental setup}
@@ -172,8 +172,8 @@ corresponding library) and consumed by different command line utilities. We will
 use these command line utilities, since they produce an output that can be
 automatically processed and evaluated, which is what we are looking for in this
 paper\footnote{Systems based on the AMD architecture have a similar power
-  profiling architecture called AMP with its corresponding command line
-  tool. However, it was not well documented, and we found it excessively
+  profiling system called AMP with its corresponding command line
+  tool. However, we found that it was not well documented, and excessively
   complicated for the purposes of this article. Although not as complete, AMD
   processors also include the aforementioned MSRs so RAPL-based utilities can
   run on them}.
@@ -225,7 +225,11 @@ to host installed modules), and processing the command line arguments used a
 different library. Other than that, the business logic was exactly the same.
 
 These were runnning in an Ubuntu version 20.04.1 with kernel version
-5.15.0-69. The processor is a AMD Ryzen 9 3950X 16-Core.
+5.15.0-69. The processor is a AMD Ryzen 9 3950X 16-Core. Since we will
+not be testing in a pure Intel architecture, the complete RAPL API is
+not going to be available; that is also why we will be experimenting
+with different tools so that we are able to have an adequate coverage
+of energy consumption for the commands we will be measuring.
 
 To perform the experiments, a Perl script was created; it launched the scripts
 and collected results by analyzing the standard output and putting it in a CSV
