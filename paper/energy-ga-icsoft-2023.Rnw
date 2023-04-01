@@ -62,6 +62,7 @@ interpreters to spawn like {\sf deno} \cite{runtimeintroducing} (written in
 Rust) and {\sf bun} \cite{bun} programmed in the relatively unknown language
 Zig.
 
+No wonder, then, that JavaScript is also a popular language for implementing
 metaheuristics, especially evolutionary algorithms, since early implementations
 in the browser \cite{smith1996ga,jesusIWANN99,langdon2004global}, whole
 No wonder, then, that JavaScript is also a popular language for implementing
