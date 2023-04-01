@@ -257,25 +257,24 @@ times, compute the average time, and then use the same tool to measure the
 energy consumption for the \texttt{sleep} program during the average amount of
 time. The energy readings shown are the result of subtracting this measurement
 from every one of the 15 other measurements taken, so that we can analyze
-the differential of energy that has been consumed by our programs.
-
-Experimenting with this simple program will mainly allow us to calibrate the
-different tools in order to pick only one, if possible, as well as validate the
-program and iron out all possible errors in the program itself or in the
-processing scripts.
+the differential of energy that has been consumed by our programs; the result is clipped at 0, since negative energy differentials would make no sense.
 
 <<r pinpoint, echo=F>>=
 library(ggplot2)
 test.pinpoint <- read.csv("../code/data/pinpoint-sets-29-Mar-21-06-12.csv")
 @
 
+Experimenting with this simple program will mainly allow us to calibrate the
+different tools in order to pick only one, if possible, as well as validate the
+program and iron out all possible errors in the program itself or in the
+processing scripts.
 
-<<r pinpoint.gpu, echo=F, fig.cap="Measurements of energy expenditures by the GPU in the sets problem.\\protect\\label{fig:gpu}">>=
+<<r pinpoint.gpu, echo=F, fig.cap="Boxplot of measurements of energy expenditures by the GPU in the sets problem. GPU energy consumption is measured in Joules.\\protect\\label{fig:gpu}">>=
 test.pinpoint$size <- as.factor(test.pinpoint$size)
 ggplot(test.pinpoint, aes(x=size,y=GPU,group=size))+geom_boxplot()
 @
 
-One of the first observations we can draw from these initial experiments is whether it is interesting to measure how much energy the GPU spends. Since \texttt{pinpoint} is the only tool able to measure this, we will use it. We show the results in Figure ref{fig:gpu}.
+One of the first observations we can draw from these initial experiments is whether it is interesting to measure how much energy the GPU spends. Since \texttt{pinpoint} is the only tool able to measure this, we will use it. We show the results in Figure ref{fig:gpu}. What we see here is that it is mostly independent of the set size, but most importantly, that it is 0 in most cases, more than 50\%. The rest must be essentially noise, and it amounts to a few Joules anyway. We can probably discard \texttt{pinpoint} then as a tool, since it only offers the measurement of this device over the others, and this is not really useful. Adding this to the fact that measurements fail in many cases, we can discard it for the rest of the experiment.
 
 \section{Experimental results}
 \label{sec:res}
