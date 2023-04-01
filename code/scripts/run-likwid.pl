@@ -23,7 +23,6 @@ for my $l ( qw(1024 2048 4096) ) {
   say $command;
   for (my $i = 0; $i <= $ITERATIONS; $i++ ) {
     my $output = `$tool $command 2>&1`;
-    say $output;
     my ( $core, $pkg ) = $output =~ /(\d+\.\d+)\s+Joules/g;
     my ( $seconds ) = $output =~ /(\d+\.\d+) s/;
     $total_seconds += $seconds;
