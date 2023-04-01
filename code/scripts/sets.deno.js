@@ -4,6 +4,7 @@ import { generateSets } from "../lib/utils.js";
 const size = Deno.args[0];
 const NUMBER_OF_SETS = 1024;
 
+console.log( "Size ", size);
 const sacos = generateSets(size, NUMBER_OF_SETS).map((s) => hashify(s));
 
 let merged = sacos;
