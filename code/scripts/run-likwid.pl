@@ -33,12 +33,14 @@ for my $l ( qw(1024 2048 4096) ) {
   my $average=$total_seconds/ $ITERATIONS;
   my $baseline_output = `$tool sleep $average 2>&1`;
   my ( $core, $pkg ) = $baseline_output =~ /(\d+\.\d+)\s+Joules/g;
+  say "Baseline $core $pkg";
   foreach  my $row (@results) {
     my @core_pkg = @$row;
     my $core_diff = $core_pkg[0] - $core;
+    my $pkg_diff = $core_pkg[1] - $pkg;
     say $fh "pinpoint, $l, ",
       $core_diff > 0 ?$core_diff:0,  ", " ,
-      $core_pkg[1]-$pkg,", ",
+      $pkg_diff > 0 ? $pkg_diff: 0 ,", ",
       $core_pkg[2];
   }
 }
