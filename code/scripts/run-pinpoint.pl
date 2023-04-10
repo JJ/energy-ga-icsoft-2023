@@ -22,14 +22,14 @@ for my $c ( qw(node bun deno) ) {
     my @results;
     do {
       my $command = $command_lines{$c}." ". $l;
-
+      say $command;
       my $output = `pinpoint $command 2>&1`;
       if ($output !~ /0.00\s+J/) {
         $successful++;
         my ( $gpu, $pkg ) = $output =~ /(\d+\.\d+)\s+J/g;
         my ( $seconds ) = $output =~ /(\d+\.\d+) seconds/;
         $total_seconds += $seconds;
-        say "pinpoint, $l , $gpu ,$pkg";
+        say "pinpoint, $c, $l , $gpu ,$pkg";
         push @results, [$gpu, $pkg,$seconds];
       }
     } while ( $successful < $ITERATIONS );
