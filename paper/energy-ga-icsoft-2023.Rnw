@@ -17,6 +17,7 @@
 \newcommand{\pinp}{\texttt{pinpoint}}
 \newcommand{\lik}{\texttt{likwid}}
 
+
 \begin{document}
 
 \title{An analysis of energy consumption of JavaScript interpreters/compilers in evolutionary algorithm workloads}
@@ -285,7 +286,7 @@ ggplot(test.likwid, aes(x=size,y=CORE,group=size))+geom_boxplot()
 ggplot(test.likwid, aes(x=size,y=PKG,group=size))+geom_boxplot()
 @
 
-Another tool that we have tested, \texttt{likwid}, is able to measure the \emph{package} energy consumption. In this initial exploration, we will try and see whether this measurement is significant, and to what extent it is related to the core measurements. Boxplots of energy consumption for different set size is shown in Figure \ref{fig:likwid} for the CORE (top) and PKG RAPL registers. It seems to show that differential energy consumption (once baseline has been subtracted) is almost negligible in the CORE register unless the size is big enough (4096) in both cases, although the CORE register shows a certain amount of consumption for size = 2048.
+Another tool that we have tested, \texttt{likwid}, is also able to measure the \emph{package} energy consumption. In this initial exploration, we will try and see whether this measurement is significant, and to what extent it is related to the core measurements. Boxplots of energy consumption for different set size is shown in Figure \ref{fig:likwid} for the CORE (top) and PKG RAPL registers. It seems to show that differential energy consumption (once baseline has been subtracted) is almost negligible in the CORE register unless the size is big enough (4096) in both cases, although the CORE register shows a certain amount of consumption for size = 2048. It is entirely unlikely that this kind of measurements have a certain degree of uncertainly; however, apparently \pinp will directly estimate these runs as 0, and thus are skipped; however, this tool does measure a certain amount of consumption that cannot be so easily filtered.
 %
 <<r pkg.core, echo=F, fig.cap="Relationship between CORE and PACKAGE consumption (x and y axis, respectively.\\protect\\label{fig:corepkg}">>=
 ggplot(test.likwid, aes(x=PKG,y=CORE,color=size))+geom_point()
