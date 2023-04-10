@@ -14,6 +14,9 @@
 \usepackage{hyperref}
 \usepackage{SCITEPRESS}     % Please add other packages that you may need BEFORE the SCITEPRESS.sty package.
 
+\newcommand{\pinp}{\texttt{pinpoint}}
+\newcommand{\lik}{\texttt{likwid}}
+
 
 \begin{document}
 
@@ -274,9 +277,9 @@ test.pinpoint$size <- as.factor(test.pinpoint$size)
 ggplot(test.pinpoint, aes(x=size,y=GPU,group=size))+geom_boxplot()
 @
 
-One of the first observations we can draw from these initial experiments is whether it is interesting to measure how much energy the GPU spends. Since \texttt{pinpoint} is the only tool able to measure this, we will use it. We show the results in Figure ref{fig:gpu}. What we see here is that it is mostly independent of the set size, but most importantly, that it is 0 in most cases, more than 50\%. The rest must be essentially noise, and it amounts to a few Joules anyway. We can probably discard \texttt{pinpoint} then as a tool, since it only offers the measurement of this device over the others, and this is not really useful. Adding this to the fact that measurements fail in many cases, we can discard it for the rest of the experiment.
+One of the first observations we can draw from these initial experiments is whether it is interesting to measure how much energy the GPU spends. Since \texttt{pinpoint} is the only tool able to measure this, we will use it. We show the results in Figure ref{fig:gpu}. What we see here is that it is mostly independent of the set size, but most importantly, that it is 0 in most cases, more than 50\%. The rest must be essentially noise, and it amounts to a few Joules anyway. In order to decide if we can use this tool by itself, or complement it with other measures, we need to validate or enhance its measurements with others; that is why next we will make some test measurements with the next tool, \lik.
 
-<<r pinpoint, echo=F, fig.cap="Boxplot of (differential) measurements of energy consumption as measured by the CORE and PKG (package) registers, both measured in Joules.\\protect\\label{fig:likwid}>>=
+<<r likwid, echo=F, fig.cap="Boxplot of (differential) measurements of energy consumption as measured by the CORE and PKG (package) registers, both measured in Joules.\\protect\\label{fig:likwid}">>=
 test.likwid <- read.csv("../code/data/likwid-sets-10-Apr-12-54-28.csv")
 test.likwid$size <- as.factor(test.likwid$size)
 ggplot(test.likwid, aes(x=size,y=CORE,group=size))+geom_boxplot()
@@ -285,18 +288,20 @@ ggplot(test.likwid, aes(x=size,y=PKG,group=size))+geom_boxplot()
 
 Another tool that we have tested, \texttt{likwid}, is able to measure the \emph{package} energy consumption. In this initial exploration, we will try and see whether this measurement is significant, and to what extent it is related to the core measurements. Boxplots of energy consumption for different set size is shown in Figure \ref{fig:likwid} for the CORE (top) and PKG RAPL registers. It seems to show that differential energy consumption (once baseline has been subtracted) is almost negligible in the CORE register unless the size is big enough (4096) in both cases, although the CORE register shows a certain amount of consumption for size = 2048.
 %
-<<r pinpoint, echo=F, fig.cap="Relationship between CORE and PACKAGE consumption (x and y axis, respectively.\\protect\\label{fig:corepkg}>>=
+<<r pkg.core, echo=F, fig.cap="Relationship between CORE and PACKAGE consumption (x and y axis, respectively.\\protect\\label{fig:corepkg}">>=
 ggplot(test.likwid, aes(x=PKG,y=CORE,color=size))+geom_point()
 @
 %
 Plotting the relationship between these two registers (see Figure \ref{fig:corepkg}), however, shows a linear relationship, so we do not really need to plot both. One of them will be enough, and since PKG seems to have the greatest variation, we will stick to that one.
 
-<<r pinpoint.likwid, echo=F, fig.cap="Relationship between CORE measurements (likwid) and CPU measurements (pinpoint) (x and y axis, respectively.\\protect\\label{fig:pinlik}>>=
+<<r pinpoint.likwid, echo=F, fig.cap="Relationship between CORE measurements (likwid) and CPU measurements (pinpoint) (x and y axis, respectively.\\protect\\label{fig:pinlik}">>=
 pinlik <- data.frame(tool=c(rep("pinpoint",45),rep("likwid",48)),
                      size=c(c(rep("1024",15),rep("2048",15),rep("4096",15)),c(rep("1024",16),rep("2048",16),rep("4096",16))),
                      PKG=c(test.pinpoint$PKG,test.likwid$PKG))
 ggplot(pinlik, aes(x=tool,y=PKG))+geom_boxplot(aes(fill=size))
 @
+
+Since we have several tools to measure PKG, we need to find out what kind of measurements they have, and if there is correlation, or even equality between them. We show how 
 
 \section{Experimental results}
 \label{sec:res}
