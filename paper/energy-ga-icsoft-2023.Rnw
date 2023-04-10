@@ -300,7 +300,7 @@ pinlik <- data.frame(tool=c(rep("pinpoint",45),rep("likwid",48)),
 ggplot(pinlik, aes(x=tool,y=PKG))+geom_boxplot(aes(fill=size))
 @
 
-Since we have several tools to measure PKG, we need to find out what kind of measurements they have, and if there is correlation, or even equality between them. We show how PKG energy consumption is registered by \pinp and \lik in Figure \ref{fig:pinlik}. We have already seen in Figure \ref{likwid} how the measurements registered by \lik have some strange behavior; this chart shows that while \pinp shows a reasonable amount of consumption for all three sizes, \lik just registers zero, which is not reasonable in this case. This will lead us to discard the use of this tool in the upcoming experiments.
+Since there are several tools available to measure PKG, we need to find out what kind of measurements they have, and if there is correlation, or even equality between them. We show how PKG energy consumption is registered by \pinp and \lik in Figure \ref{fig:pinlik}. We have already seen in Figure \ref{fig:likwid} how the measurements registered by \lik have some strange behavior; this chart shows that while \pinp shows a reasonable amount of consumption for all three sizes, \lik just registers zero, which is not reasonable in this case. This will lead us to discard the use of this tool in the upcoming experiments.
 
 <<r perf, echo=F, fig.cap="Relationship between PKG measurements taken by pinpoint and perf, with boxplots with values for the three set sizes.\\protect\\label{fig:pinperf}">>=
 test.perf <- read.csv("../code/data/perfstat-deno-sets-30-Mar-14-51-25.csv")
@@ -310,7 +310,7 @@ pinperf <- data.frame(tool=c(rep("pinpoint",45),rep("perf",47)),
 ggplot(pinperf, aes(x=tool,y=PKG))+geom_boxplot(aes(fill=size))
 @
 
-Unlike the previous tool, Figure \ref{fig:pinperf} shows that there is a certain agreement between these two, except for the fact that \texttt{perf} seems to measure exceptionally low values in the lowest sizes. A Wilcox test shows significant differences for all three sizes; however, this might be due to a different amount of overhead or some other unknown environmental factors.
+Unlike what happened with the previous tool, Figure \ref{fig:pinperf} shows that there is a certain agreement between these two, except for the fact that \texttt{perf} seems to measure exceptionally low values in the lowest sizes. A Wilcox test shows significant differences for all three sizes; however, this might be due to a different amount of overhead or some other unknown environmental factors.
 
 Eventually, since \pinp is able to measure with accuracy for all size ranges, we will use it exclusively, as well as the quantity it measures, for comparison of different virtual machines. The initial results for this test drive are shown in Figure \ref{fig:testvms}.
 
@@ -325,7 +325,6 @@ Eventually, since \pinp is able to measure with accuracy for all size ranges, we
 This work is supported by the Ministerio espa\~{n}ol de Econom\'{\i}a y
 Competitividad (Spanish Ministry of Competitivity and Economy) under project
 PID2020-115570GB-C22 (DemocratAI::UGR).
-
 
 \bibliographystyle{apalike}
 {\small
