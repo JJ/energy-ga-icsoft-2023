@@ -301,7 +301,7 @@ pinlik <- data.frame(tool=c(rep("pinpoint",45),rep("likwid",48)),
 ggplot(pinlik, aes(x=tool,y=PKG))+geom_boxplot(aes(fill=size))
 @
 
-Since we have several tools to measure PKG, we need to find out what kind of measurements they have, and if there is correlation, or even equality between them. We show how 
+Since we have several tools to measure PKG, we need to find out what kind of measurements they have, and if there is correlation, or even equality between them. We show how PKG energy consumption is registered by \pinp and \lik in Figure \ref{fig:pinlik}. We have already seen in Figure \ref{likwid} how the measurements registered by \lik have some strange behavior; this chart shows that while \pinp shows a reasonable amount of consumption for all three sizes, \lik just registers zero, which is not reasonable in this case. This will lead us to discard the use of this tool in the upcoming experiments.
 
 \section{Experimental results}
 \label{sec:res}
