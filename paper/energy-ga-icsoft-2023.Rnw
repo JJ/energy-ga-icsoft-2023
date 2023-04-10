@@ -17,7 +17,6 @@
 \newcommand{\pinp}{\texttt{pinpoint}}
 \newcommand{\lik}{\texttt{likwid}}
 
-
 \begin{document}
 
 \title{An analysis of energy consumption of JavaScript interpreters/compilers in evolutionary algorithm workloads}
