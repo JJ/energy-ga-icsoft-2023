@@ -294,7 +294,7 @@ ggplot(test.likwid, aes(x=PKG,y=CORE,color=size))+geom_point()
 %
 Plotting the relationship between these two registers (see Figure \ref{fig:corepkg}), however, shows a linear relationship, so we do not really need to plot both. One of them will be enough, and since PKG seems to have the greatest variation, we will stick to that one.
 
-<<r pinpoint.likwid, echo=F, fig.cap="Relationship between CORE measurements (likwid) and CPU measurements (pinpoint) (x and y axis, respectively.\\protect\\label{fig:pinlik}">>=
+<<r pinpoint.likwid, echo=F, fig.cap="Relationship between PKG measurements taken by pinpoint and likwid.\\protect\\label{fig:pinlik}">>=
 pinlik <- data.frame(tool=c(rep("pinpoint",45),rep("likwid",48)),
                      size=c(c(rep("1024",15),rep("2048",15),rep("4096",15)),c(rep("1024",16),rep("2048",16),rep("4096",16))),
                      PKG=c(test.pinpoint$PKG,test.likwid$PKG))
@@ -302,6 +302,18 @@ ggplot(pinlik, aes(x=tool,y=PKG))+geom_boxplot(aes(fill=size))
 @
 
 Since we have several tools to measure PKG, we need to find out what kind of measurements they have, and if there is correlation, or even equality between them. We show how PKG energy consumption is registered by \pinp and \lik in Figure \ref{fig:pinlik}. We have already seen in Figure \ref{likwid} how the measurements registered by \lik have some strange behavior; this chart shows that while \pinp shows a reasonable amount of consumption for all three sizes, \lik just registers zero, which is not reasonable in this case. This will lead us to discard the use of this tool in the upcoming experiments.
+
+<<r perf, echo=F, fig.cap="Relationship between PKG measurements taken by pinpoint and perf, with boxplots with values for the three set sizes.\\protect\\label{fig:pinperf}">>=
+test.perf <- read.csv("../code/data/perfstat-deno-sets-30-Mar-14-51-25.csv")
+pinperf <- data.frame(tool=c(rep("pinpoint",45),rep("perf",47)),
+                     size=c(c(rep("1024",15),rep("2048",15),rep("4096",15)),c(rep("1024",16),rep("2048",16),rep("4096",15))),
+                     PKG=c(test.pinpoint$PKG,test.perf$PKG))
+ggplot(pinperf, aes(x=tool,y=PKG))+geom_boxplot(aes(fill=size))
+@
+
+Unlike the previous tool, Figure \ref{fig:pinperf} shows that there is a certain agreement between these two, except for the fact that \texttt{perf} seems to measure exceptionally low values in the lowest sizes. A Wilcox test shows significant differences for all three sizes; however, this might be due to a different amount of overhead or some other unknown environmental factors.
+
+Eventually, since \pinp is able to measure with accuracy for all size ranges, we will use it exclusively, as well as the quantity it measures, for comparison of different virtual machines. The initial results for this test drive are shown in Figure \ref{fig:testvms}.
 
 \section{Experimental results}
 \label{sec:res}
