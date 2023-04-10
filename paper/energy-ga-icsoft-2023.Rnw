@@ -313,13 +313,24 @@ ggplot(pinperf, aes(x=tool,y=PKG))+geom_boxplot(aes(fill=size))
 
 Unlike what happened with the previous tool, Figure \ref{fig:pinperf} shows that there is a certain agreement between these two, except for the fact that \texttt{perf} seems to measure exceptionally low values in the lowest sizes. A Wilcox test shows significant differences for all three sizes; however, this might be due to a different amount of overhead or some other unknown environmental factors.
 
-Eventually, since \pinp is able to measure with accuracy for all size ranges, we will use it exclusively, as well as the quantity it measures, for comparison of different virtual machines. The initial results for this test drive are shown in Figure \ref{fig:testvms}.
-
 <<r sets.vms, echo=F, fig.cap="PKG measurements for the set problem and the three different virtual machines.\\protect\\label{fig:testvms}">>=
 sets.vms <- read.csv("../code/data/pinpoint-vms-sets-10-Apr-17-59-56.csv")
 sets.vms$size <- as.factor(sets.vms$size)
 ggplot(sets.vms, aes(x=size,y=PKG))+geom_boxplot(aes(fill=VM))
+sets.vms$Joules.Second <- sets.vms$PKG / sets.vms$seconds
 @
+
+Eventually, since \pinp is able to measure with accuracy for all size ranges, we will use it exclusively, as well as the quantity it measures, for comparison of different virtual machines. The initial results for this test drive are shown in Figure \ref{fig:testvms}. This is due, in part, to the fact that they take a different amount of time, so it would be interesting to find out whether the energy density, or the consumption of energy per second, is similar. This is shown in Figure \ref{fig:jouls}.
+
+<<r sets.vms.jouls, echo=F, fig.cap="Boxplot of energy consumption per second, in Joules/s.\\protect\\label{fig:jouls}">>=
+ggplot(sets.vms, aes(x=size,y=Joules.Second))+geom_boxplot(aes(fill=VM))
+@
+
+The interesting thing about this Figure is that the consumption per second varies with with the VM used, as well as the size. Remarkably, {\sf deno} keeps it approximately constant, while {\sf bun} and {\sf node} experiment variation with the size, and not in a systematic way. It is interesting also to note that while {\sf bun}, in general, will spend less energy for unit of work done than {\sf node}, it will do so at the expense of exercising the CPU package more strenuously, spending much more energy per second than the other two VMs.
+
+These, however, are preliminary findings with a test problem, we will have to design experiments for actual operations used in evolutionary algorithms, which we will do next.
+
+
 
 \section{Experimental results}
 \label{sec:res}
