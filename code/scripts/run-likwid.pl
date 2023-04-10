@@ -38,7 +38,7 @@ for my $l ( qw(1024 2048 4096) ) {
     my @core_pkg = @$row;
     my $core_diff = $core_pkg[0] - $core;
     my $pkg_diff = $core_pkg[1] - $pkg;
-    say $fh "pinpoint, $l, ",
+    say $fh "likwid, $l, ",
       $core_diff > 0 ?$core_diff:0,  ", " ,
       $pkg_diff > 0 ? $pkg_diff: 0 ,", ",
       $core_pkg[2];
