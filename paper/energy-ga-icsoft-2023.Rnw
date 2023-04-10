@@ -315,6 +315,12 @@ Unlike what happened with the previous tool, Figure \ref{fig:pinperf} shows that
 
 Eventually, since \pinp is able to measure with accuracy for all size ranges, we will use it exclusively, as well as the quantity it measures, for comparison of different virtual machines. The initial results for this test drive are shown in Figure \ref{fig:testvms}.
 
+<<r sets.vms, echo=F, fig.cap="PKG measurements for the set problem and the three different virtual machines.\\protect\\label{fig:testvms}">>=
+sets.vms <- read.csv("../code/data/pinpoint-vms-sets-10-Apr-17-59-56.csv")
+sets.vms$size <- as.factor(sets.vms$size)
+ggplot(sets.vms, aes(x=size,y=PKG))+geom_boxplot(aes(fill=VM))
+@
+
 \section{Experimental results}
 \label{sec:res}
 
