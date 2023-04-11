@@ -1,12 +1,11 @@
 import { crossover, generateChromosomes } from "../lib/utils.js";
 
-const size = Deno.args[0];
+const size = process.argv[2];
 const NUMBER_OF_CHROMOSOMES = 40000;
 
 console.log("Size ", size);
 const population = generateChromosomes(size, NUMBER_OF_CHROMOSOMES);
 const pairs = [];
-
 const HALF_POPULATION = NUMBER_OF_CHROMOSOMES / 2;
 for (let i = 0; i < HALF_POPULATION; i++) {
   pairs.push([population[i], population[i + HALF_POPULATION]]);
