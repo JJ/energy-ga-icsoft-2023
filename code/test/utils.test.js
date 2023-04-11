@@ -1,8 +1,8 @@
 import { equal, ok } from "node:assert";
 import { test } from "node:test";
-import { generateSets } from "../lib/utils.js";
+import { generateChromosomes, generateSets } from "../lib/utils.js";
 
-test("generate test ", () => {
+test("generate sets", () => {
   [8, 64].forEach((size) => {
     const first = generateSets(size, size);
     equal(first.length, size);
@@ -11,6 +11,17 @@ test("generate test ", () => {
     second[0].forEach((e) => {
       ok(e < size);
       ok(e >= 0);
+    });
+  });
+});
+
+test("generate chromosomes ", () => {
+  [8, 64].forEach((size) => {
+    const first = generateChromosomes(size, size);
+    equal(first.length, size);
+    first.forEach((e) => {
+      equal(e.length, size);
+      ok(e.match(/^[01]+$/));
     });
   });
 });
