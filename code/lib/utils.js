@@ -34,3 +34,14 @@ export function generateChromosomes(chromosomeSize, numberOfChromosomes) {
   }
   return allChromosomes;
 }
+
+/**
+ *
+ * @param {String} A chromosome of zeros and ones
+ * @returns {Number} number of ones
+ */
+export function countOnes(chromosome) {
+  return chromosome
+    .split("")
+    .reduce((acc, bit) => acc + (bit === "1" ? 1 : 0), 0);
+}

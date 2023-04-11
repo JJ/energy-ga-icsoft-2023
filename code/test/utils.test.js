@@ -1,6 +1,6 @@
 import { equal, ok } from "node:assert";
 import { test } from "node:test";
-import { generateChromosomes, generateSets } from "../lib/utils.js";
+import { countOnes, generateChromosomes, generateSets } from "../lib/utils.js";
 
 test("generate sets", () => {
   [8, 64].forEach((size) => {
@@ -24,4 +24,11 @@ test("generate chromosomes ", () => {
       ok(e.match(/^[01]+$/));
     });
   });
+});
+
+test("Onemax ", () => {
+  equal(countOnes("1"), 1);
+  equal(countOnes("10000000000000000000000000000000000"), 1);
+  equal(countOnes("100000000000000000000000000000000001"), 2);
+  equal(countOnes("0000000000000000000000000000000000"), 0);
 });
