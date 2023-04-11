@@ -1,21 +1,15 @@
-import { hashify, sacoUnion } from "https://deno.land/x/saco@v0.0.2/index.js";
-import { generateSets } from "../lib/utils.js";
+import { hashify } from "https://deno.land/x/saco@v0.0.2/index.js";
+import { countOnes, generateChromosomes } from "../lib/utils.js";
 
 const size = Deno.args[0];
-const NUMBER_OF_SETS = 1024;
+const NUMBER_OF_CHROMOSOMES = 40000;
 
-console.log( "Size ", size);
-const sacos = generateSets(size, NUMBER_OF_SETS).map((s) => hashify(s));
+console.log("Size ", size);
+const population = generateChromosomes(size, NUMBER_OF_CHROMOSOMES);
 
-let merged = sacos;
-do {
-  merged = pairUnion(merged);
-} while (merged.length > 1);
-console.log(merged);
+const fitnessArray = [];
+population.forEach((c) => {
+  fitnessArray.push(countOnes(c));
+});
 
-function pairUnion(sacos) {
-  const byPairs = sacos.flatMap((_, i, a) =>
-    i % 2 ? [] : [a.slice(i, i + 2)]
-  );
-  return byPairs.map((p) => sacoUnion(p[0], p[1]));
-}
+console.log(hashify(fitnessArray));
