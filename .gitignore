@@ -120,3 +120,6 @@ auto/
 
 # Emacs
 *~
+
+# R
+.RData
