@@ -3,7 +3,7 @@ on:
   push:
     paths:
       - "**/*.js"
-      - "package.*"
+      - "package*.*"
   pull_request:
     paths:
       - "**/*.js"
