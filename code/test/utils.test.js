@@ -1,6 +1,12 @@
 import { equal, ok } from "node:assert";
 import { test } from "node:test";
-import { countOnes, generateChromosomes, generateSets } from "../lib/utils.js";
+import { hashify } from "saco-js";
+import {
+  countOnes,
+  crossover,
+  generateChromosomes,
+  generateSets,
+} from "../lib/utils.js";
 
 test("generate sets", () => {
   [8, 64].forEach((size) => {
@@ -31,4 +37,15 @@ test("Onemax ", () => {
   equal(countOnes("10000000000000000000000000000000000"), 1);
   equal(countOnes("100000000000000000000000000000000001"), 2);
   equal(countOnes("0000000000000000000000000000000000"), 0);
+});
+
+test("Crossover ", () => {
+  const chrom1 = "000000000000";
+  const chrom2 = "111111111111";
+  const [newChrom1, newChrom2] = crossover(chrom1, chrom2);
+  const hash1 = hashify(newChrom1.split(""));
+  const hash2 = hashify(newChrom2.split(""));
+  console.log(hash1, hash2);
+  equal(hash1["0"], hash2["1"]);
+  equal(hash1["1"], hash2["0"]);
 });
