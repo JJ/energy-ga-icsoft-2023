@@ -45,7 +45,6 @@ test("Crossover ", () => {
   const [newChrom1, newChrom2] = crossover(chrom1, chrom2);
   const hash1 = hashify(newChrom1.split(""));
   const hash2 = hashify(newChrom2.split(""));
-  console.log(hash1, hash2);
   equal(hash1["0"], hash2["1"]);
   equal(hash1["1"], hash2["0"]);
 });
