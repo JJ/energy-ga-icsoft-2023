@@ -20,7 +20,7 @@
 
 \begin{document}
 
-\title{An analysis of energy consumption of JavaScript interpreters/compilers in evolutionary algorithm workloads}
+\title{An analysis of energy consumption of JavaScript interpreters with evolutionary algorithm workloads}
 
 \author{\authorname{Juan J. Merelo-Guervós\sup{1}\orcidAuthor{0000-0002-1385-9741} and Mario García-Valdez\sup{2}\orcidAuthor{0000-0002-2593-1114}}
 \affiliation{\sup{1}Department of Computer Engineering, Automatics and Robotics, University of Granada, Granada, Spain}
