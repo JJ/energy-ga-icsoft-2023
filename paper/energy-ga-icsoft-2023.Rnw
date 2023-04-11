@@ -31,7 +31,7 @@
 \keywords{Green computing, metaheuristics, JavaScript}
 
 \abstract{
-% The abstract should summarize the contents of the paper and should contain at least 70 and at most 200 words. The text must be set to 9-point font size.
+Energy-aware computing includes many different variables and parameters, which makes necessary to focus on a single one to obtain meaningful results. In this paper we will look at the energy consumption of three different JavaScript interpreters: {\sf bun}, {\sf node} and {\sf deno}; given its different conceptual design we should expect different energy budgets for running the (roughly) same workload, operations related to evolutionary algorithms, a population-based stochastic optimization algorithm. In this paper we will first test different tools to measure per-process energy consumption in a precise way, trying to find the one that gives the most accurate estimation; after choosing the tool by performing different experiments on a workload similar to the one carried out by evolutionary algorithms, we will focus on EA-specific functions and operators and measure how much energy they consume for different problem sizes. From this, we will try to draw a conclusion on which JavaScript interpreter should be used in this kind of workloads if energy (or related expenses) have a limited budget.
 }
 
 \onecolumn \maketitle \normalsize \setcounter{footnote}{0} \vfill
@@ -352,7 +352,7 @@ onemax$kwh <- onemax$PKG * 2.77778e-7
 onemax$cost.Spain <- onemax$kwh * 20
 @
 %
-The figure shows the almost-flat growth of energy consumption for {\sf bun}. How consumption grows for {\sf deno} is weird, since it takes less energy when the chromosome is bigger (4096). Once again, {\sf node} is the bigger energy guzzler, consuming up to 3 times more than {\sf deno} on average, and more than 6 times as much as {\sf bun}. We will see how this is reflected in monetary terms, taking into account that the cost in Spain today is around 0.2€/kWH. This cost, shown in table \cite{tab:onemax:cost}, reaches almost one hundredth of an euro for the most "expensive" VM, {\sf node}; that gives you an idea of the kind of cost the algorithms have, and also how this cost decreases almost an order of magnitude if {\sf bun} is used.
+The figure shows the almost-flat growth of energy consumption for {\sf bun}. How consumption grows for {\sf deno} is weird, since it takes less energy when the chromosome is bigger (4096). Once again, {\sf node} is the bigger energy guzzler, consuming up to 3 times more than {\sf deno} on average, and more than 6 times as much as {\sf bun}. We will see how this is reflected in monetary terms, taking into account that the cost in Spain today is around 0.2€/kWH. This cost, shown in table \ref{tab:onemax:cost}, reaches almost one hundredth of an euro for the most "expensive" VM, {\sf node}; that gives you an idea of the kind of cost the algorithms have, and also how this cost decreases almost an order of magnitude if {\sf bun} is used.
 
 <<r onemax.cost, echo=F, message=F>>=
 library(dplyr)
@@ -363,7 +363,7 @@ kable(onemax.cost, caption="Estimated cost of the OneMax runs for every VM and s
 
 The crossover operation involves copy operations between strings, as well as creation of new strings. We will again generate 40K chromosomes and group them in pair of two; these strings will be crossed by interchanging a random fragment from one to the other and back. The resulting pairs will be stored in an array, which is eventually printed. The result of each and every experiment is shown in an energy vs. wallclock time chart in Figure \ref{fig:xover}.
 
-<<r crossover, echo=F, fig.cap="PKG consumption, in Joules, vs. time in seconds, for the crossover and the three different virtual machines.\\protect\\label{fig:onemax:xover}">>=
+<<r crossover, echo=F, fig.cap="PKG consumption, in Joules, vs. time in seconds, for the crossover and the three different virtual machines.\\protect\\label{fig:xover}">>=
 crossover <- read.csv("../code/data/pinpoint-vms-crossover-11-Apr-17-06-52.csv")
 crossover$size <- as.factor(crossover$size)
 ggplot(crossover, aes(x=seconds,y=PKG))+geom_point(size=3,aes(color=size,fill=size,shape=VM))+theme_tufte()
