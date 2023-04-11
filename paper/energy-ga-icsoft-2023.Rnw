@@ -361,7 +361,23 @@ library(kableExtra)
 kable(onemax.cost, caption="Estimated cost of the OneMax runs for every VM and size, in €-cents. \\protect\\label{tab:onemax:cost}")
 @
 
-The crossover operation involves copy operations between strings, as well as creation of new strings. We will again generate 40K chromosomes and group them in pair of two; these strings will be crossed by interchanging a random fragment from one to the other and back. The resulting pairs will be stored in an array, which is eventually printed.
+The crossover operation involves copy operations between strings, as well as creation of new strings. We will again generate 40K chromosomes and group them in pair of two; these strings will be crossed by interchanging a random fragment from one to the other and back. The resulting pairs will be stored in an array, which is eventually printed. The result of each and every experiment is shown in an energy vs. wallclock time chart in Figure \ref{fig:xover}.
+
+<<r crossover, echo=F, fig.cap="PKG consumption, in Joules, vs. time in seconds, for the crossover and the three different virtual machines.\\protect\\label{fig:onemax:xover}">>=
+crossover <- read.csv("../code/data/pinpoint-vms-crossover-11-Apr-17-06-52.csv")
+crossover$size <- as.factor(crossover$size)
+ggplot(crossover, aes(x=seconds,y=PKG))+geom_point(size=3,aes(color=size,fill=size,shape=VM))+theme_tufte()
+@
+
+The scenario is remarkably similar to the one shown in Figure \ref{fig:onemax}. In the two cases, {\sf bun} achieves the top performance and lowest energy consumption, and node is the worst. Average energy consumption is shown as a boxplot in Figure \ref{fig:crossover:energy}.
+%
+<<r crossover.energy, echo=F, fig.cap="Boxplot of PKG measurements for the crossover operator and the three different virtual machines.\\protect\\label{fig:crossover:energy}">>=
+ggplot(crossover, aes(x=size,y=PKG))+geom_boxplot(aes(fill=VM))+ylim(0, NA)+theme_tufte()
+@
+%
+Here we can see again the surprising fact that {\sf deno} takes the same amount of energy, on average, than node for size 2048, in a similar case to what happened for OneMax (shown in Figure \ref{fig:onemax:energy}). The difference between the thriftiest, {\sf bun}, and the most heavy consumer, {\sf node}, is approximately 3 times in this case, less than in the case of the OneMax fitness function.
+
+Given that the results for the two evolutionary-algorithm specific functions, as well as the test function, are quite conclusive, we should not expect anything different from the mutation function, so we will leave the experiments at these two, and proceed to the conclusions.
 
 \section{Conclusions}
 \label{sec:conc}
