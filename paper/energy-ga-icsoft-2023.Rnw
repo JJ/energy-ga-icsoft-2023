@@ -333,7 +333,14 @@ These, however, are preliminary findings with a test problem, we will have to de
 \section{Experimental results}
 \label{sec:res}
 
-The experiments must be focused on the key operations performed by an evolutionary algorithm: evaluation of fitness and "genetic" operators like mutation and crossover. What we will do is, repeating the setup in the initial exploration, check the energy consumption for the processing of 40000 chromosomes, a number chosen to take a sizable amount of memory, but also on the ballpark of usual number of operations in an evolutionary algorithm benchmark, it is also small enough to not create garbage collection problems with the memory, something that was detected after the initial exploration. Experiments were repeated for the same chromosome size as before, 1024, 2048, and 4096, and for the three JS virtual machines used.
+<<r onemax, echo=F, fig.cap="Boxplot of energy consumption vs. time taken for all three sizes and VMs.\\protect\\label{fig:onemax}">>=
+onemax <- read.csv("../code/data/pinpoint-vms-onemax-11-Apr-10-19-29.csv")
+onemax$size <- as.factor(onemax$size)
+ggplot(onemax, aes(x=seconds,y=PKG))+geom_point(size=3,aes(color=size,fill=size,shape=VM))
+@
+The experiments must be focused on the key operations performed by an evolutionary algorithm: evaluation of fitness and "genetic" operators like mutation and crossover. What we will do is, repeating the setup in the initial exploration, check the energy consumption for the processing of 40000 chromosomes, a number chosen to take a sizable amount of memory, but also on the ballpark of usual number of operations in an evolutionary algorithm benchmark, it is also small enough to not create garbage collection problems with the memory, something that was detected after the initial exploration. Experiments were repeated for the same chromosome size as before, 1024, 2048, and 4096, and for the three JS virtual machines used. The results are shown in Figure \ref{fig:onemax}.
+
+
 
 \section{Conclusions}
 \label{sec:conc}
