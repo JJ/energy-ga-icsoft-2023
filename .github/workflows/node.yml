@@ -21,4 +21,4 @@ jobs:
       - name: Fuentes
         uses: actions/checkout@v3
       - name: test
-        run: cd code && npm test
+        run: cd code && npm ci && npm test
