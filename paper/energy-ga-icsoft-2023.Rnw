@@ -277,7 +277,7 @@ test.pinpoint$size <- as.factor(test.pinpoint$size)
 ggplot(test.pinpoint, aes(x=size,y=GPU,group=size))+geom_boxplot()
 @
 
-One of the first observations we can draw from these initial experiments is whether it is interesting to measure how much energy the GPU spends. Since \texttt{pinpoint} is the only tool able to measure this, we will use it. We show the results in Figure ref{fig:gpu}. What we see here is that it is mostly independent of the set size, but most importantly, that it is 0 in most cases, more than 50\%. The rest must be essentially noise, and it amounts to a few Joules anyway. In order to decide if we can use this tool by itself, or complement it with other measures, we need to validate or enhance its measurements with others; that is why next we will make some test measurements with the next tool, \lik.
+One of the first observations we can draw from these initial experiments is whether it is interesting to measure how much energy the GPU spends. Since \texttt{pinpoint} is the only tool able to measure this, we will use it. We show the results in Figure ref{fig:gpu}. What we see here is that it is mostly independent of the set size, but most importantly, that it is 0 in most cases, more than 50\%. The rest must be essentially noise, and it amounts to a few Joules anyway. In order to decide if we can use this tool by itself, or complement it with other measures, we need to validate or enhance its measurements with others; that is why next we will make some test measurements with the next tool, \lik{}.
 
 <<r likwid, echo=F, fig.cap="Boxplot of (differential) measurements of energy consumption as measured by the CORE and PKG (package) registers, both measured in Joules.\\protect\\label{fig:likwid}">>=
 test.likwid <- read.csv("../code/data/likwid-sets-10-Apr-12-54-28.csv")
@@ -301,7 +301,7 @@ pinlik <- data.frame(tool=c(rep("pinpoint",45),rep("likwid",48)),
 ggplot(pinlik, aes(x=tool,y=PKG))+geom_boxplot(aes(fill=size))
 @
 
-Since there are several tools available to measure PKG, we need to find out what kind of measurements they have, and if there is correlation, or even equality between them. We show how PKG energy consumption is registered by \pinp and \lik in Figure \ref{fig:pinlik}. We have already seen in Figure \ref{fig:likwid} how the measurements registered by \lik have some strange behavior; this chart shows that while \pinp shows a reasonable amount of consumption for all three sizes, \lik just registers zero, which is not reasonable in this case. This will lead us to discard the use of this tool in the upcoming experiments.
+Since there are several tools available to measure PKG, we need to find out what kind of measurements they have, and if there is correlation, or even equality between them. We show how PKG energy consumption is registered by \pinp{} and \lik{} in Figure \ref{fig:pinlik}. We have already seen in Figure \ref{fig:likwid} how the measurements registered by \lik{} have some strange behavior; this chart shows that while \pinp{} shows a reasonable amount of consumption for all three sizes, \lik{} just registers zero, which is not reasonable in this case. This will lead us to discard the use of this tool in the upcoming experiments.
 
 <<r perf, echo=F, fig.cap="Relationship between PKG measurements taken by pinpoint and perf, with boxplots with values for the three set sizes.\\protect\\label{fig:pinperf}">>=
 test.perf <- read.csv("../code/data/perfstat-deno-sets-30-Mar-14-51-25.csv")
@@ -320,7 +320,7 @@ ggplot(sets.vms, aes(x=size,y=PKG))+geom_boxplot(aes(fill=VM))
 sets.vms$Joules.Second <- sets.vms$PKG / sets.vms$seconds
 @
 
-Eventually, since \pinp is able to measure with accuracy for all size ranges, we will use it exclusively, as well as the quantity it measures, for comparison of different virtual machines. The initial results for this test drive are shown in Figure \ref{fig:testvms}. This is due, in part, to the fact that they take a different amount of time, so it would be interesting to find out whether the energy density, or the consumption of energy per second, is similar. This is shown in Figure \ref{fig:jouls}.
+Eventually, since \pinp{} is able to measure with accuracy for all size ranges, we will use it exclusively, as well as the quantity it measures, for comparison of different virtual machines. The initial results for this test drive are shown in Figure \ref{fig:testvms}. This is due, in part, to the fact that they take a different amount of time, so it would be interesting to find out whether the energy density, or the consumption of energy per second, is similar. This is shown in Figure \ref{fig:jouls}.
 
 <<r sets.vms.jouls, echo=F, fig.cap="Boxplot of energy consumption per second, in Joules/s.\\protect\\label{fig:jouls}">>=
 ggplot(sets.vms, aes(x=size,y=Joules.Second))+geom_boxplot(aes(fill=VM))
