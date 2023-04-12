@@ -382,6 +382,8 @@ Given that the results for the two evolutionary-algorithm specific functions, as
 \section{Conclusions}
 \label{sec:conc}
 
+In this paper, we set out to study the energy efficiency of different JavaScript interpreters in evolutionary algorithm workloads, by studying how short scripts that are extensively used in implementations of these algorithms work and how these energy expenses scale with chromosome size.
+
 \section*{Acknowledgements}
 
 This work is supported by the Ministerio espa\~{n}ol de Econom\'{\i}a y
