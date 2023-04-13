@@ -484,7 +484,9 @@ tool has been calibrated by comparing its readings with other tools, which were
 also evaluated for the same purpose and eventually discarded. We have also adopted a
 benchmark-based approach, similar to the one used to measure performance, so
 that consumption for specific operations can be pinpointed, discarding noise
-produced by an implementation of a complete algorithm. % I did not understand the last sentence. - M
+produced by an implementation of a complete algorithm; that is, a whole program includes different operations, applied in different proportion, that might cancel each other. Testing short code paths, as proposed by \cite{10.1145/2425248.2425252} makes easier to understand their individual contribution to the overall consumption of the algorithm, and eventually optimize their specific code, or the number of times they are applied in the algorithm.
+% I did not understand the last sentence. - M
+% Clarified and added citation - JJ
 
 During the exploratory data analysis, we have established that, in Linux
 machines, \pinp{} can be profitably used to measure per-process energy
