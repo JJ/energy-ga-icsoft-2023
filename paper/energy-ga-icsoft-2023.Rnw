@@ -421,7 +421,7 @@ How consumption grows for {\sf deno} is weird, since it takes less energy when
 the chromosome is bigger (4096). Once again, {\sf node} is the bigger energy
 guzzler, consuming up to 3 times more than {\sf deno} on average, and more than
 6 times as much as {\sf bun}. We will see how this is reflected in monetary
-terms, taking into account that the cost in Spain today is around 0.2€/kWH.
+terms, taking into account that the cost in Spain today is around 0.2€/kWh.
 This cost, shown in table \ref{tab:onemax:cost}, reaches almost one-hundredth
 of a euro for the most "expensive" VM, {\sf node}; that gives you an idea of
 the kind of cost the algorithms have, and also how this cost decreases almost
