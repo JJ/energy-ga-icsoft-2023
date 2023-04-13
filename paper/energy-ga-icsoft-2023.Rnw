@@ -377,11 +377,37 @@ onemax$size <- as.factor(onemax$size)
 ggplot(onemax, aes(x=seconds,y=PKG))+geom_point(size=3,aes(color=size,fill=size,shape=VM))+theme_tufte()
 @
 
-As was done in \cite{DBLP:conf/evoW/MereloCBRGFRV16}, which was focused on wallclock performance, the experiments will be focused on the key operations performed by an evolutionary algorithm: evaluation of fitness and "genetic" operators like mutation and crossover. What we will do is, repeating the setup in the initial exploration, check the energy consumption for the processing of 40000 chromosomes, a number chosen to take a sizable amount of memory, but also on the ballpark of usual number of operations in an evolutionary algorithm benchmark, it is also small enough to not create garbage collection problems with the memory, something that was detected after the initial exploration. Experiments were repeated for the same chromosome size as before, 1024, 2048, and 4096, and for the three JS virtual machines used. Although the business logic is exactly the same for the experiments, the script run comes in two version, one for {\sf deno} and other for {\sf bun/node}, due to the different way they have of reading command-line arguments. This does not affect the overhead in any way. Code, as well as the data resulted from the experiments and analyzed in this paper, is released with a free license (along with this paper) from the repository \url{https://github.com/JJ/energy-ga-icsoft-2023}.
+As was done in \cite{DBLP:conf/evoW/MereloCBRGFRV16}, which was focused on
+wallclock performance, the experiments will be focused on the key operations
+performed by an evolutionary algorithm: evaluation of fitness and "genetic"
+operators like mutation and crossover. What we will do is, repeat the setup
+in the initial exploration, check the energy consumption for the processing of
+40000 chromosomes, a number chosen to take a sizable amount of memory, but also
+on the ballpark of the usual number of operations in an evolutionary algorithm
+benchmark, it is also small enough to not create garbage collection problems
+with the memory, something that was detected after the initial exploration.
+Experiments were repeated for the same chromosome size as before, 1024, 2048,
+and 4096, and for the three JS virtual machines used. Although the business
+logic is exactly the same for the experiments, the script run comes in two
+versions, one for {\sf deno} and the other for {\sf bun/node}, due to the different
+way they have of reading command-line arguments. This does not affect the
+overhead in any way. Code, as well as the data resulted from the experiments
+and analyzed in this paper, are released with a free license (along with this
+paper) from the repository \url{https://github.com/JJ/energy-ga-icsoft-2023}.
 
-First we will evaluate a typical fitness function, OneMax, which counts the number of ones in a binary (1s and 0s) strings. This type of functions, which check the values of the bits in the string and assign it an integer value is typical of many papers focused on the evaluation of the evolutionary algorithm itself, including parallel versions \cite{DBLP:conf/gecco/GuervosV18}.
+First, we will evaluate a typical fitness function, OneMax, which counts the
+number of ones in a binary (1s and 0s) string. This type of functions, which
+check the values of bits in a string and assign an integer value to it are
+typical of many papers focused on evaluating evolutionary algorithms,
+including parallel versions \cite{DBLP:conf/gecco/GuervosV18}.
 
-The results are shown in Figure \ref{fig:onemax}. This already shows that time, as well as energy consumption, for {\sf node} is higher; just check the separation of the squares representing individual experiments in that interpreter to the rest of the values for the same color; this separation increases with chromosome size. But this paper focuses on energy consumption, which we summarize next in Figure \ref{fig:onemax:energy}.
+The results are shown in Figure \ref{fig:onemax}. This already shows that time,
+as well as energy consumption, for {\sf node} is higher; just check the
+separation of the squares representing individual experiments in that
+interpreter to the rest of the values for the same color; this separation
+increases with chromosome size. But this paper focuses on energy consumption,
+which we summarize next in Figure \ref{fig:onemax:energy}.
+
 %
 <<r onemax.vms, echo=F, fig.cap="Boxplot of PKG measurements OneMax problem and the three different virtual machines.\\protect\\label{fig:onemax:energy}">>=
 ggplot(onemax, aes(x=size,y=PKG))+geom_boxplot(aes(fill=VM))+ylim(0, NA)+theme_tufte()
@@ -389,7 +415,17 @@ onemax$kwh <- onemax$PKG * 2.77778e-7
 onemax$cost.Spain <- onemax$kwh * 20
 @
 %
-The figure shows the almost-flat growth of energy consumption for {\sf bun}. How consumption grows for {\sf deno} is weird, since it takes less energy when the chromosome is bigger (4096). Once again, {\sf node} is the bigger energy guzzler, consuming up to 3 times more than {\sf deno} on average, and more than 6 times as much as {\sf bun}. We will see how this is reflected in monetary terms, taking into account that the cost in Spain today is around 0.2€/kWH. This cost, shown in table \ref{tab:onemax:cost}, reaches almost one hundredth of an euro for the most "expensive" VM, {\sf node}; that gives you an idea of the kind of cost the algorithms have, and also how this cost decreases almost an order of magnitude if {\sf bun} is used.
+
+The figure shows the almost-flat growth of energy consumption for {\sf bun}.
+How consumption grows for {\sf deno} is weird, since it takes less energy when
+the chromosome is bigger (4096). Once again, {\sf node} is the bigger energy
+guzzler, consuming up to 3 times more than {\sf deno} on average, and more than
+6 times as much as {\sf bun}. We will see how this is reflected in monetary
+terms, taking into account that the cost in Spain today is around 0.2€/kWH.
+This cost, shown in table \ref{tab:onemax:cost}, reaches almost one-hundredth
+of a euro for the most "expensive" VM, {\sf node}; that gives you an idea of
+the kind of cost the algorithms have, and also how this cost decreases almost
+an order of magnitude if {\sf bun} is used.
 
 <<r onemax.cost, echo=F, message=F>>=
 library(dplyr)
@@ -398,7 +434,12 @@ library(kableExtra)
 kable(onemax.cost, caption="Estimated cost of the OneMax runs for every VM and size, in €-cents. \\protect\\label{tab:onemax:cost}")
 @
 
-The crossover operation involves copy operations between strings, as well as creation of new strings. We will again generate 40K chromosomes and group them in pair of two; these strings will be crossed by interchanging a random fragment from one to the other and back. The resulting pairs will be stored in an array, which is eventually printed. The result of each and every experiment is shown in an energy vs. wallclock time chart in Figure \ref{fig:xover}.
+The crossover operation involves copy operations between strings, as well as
+creation of new strings. We will again generate 40K chromosomes and group them
+in pairs; these strings will be crossed by interchanging a random
+fragment from one to the other and back. The resulting pairs will be stored in
+an array, which is eventually printed. The result of every experiment
+is shown in an energy vs. wallclock time chart in Figure \ref{fig:xover}.
 
 <<r crossover, echo=F, fig.cap="PKG consumption, in Joules, vs. time in seconds, for the crossover and the three different virtual machines.\\protect\\label{fig:xover}">>=
 crossover <- read.csv("../code/data/pinpoint-vms-crossover-11-Apr-17-06-52.csv")
@@ -406,30 +447,92 @@ crossover$size <- as.factor(crossover$size)
 ggplot(crossover, aes(x=seconds,y=PKG))+geom_point(size=3,aes(color=size,fill=size,shape=VM))+theme_tufte()
 @
 
-The scenario is remarkably similar to the one shown in Figure \ref{fig:onemax}. In the two cases, {\sf bun} achieves the top performance and lowest energy consumption, and node is the worst. Average energy consumption is shown as a boxplot in Figure \ref{fig:crossover:energy}.
+The scenario is remarkably similar to the one shown in Figure \ref{fig:onemax}.
+In the two cases, {\sf bun} achieves the top performance and lowest energy
+consumption, and {\sf node} is the worst. Average energy consumption is shown as a
+boxplot in Figure \ref{fig:crossover:energy}.
+
 %
 <<r crossover.energy, echo=F, fig.cap="Boxplot of PKG measurements for the crossover operator and the three different virtual machines.\\protect\\label{fig:crossover:energy}">>=
 ggplot(crossover, aes(x=size,y=PKG))+geom_boxplot(aes(fill=VM))+ylim(0, NA)+theme_tufte()
 @
 %
-Here we can see again the surprising fact that {\sf deno} takes the same amount of energy, on average, than node for size 2048, in a similar case to what happened for OneMax (shown in Figure \ref{fig:onemax:energy}). The difference between the thriftiest, {\sf bun}, and the most heavy consumer, {\sf node}, is approximately 3 times in this case, less than in the case of the OneMax fitness function.
 
-Given that the results for the two evolutionary-algorithm specific functions, as well as the test function, are quite conclusive, we should not expect anything different from the mutation function, so we will leave the experiments at these two, and proceed to the conclusions.
+Here we can see again the surprising fact that {\sf deno} takes the same amount
+of energy, on average, as {\sf node} for size 2048, in a similar case to what
+happened for OneMax (shown in Figure \ref{fig:onemax:energy}). The difference
+between the thriftiest, {\sf bun}, and the heaviest consumer, {\sf node}, is
+approximately three times, in this case, less than in the case of the OneMax fitness
+function.
+
+Given that the results for the two evolutionary-algorithm-specific functions,
+as well as the test function, are quite conclusive, we should not expect
+anything different from the mutation function, so we will leave the experiments
+at these two, and proceed to the conclusions.
 
 \section{Conclusions}
 \label{sec:conc}
 
-In this paper, we set out to study the energy efficiency of different JavaScript interpreters in evolutionary algorithm workloads, by studying how short scripts that are extensively used in implementations of these algorithms work and how these energy expenses scale with chromosome size. We have developed a methodology to accurately measure per-process consumption; we have also adopted a tool, \pinp, that is able to give good estimations of sensor readings, discarding experiments where that estimation was not adequate; this tool has been calibrated by comparing its readings with other tools, which were also evaluated for the purpose and eventually discarded. We have also adopted a benchmark-based approach, similar to the one used to measure performance, so that consumption for specific operations can be pinpointed, discarding noise produced by an implementation of a complete algorithm.
+In this paper, we set out to study the energy efficiency of different
+JavaScript interpreters in evolutionary algorithm workloads, by studying how
+short scripts that are extensively used in implementations of these algorithms
+work and how these energy expenses scale with the chromosome size. We have
+developed a methodology to accurately measure per-process consumption; we have
+also adopted a tool, \pinp, that is able to give good estimations of sensor
+readings, discarding experiments where that estimation was not adequate; this
+tool has been calibrated by comparing its readings with other tools, which were
+also evaluated for the same purpose and eventually discarded. We have also adopted a
+benchmark-based approach, similar to the one used to measure performance, so
+that consumption for specific operations can be pinpointed, discarding noise
+produced by an implementation of a complete algorithm. % I did not understand the last sentence. - M
 
-During the exploratory data analysis, we have established that, in Linux machines, \pinp{} can be profitably used to measure per-process energy consumption, as long as these measurements are repeated and the process themselves include short snippets of business logic; this tool should be preferred over others that are either less accurate or simply take into account different aspects of energy consumption.
+During the exploratory data analysis, we have established that, in Linux
+machines, \pinp{} can be profitably used to measure per-process energy
+consumption, as long as these measurements are repeated and the process
+themselves include short snippets of business logic; this tool should be
+preferred over others that are either less accurate or simply take into account
+different aspects of energy consumption.
 
-The main point of this paper, however, was to check which JavaScript interpreter should be used if our objective is to consume the minimum amount of energy; the experiments have reliably confirmed {\sf bun} to be that tool. Not only it consumes less for all the range of chromosome sizes used; it also takes less time and can run applications written for Node (mostly) unmodified; its consumption also scales better with problem size. This might be due to design considerations, but also to the fact that the language used to write it, Zig, does not have as many safety controls as the language used for other interpreters. The only inconvenient of this interpreter is that it has not reached version 1.0 yet, being currently in version 0.5.9; this might prevent any company or organization to use it in production environments.
+The main point of this paper, however, was to check which JavaScript
+interpreter should be used if our objective is to consume the minimum amount of
+energy; the experiments have reliably confirmed {\sf bun} to be that tool. Not
+only it consumes less for all the range of chromosome sizes used; it also takes
+less time and can run applications written for Node (mostly) unmodified; its
+consumption also scales better with problem size. This might be due to design
+considerations, but also to the fact that the language used to write it, Zig,
+does not have as many safety controls as other interpreted languages. % JJ please check if the last sentence is correct. - M
+The only inconvenience of this interpreter is that it has not
+reached version 1.0 yet, being currently in version 0.5.9; this might prevent
+any company or organization from using it in production environments.
 
-If that is an issue, {\sf deno} might be a good alternative. Except in a specific case, it is going to be faster and consume less energy than {\sf node}, even more so when memory requirements are high. According to our initial exploration, it will also consume less energy {\em per second}, thus for workloads that take roughly the same time, it will be a better candidate than {\sf node}. As an inconvenient, it needs small modifications to run, at least if you need core or other kind of external libraries; its core library modules are different to those used in {\sf node/bun}, although that need not be a disadvantage per se.
+If that is an issue, {\sf deno} might be a good alternative. Except in a
+specific case, it is going to be faster and consume less energy than {\sf
+node}, even more so when memory requirements are high. According to our initial
+exploration, it will also consume less energy {\em per second}, thus for
+workloads that take roughly the same time, it will be a better candidate than
+{\sf node}. As an inconvenience, it needs minor modifications to run, at least
+if you need core or other kind of external libraries; its core library modules
+are different to those used in {\sf node/bun}, although that need not be a
+disadvantage per se.
 
-The previous two points imply that, energy-wise, there are no good reasons to use {\sf node.js} for running evolutionary algorithms. Except if business logic uses specific, early-adoption, or some feature that, for some reason, does not work yet with {\sf bun}, we would advise anyone to keep using {\sf bun} in this kind of workloads.
+The previous two points imply that, energy-wise, there are no good reasons to
+use {\sf node.js} for running evolutionary algorithms. Except if the business logic
+uses specific, early-adoption, or some features that, for some reason, does not
+work with {\sf bun} yet, we would advise anyone to keep using {\sf bun} for this
+kind of workloads.
 
-As we have indicated in the experimental session, the wide advantage that {\sf bun} has over the other interpreters does not leave a lot of room for adopting different benchmarks that could make that ranking vary; at any rate, these experiments have shown how much faster and energy-saving {\sf bun} is (from 1/3 to 1/6 the energy consumed by {\sf node}), but it would be interesting to know what happens to this gap under different operations like selection or different kind of mutation. At the same time, even if evolutionary algorithms are mostly GPU-free, there are some fitness functions that operate on floating point numbers and thus would need to use the GPU; how interpreters work in this area could be an interesting future line of work. This, along with testing different versions of the interpreters as they are published, will be the subject of future papers.
+As we have indicated in the experimental session, the wide advantage that {\sf
+bun} has over the other interpreters does not leave much room for adopting
+different benchmarks that could make that ranking vary; at any rate, these
+experiments have shown how much faster and energy-saving {\sf bun} is (from 1/3
+to 1/6 the energy consumed by {\sf node}), but it would be interesting to know
+what happens to this gap under different operations like selection or different
+kind of mutation. At the same time, even if evolutionary algorithms are mostly
+GPU-free, there are some fitness functions that operate on floating point
+numbers and thus would need to use the GPU; how interpreters work in this area
+could be an interesting future line of work. This, along with testing different
+versions of the interpreters as they are published, will be the subject of
+future papers.
 
 
 
