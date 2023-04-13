@@ -502,7 +502,8 @@ only it consumes less for all the range of chromosome sizes used; it also takes
 less time and can run applications written for Node (mostly) unmodified; its
 consumption also scales better with problem size. This might be due to design
 considerations, but also to the fact that the language used to write it, Zig,
-does not have as many safety controls as other interpreted languages. % JJ please check if the last sentence is correct. - M
+emphasizes compile-time safety and manual memory allocation by default, and avoids hidden control flow. % JJ please check if the last sentence is correct. - M
+% Changed to claims from the ziglang.org website - JJ
 The only inconvenience of this interpreter is that it has not
 reached version 1.0 yet, being currently in version 0.5.9; this might prevent
 any company or organization from using it in production environments.
