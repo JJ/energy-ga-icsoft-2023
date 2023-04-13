@@ -66,23 +66,22 @@ Rust) and {\sf bun} \cite{bun} programmed in the relatively unknown language
 Zig.
 
 No wonder, then, that JavaScript is also a popular language for implementing
-metaheuristics, especially evolutionary algorithms, since early implementations
-in the browser \cite{smith1996ga,jesusIWANN99,langdon2004global}, whole
-No wonder, then, that JavaScript is also a popular language for implementing
-libraries \cite{EvoStar2014:jsEO}, through complete implementations geared
-towards volunteer computing \cite{2016arXiv160101607M}. But one of the
-criticisms leveraged towards these implementations of evolutionary algorithms
-is the (possible) lack of speed of the language compared to other compiled
-languages (mainly Java, very popular with metaheuristics implementations, or
-C++).
+metaheuristics, especially evolutionary algorithms. From the early
+implementations in the browser
+\cite{smith1996ga,jesusIWANN99,langdon2004global}, whole libraries
+\cite{EvoStar2014:jsEO}, through complete implementations geared towards
+volunteer computing \cite{2016arXiv160101607M}. However, one of the criticisms
+leveraged towards these implementations is the (possible) lack of speed when
+compared to other compiled languages (mainly Java, very popular in
+metaheuristics implementations, or C++).
 
 This is why, since implementation matters \cite{DBLP:conf/iwann/MereloRACML11},
-choosing the right interpreter is going to have a big impact on the performance
+choosing the right interpreter is going to have a significant impact on the performance
 of any workload; if you decide to choose JavaScript for any reason (such as
 seamless client/server integration, or be able to run your algorithm either on
 the browser or from the command line if desired) knowing which VM delivers the
-best performance is essential, either from the scientific point of view, or
-from the software engineering point of view.
+best performance is essential, either from the scientific, or software engineering
+points of view.
 
 At the same time, with the advent of the concept of green computing
 \cite{kurp2008green}, it becomes increasingly important to measure not only the
@@ -93,7 +92,7 @@ the consumption needed to run a certain workload. This will be the main focus
 of this paper; since the core of the different JS virtual machines is
 different, and are created with languages with different focus (Rust is focused
 on memory safety \cite{noseda2022rust}, Zig based on simplicity and performance
-\cite{zig}), different consumption should be expected. Since all three
+\cite{zig}), different energy consumption should be expected. Since all three
 languages can (roughly) run the same, unmodified source code, what we intend
 with this paper is to advise on which JS interpreter might give the lowest
 power consumption, the maximum performance, or both, so that evolutionary
@@ -164,8 +163,8 @@ to measure precisely how much a specific process consumes.
 
 On the other hand, energy profilers are programs that draw information from
 hardware sensors \cite{sinha2001jouletrack}, generally exposed through kernel
-calls or higher-level wrapper libraries, to pinpoint consumption during a period
-of time of by specific processes. Tools that give these measures, either with a
+calls or higher-level wrapper libraries, to pinpoint consumption by specific processes
+during in a time range. Tools that give these measures, either with a
 graphic or a command line interface, have been available for some time already,
 and have become more popular lately. One of the mainstream processor architectures,
 Intel, includes an interface called RAPL, or Running Average Power Limit
@@ -207,10 +206,8 @@ compiling their source code. \begin{itemize}
   consumption. It will be used mainly for the  \texttt{pkg} domain; this is a
   domain that it is measured by all tools, but all of them would process device
     readings differently, so it will provide us with alternative estimations of
-    the consumption. % it will provide (the domain? of the tools?)
-    % The tool will provide a different estimation from the MSR reading; this is
-    % what I understood, at least. - JJ
-\item {\sf likwid-powermeter}\footnote{\url{https://github.com/RRZE-HPC/likwid}}
+    the consumption. 
+  \item {\sf likwid-powermeter}\footnote{\url{https://github.com/RRZE-HPC/likwid}}
   measures the \texttt{CORE} as well as the \texttt{PKG} domain, which includes
   the former together with the so-called ``uncore'' components.
 \end{itemize}
@@ -269,7 +266,7 @@ test.pinpoint <- read.csv("../code/data/pinpoint-sets-29-Mar-21-06-12.csv")
 
 Experimenting with this simple program will mainly allow us to calibrate the
 different tools in order to pick only one, if possible, as well as validate the
-program and iron out all possible errors in the program itself or in the
+program and iron out all possible errors in the program itself or the
 processing scripts.
 
 <<r pinpoint.gpu, echo=F, fig.cap="Boxplot of measurements of energy expenditures by the GPU in the sets problem. GPU energy consumption is measured in Joules.\\protect\\label{fig:gpu}">>=
@@ -277,7 +274,16 @@ test.pinpoint$size <- as.factor(test.pinpoint$size)
 ggplot(test.pinpoint, aes(x=size,y=GPU,group=size))+geom_boxplot()
 @
 
-One of the first observations we can draw from these initial experiments is whether it is interesting to measure how much energy the GPU spends. Since \texttt{pinpoint} is the only tool able to measure this, we will use it. We show the results in Figure ref{fig:gpu}. What we see here is that it is mostly independent of the set size, but most importantly, that it is 0 in most cases, more than 50\%. The rest must be essentially noise, and it amounts to a few Joules anyway. In order to decide if we can use this tool by itself, or complement it with other measures, we need to validate or enhance its measurements with others; that is why next we will make some test measurements with the next tool, \lik{}.
+One of the first observations we can draw from these initial experiments is
+whether measure how much energy the GPU spends it is interesting. Since
+\texttt{pinpoint} is the only tool able to measure this, we will use it. We
+show the results in Figure ref{fig:gpu}. We see here that it is mostly
+independent of the set size, but most importantly, it is 0 in most cases,
+more than 50\%. The rest must be essentially noise, amounting to a few
+Joules anyway. In order to decide if we can use this tool alone or
+complement it with other measures, we need to validate or enhance its
+measurements with others; that is why next, we will make some test measurements
+with the next tool, \lik{}.
 
 <<r likwid, echo=F, fig.cap="Boxplot of (differential) measurements of energy consumption as measured by the CORE and PKG (package) registers, both measured in Joules.\\protect\\label{fig:likwid}">>=
 test.likwid <- read.csv("../code/data/likwid-sets-10-Apr-12-54-28.csv")
@@ -286,7 +292,19 @@ ggplot(test.likwid, aes(x=size,y=CORE,group=size))+geom_boxplot()
 ggplot(test.likwid, aes(x=size,y=PKG,group=size))+geom_boxplot()
 @
 
-Another tool that we have tested, \texttt{likwid}, is also able to measure the \emph{package} energy consumption. In this initial exploration, we will try and see whether this measurement is significant, and to what extent it is related to the core measurements. Boxplots of energy consumption for different set size is shown in Figure \ref{fig:likwid} for the CORE (top) and PKG RAPL registers. It seems to show that differential energy consumption (once baseline has been subtracted) is almost negligible in the CORE register unless the size is big enough (4096) in both cases, although the CORE register shows a certain amount of consumption for size = 2048. It is entirely unlikely that this kind of measurements have a certain degree of uncertainly; however, apparently \pinp will directly estimate these runs as 0, and thus are skipped; however, this tool does measure a certain amount of consumption that cannot be so easily filtered.
+Another tool that we have tested, \texttt{likwid}, can also measure the
+\emph{package} energy consumption. In this initial exploration, we will 
+see whether this measurement is significant and to what extent it is related
+to the core measurements. Boxplots of energy consumption for different set size
+is shown in Figure \ref{fig:likwid} for the CORE (top) and PKG RAPL registers.
+It seems to show that differential energy consumption (once the baseline has been
+subtracted) is almost negligible in the CORE register unless the size is big
+enough (4096) in both cases, although the CORE register shows a certain amount
+of consumption for size = 2048. It is entirely unlikely that these kinds of
+measurements have a certain degree of uncertainty; however, apparently, \pinp
+will directly estimate these runs as 0, and thus are skipped; however, this
+tool does measure a certain amount of consumption that cannot be so easily
+filtered.
 %
 <<r pkg.core, echo=F, fig.cap="Relationship between CORE and PACKAGE consumption (x and y axis, respectively.\\protect\\label{fig:corepkg}">>=
 ggplot(test.likwid, aes(x=PKG,y=CORE,color=size))+geom_point()
@@ -301,7 +319,15 @@ pinlik <- data.frame(tool=c(rep("pinpoint",45),rep("likwid",48)),
 ggplot(pinlik, aes(x=tool,y=PKG))+geom_boxplot(aes(fill=size))
 @
 
-Since there are several tools available to measure PKG, we need to find out what kind of measurements they have, and if there is correlation, or even equality between them. We show how PKG energy consumption is registered by \pinp{} and \lik{} in Figure \ref{fig:pinlik}. We have already seen in Figure \ref{fig:likwid} how the measurements registered by \lik{} have some strange behavior; this chart shows that while \pinp{} shows a reasonable amount of consumption for all three sizes, \lik{} just registers zero, which is not reasonable in this case. This will lead us to discard the use of this tool in the upcoming experiments.
+Since several tools are available to measure PKG, we need to find out
+what kind of measurements they have, and if there is a correlation or even
+equality between them. We show how PKG energy consumption is registered by
+\pinp{} and \lik{} in Figure \ref{fig:pinlik}. We have already seen in Figure
+\ref{fig:likwid} how the measurements registered by \lik{} have some strange
+behavior; this chart shows that while \pinp{} shows a reasonable amount of
+consumption for all three sizes, \lik{} just registers zero, which is not
+reasonable in this case. This will lead us to discard the use of this tool in
+the upcoming experiments.
 
 <<r perf, echo=F, fig.cap="Relationship between PKG measurements taken by pinpoint and perf, with boxplots with values for the three set sizes.\\protect\\label{fig:pinperf}">>=
 test.perf <- read.csv("../code/data/perfstat-deno-sets-30-Mar-14-51-25.csv")
@@ -311,7 +337,12 @@ pinperf <- data.frame(tool=c(rep("pinpoint",45),rep("perf",47)),
 ggplot(pinperf, aes(x=tool,y=PKG))+geom_boxplot(aes(fill=size))
 @
 
-Unlike what happened with the previous tool, Figure \ref{fig:pinperf} shows that there is a certain agreement between these two, except for the fact that \texttt{perf} seems to measure exceptionally low values in the lowest sizes. A Wilcox test shows significant differences for all three sizes; however, this might be due to a different amount of overhead or some other unknown environmental factors.
+Unlike what happened with the previous tool, Figure \ref{fig:pinperf} shows
+that there is a certain agreement between these two, except for the fact that
+\texttt{perf} seems to measure exceptionally low values in the lowest sizes. A
+Wilcox test shows significant differences for all three sizes; however, this
+might be due to a different amount of overhead or other unknown
+environmental factors.
 
 <<r sets.vms, echo=F, fig.cap="PKG measurements for the set problem and the three different virtual machines.\\protect\\label{fig:testvms}">>=
 sets.vms <- read.csv("../code/data/pinpoint-vms-sets-10-Apr-17-59-56.csv")
@@ -320,13 +351,19 @@ ggplot(sets.vms, aes(x=size,y=PKG))+geom_boxplot(aes(fill=VM))
 sets.vms$Joules.Second <- sets.vms$PKG / sets.vms$seconds
 @
 
-Eventually, since \pinp{} is able to measure with accuracy for all size ranges, we will use it exclusively, as well as the quantity it measures, for comparison of different virtual machines. The initial results for this test drive are shown in Figure \ref{fig:testvms}. This is due, in part, to the fact that they take a different amount of time, so it would be interesting to find out whether the energy density, or the consumption of energy per second, is similar. This is shown in Figure \ref{fig:jouls}.
+Eventually, since \pinp{} is able to measure all size ranges accurately, we will use it exclusively, as well as the quantity it measures, for comparison of different virtual machines. The initial results for this test drive are shown in Figure \ref{fig:testvms}. This is due, in part, to the fact that they take a different amount of time, so it would be interesting to find out whether the energy density, or the consumption of energy per second, is similar. This is shown in Figure \ref{fig:jouls}.
 
 <<r sets.vms.jouls, echo=F, fig.cap="Boxplot of energy consumption per second, in Joules/s.\\protect\\label{fig:jouls}">>=
 ggplot(sets.vms, aes(x=size,y=Joules.Second))+geom_boxplot(aes(fill=VM))
 @
 
-The interesting thing about this Figure is that the consumption per second varies with with the VM used, as well as the size. Remarkably, {\sf deno} keeps it approximately constant, while {\sf bun} and {\sf node} experiment variation with the size, and not in a systematic way. It is interesting also to note that while {\sf bun}, in general, will spend less energy for unit of work done than {\sf node}, it will do so at the expense of exercising the CPU package more strenuously, spending much more energy per second than the other two VMs.
+The interesting thing about this Figure is that the consumption per second
+varies with the VM used, as well as the size. Remarkably, {\sf deno} keeps
+it approximately constant, while {\sf bun} and {\sf node} exhibit a variation
+with the size, and not in a systematic way. It is interesting also to note that
+while {\sf bun}, in general, will spend less energy for each unit of work done than
+{\sf node}, it will do so at the expense of exercising the CPU package more
+strenuously, spending much more energy per second than the other two VMs.
 
 These, however, are preliminary findings with a test problem; we will have to design experiments for actual operations used in evolutionary algorithms, which we will do next.
 
