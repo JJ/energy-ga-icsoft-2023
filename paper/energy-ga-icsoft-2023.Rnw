@@ -66,7 +66,8 @@ Rust) and {\sf bun} \cite{bun} programmed in the relatively unknown language
 Zig.
 
 No wonder, then, that JavaScript is also a popular language for implementing
-metaheuristics, especially evolutionary algorithms. From the early
+metaheuristics, especially evolutionary algorithms. Evolutionary algorithms \cite{eiben2015evolutionary} are population-based stochastic optimization algorithms based on the representation of a problem as a (often binary) "chromosome", and {\em evolution} of population of these "chromosomes" by random change (via "genetic" operators, mutation and crossover) and survival of the fittest (evaluation of those chromosomes via a so-called "fitness" function, and selection and reproduction of those that achieve the best values).
+From the early
 implementations in the browser
 \cite{smith1996ga,jesusIWANN99,langdon2004global}, whole libraries
 \cite{EvoStar2014:jsEO}, through complete implementations geared towards
