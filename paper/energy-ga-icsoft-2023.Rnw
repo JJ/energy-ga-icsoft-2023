@@ -165,7 +165,7 @@ to measure precisely how much a specific process consumes.
 On the other hand, energy profilers are programs that draw information from
 hardware sensors \cite{sinha2001jouletrack}, generally exposed through kernel
 calls or higher-level wrapper libraries, to pinpoint consumption by specific processes
-during in a time range. Tools that give these measures, either with a
+in a time period. Tools that give these measures, either with a
 graphic or a command line interface, have been available for some time already,
 and have become more popular lately. One of the mainstream processor architectures,
 Intel, includes an interface called RAPL, or Running Average Power Limit
