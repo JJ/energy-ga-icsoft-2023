@@ -22,7 +22,13 @@
 
 \title{An analysis of energy consumption of JavaScript interpreters with evolutionary algorithm workloads}
 
-\author{\authorname{Juan J. Merelo-Guervós\sup{1}\orcidAuthor{0000-0002-1385-9741} and Mario García-Valdez\sup{2}\orcidAuthor{0000-0002-2593-1114}}
+\author{ \authorname{
+  Juan J. Merelo-Guervós\sup{1}\orcidAuthor{0000-0002-1385-9741} 
+and 
+  Mario García-Valdez\sup{2}\orcidAuthor{0000-0002-2593-1114}
+and 
+  Pedro A. Castillo\sup{1}\orcidAuthor{0000-0002-5258-0620}
+  }
 \affiliation{\sup{1}Department of Computer Engineering, Automatics and Robotics, University of Granada, Granada, Spain}
 \affiliation{\sup{2}Department of Graduate Studies, National Technological Institute of Mexico, Tijuana, Mexico}
 \email{jmerelo@ugr.es, mario@tectijuana.edu.mx}
@@ -31,7 +37,8 @@
 \keywords{Green computing, metaheuristics, JavaScript, energy-aware computing, evolutionary algorithms}
 
 \abstract{
-Energy-aware computing includes taking into account many different variables and parameters when designing an application, which makes it necessary to focus on a single one to obtain meaningful results. In this paper, we will look at the energy consumption of three different JavaScript interpreters: {\sf bun}, {\sf node} and {\sf deno}; given their different conceptual designs, we should expect different energy budgets for running the (roughly) same workload, operations related to evolutionary algorithms, a population-based stochastic optimization algorithm. In this paper we will first test different tools to measure per-process energy consumption in a precise way, trying to find the one that gives the most accurate estimation; after choosing the tool by performing different experiments on a workload similar to the one carried out by evolutionary algorithms, we will focus on EA-specific functions and operators and measure how much energy they consume for different problem sizes. From this, we will try to draw a conclusion on which JavaScript interpreter should be used in this kind of workloads if energy (or related expenses) has a limited budget.
+Energy-aware computing includes taking into account many different variables and parameters when designing an application, which makes it necessary to focus on a single one to obtain meaningful results. In this paper, we will look at the energy consumption of three different JavaScript interpreters: {\sf bun}, {\sf node} and {\sf deno}; given their different conceptual designs, we should expect different energy budgets for running the (roughly) same workload, operations related to evolutionary algorithms (EA), a population-based stochastic optimization algorithm. % In this paper 
+We will first test different tools to measure per-process energy consumption in a precise way, trying to find the one that gives the most accurate estimation; after choosing the tool by performing different experiments on a workload similar to the one carried out by EA, we will focus on EA-specific functions and operators and measure how much energy they consume for different problem sizes. From this, we will try to draw a conclusion on which JavaScript interpreter should be used in this kind of workloads if energy (or related expenses) has a limited budget.
 }
 
 \onecolumn \maketitle \normalsize \setcounter{footnote}{0} \vfill
@@ -66,7 +73,7 @@ Rust) and {\sf bun} \cite{bun} programmed in the relatively unknown language
 Zig.
 
 No wonder, then, that JavaScript is also a popular language for implementing
-metaheuristics, especially evolutionary algorithms. Evolutionary algorithms \cite{eiben2015evolutionary} are population-based stochastic optimization algorithms based on the representation of a problem as a (often binary) "chromosome", and {\em evolution} of population of these "chromosomes" by random change (via "genetic" operators, mutation and crossover) and survival of the fittest (evaluation of those chromosomes via a so-called "fitness" function, and selection and reproduction of those that achieve the best values).
+metaheuristics, especially evolutionary algorithms (EA). EA \cite{eiben2015evolutionary} are population-based stochastic optimization algorithms based on the representation of a problem as a (often binary) "chromosome", and {\em evolution} of population of these "chromosomes" by random change (via "genetic" operators, mutation and crossover) and survival of the fittest (evaluation of those chromosomes via a so-called "fitness" function, and selection and reproduction of those that achieve the best values).
 From the early
 implementations in the browser
 \cite{smith1996ga,jesusIWANN99,langdon2004global}, whole libraries
@@ -96,8 +103,7 @@ on memory safety \cite{noseda2022rust}, Zig based on simplicity and performance
 \cite{zig}), different energy consumption should be expected. Since all three
 languages can (roughly) run the same, unmodified source code, what we intend
 with this paper is to advise on which JS interpreter might give the lowest
-power consumption, the maximum performance, or both, so that evolutionary
-algorithm practitioners can target it for their development.
+power consumption, the maximum performance, or both, so that EA practitioners can target it for their development.
 
 The rest of the paper follows this plan: next we will present the state of the
 art; then we will describe the experimental setup in Section \ref{sec:setup};
@@ -132,12 +138,12 @@ in machine learning applications, its interest in research has grown
 in parallel to its number of applications. Many papers focus on
 analyzing how certain metaheuristics parameters have an impact on
 energy consumption.  Díaz-Álvarez et al. \cite{diaz2022population}
-studies how the populations size of evolutionary algorithms (EAs)
-influences power consumption. In an earlier work centered on genetic
-algorithms (GAs) \cite{10.1007/978-3-030-45715-0_8} power-consumption
+studies how the populations size of EAs
+influences power consumption. In an earlier work, centered on genetic
+algorithms (GAs) \cite{10.1007/978-3-030-45715-0_8}, power-consumption
 of battery-powered devices was measured for various parameter
 configurations including chromosome and population sizes. The
-experiments used the one max and trap function benchmark problems,
+experiments used the OneMax and Trap function benchmark problems, and 
 they concluded that execution time and energy consumption do not
 linearly correlate and there is a connection between the GA parameters
 and power consumption.  In GAs, the mutation operator appears to be a
@@ -242,7 +248,7 @@ library to perform the union of ``bags'', sets that can hold several copies of
 the same item. 1024 sets were generated; these sets had 1024, 2048, 4096
 elements. Then, a union of bags was performed on pairs of sets until
 there was only one left. This is similar to some operations performed by
-evolutionary algorithms, mainly related to merging populations. They do not
+EAs, mainly related to merging populations. They do not
 involve floating point operations in any way.
 
 The scripts to launch every kind of tool were slightly different, mainly because
@@ -366,7 +372,7 @@ while {\sf bun}, in general, will spend less energy for each unit of work done t
 {\sf node}, it will do so at the expense of exercising the CPU package more
 strenuously, spending much more energy per second than the other two VMs.
 
-These, however, are preliminary findings with a test problem; we will have to design experiments for actual operations used in evolutionary algorithms, which we will do next.
+These, however, are preliminary findings with a test problem; we will have to design experiments for actual operations used in EAs, which we will do next.
 
 \section{Experimental results}
 \label{sec:res}
@@ -380,11 +386,12 @@ ggplot(onemax, aes(x=seconds,y=PKG))+geom_point(size=3,aes(color=size,fill=size,
 
 As was done in \cite{DBLP:conf/evoW/MereloCBRGFRV16}, which was focused on
 wallclock performance, the experiments will be focused on the key operations
-performed by an evolutionary algorithm: evaluation of fitness and "genetic"
-operators like mutation and crossover. What we will do is, repeat the setup
-in the initial exploration, check the energy consumption for the processing of
+performed by an EA: evaluation of fitness and "genetic"
+operators like mutation and crossover. 
+What we will do is, repeating the setup in the initial exploration, 
+check the energy consumption for the processing of
 40000 chromosomes, a number chosen to take a sizable amount of memory, but also
-on the ballpark of the usual number of operations in an evolutionary algorithm
+on the ballpark of the usual number of operations in an EA
 benchmark, it is also small enough to not create garbage collection problems
 with the memory, something that was detected after the initial exploration.
 Experiments were repeated for the same chromosome size as before, 1024, 2048,
@@ -399,7 +406,7 @@ paper) from the repository \url{https://github.com/JJ/energy-ga-icsoft-2023}.
 First, we will evaluate a typical fitness function, OneMax, which counts the
 number of ones in a binary (1s and 0s) string. This type of functions, which
 check the values of bits in a string and assign an integer value to it are
-typical of many papers focused on evaluating evolutionary algorithms,
+typical of many papers focused on evaluating EAs,
 including parallel versions \cite{DBLP:conf/gecco/GuervosV18}.
 
 The results are shown in Figure \ref{fig:onemax}. This already shows that time,
@@ -466,7 +473,7 @@ between the thriftiest, {\sf bun}, and the heaviest consumer, {\sf node}, is
 approximately three times, in this case, less than in the case of the OneMax fitness
 function.
 
-Given that the results for the two evolutionary-algorithm-specific functions,
+Given that the results for the two EA-specific functions,
 as well as the test function, are quite conclusive, we should not expect
 anything different from the mutation function, so we will leave the experiments
 at these two, and proceed to the conclusions.
@@ -475,7 +482,7 @@ at these two, and proceed to the conclusions.
 \label{sec:conc}
 
 In this paper, we set out to study the energy efficiency of different
-JavaScript interpreters in evolutionary algorithm workloads, by studying how
+JavaScript interpreters in EA workloads, by studying how
 short scripts that are extensively used in implementations of these algorithms
 work and how these energy expenses scale with the chromosome size. We have
 developed a methodology to accurately measure per-process consumption; we have
@@ -520,7 +527,7 @@ are different to those used in {\sf node/bun}, although that need not be a
 disadvantage per se.
 
 The previous two points imply that, energy-wise, there are no good reasons to
-use {\sf node.js} for running evolutionary algorithms. Except if the business logic
+use {\sf node.js} for running EAs. Except if the business logic
 uses specific, early-adoption, or some features that, for some reason, does not
 work with {\sf bun} yet, we would advise anyone to keep using {\sf bun} for this
 kind of workloads.
@@ -531,13 +538,12 @@ different benchmarks that could make that ranking vary; at any rate, these
 experiments have shown how much faster and energy-saving {\sf bun} is (from 1/3
 to 1/6 the energy consumed by {\sf node}), but it would be interesting to know
 what happens to this gap under different operations like selection or different
-kind of mutation. At the same time, even if evolutionary algorithms are mostly
+kind of mutation. At the same time, even if EAs are mostly
 GPU-free, there are some fitness functions that operate on floating point
 numbers and thus would need to use the GPU; how interpreters work in this area
 could be an interesting future line of work. This, along with testing different
 versions of the interpreters as they are published, will be the subject of
-future papers.
-
+future research.  % papers.
 
 
 \section*{Acknowledgements}
@@ -545,6 +551,7 @@ future papers.
 This work is supported by the Ministerio espa\~{n}ol de Econom\'{\i}a y
 Competitividad (Spanish Ministry of Competitivity and Economy) under project
 PID2020-115570GB-C22 (DemocratAI::UGR).
+
 
 \bibliographystyle{apalike}
 {\small
