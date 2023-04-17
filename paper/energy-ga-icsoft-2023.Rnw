@@ -23,23 +23,34 @@
 \title{An analysis of energy consumption of JavaScript interpreters with evolutionary algorithm workloads}
 
 \author{ \authorname{
-  Juan J. Merelo-Guervós\sup{1}\orcidAuthor{0000-0002-1385-9741} 
-and 
+  Juan J. Merelo-Guervós\sup{1}\orcidAuthor{0000-0002-1385-9741}
+and
   Mario García-Valdez\sup{2}\orcidAuthor{0000-0002-2593-1114}
-and 
+and
   Pedro A. Castillo\sup{1}\orcidAuthor{0000-0002-5258-0620}
   }
 \affiliation{\sup{1}Department of Computer Engineering, Automatics and Robotics, University of Granada, Granada, Spain}
 \affiliation{\sup{2}Department of Graduate Studies, National Technological Institute of Mexico, Tijuana, Mexico}
-\email{jmerelo@ugr.es, mario@tectijuana.edu.mx}
+\email{jmerelo@ugr.es, mario@tectijuana.edu.mx, pacv@ugr.es}
 }
 
 \keywords{Green computing, metaheuristics, JavaScript, energy-aware computing, evolutionary algorithms}
 
-\abstract{
-Energy-aware computing includes taking into account many different variables and parameters when designing an application, which makes it necessary to focus on a single one to obtain meaningful results. In this paper, we will look at the energy consumption of three different JavaScript interpreters: {\sf bun}, {\sf node} and {\sf deno}; given their different conceptual designs, we should expect different energy budgets for running the (roughly) same workload, operations related to evolutionary algorithms (EA), a population-based stochastic optimization algorithm. % In this paper 
-We will first test different tools to measure per-process energy consumption in a precise way, trying to find the one that gives the most accurate estimation; after choosing the tool by performing different experiments on a workload similar to the one carried out by EA, we will focus on EA-specific functions and operators and measure how much energy they consume for different problem sizes. From this, we will try to draw a conclusion on which JavaScript interpreter should be used in this kind of workloads if energy (or related expenses) has a limited budget.
-}
+\abstract{ Energy-aware computing includes taking into account many different
+variables and parameters when designing an application, which makes it necessary
+to focus on a single one to obtain meaningful results. In this paper, we will
+look at the energy consumption of three different JavaScript interpreters: {\sf
+bun}, {\sf node} and {\sf deno}; given their different conceptual designs, we
+should expect different energy budgets for running the (roughly) same workload,
+operations related to evolutionary algorithms (EA), a population-based
+stochastic optimization algorithm. In this paper we will first test different
+tools to measure per-process energy consumption in a precise way, trying to find
+the one that gives the most accurate estimation; after choosing the tool by
+performing different experiments on a workload similar to the one carried out by
+EA, we will focus on EA-specific functions and operators and measure how much
+energy they consume for different problem sizes. From this, we will try to draw
+a conclusion on which JavaScript interpreter should be used in this kind of
+workloads if energy (or related expenses) has a limited budget.  }
 
 \onecolumn \maketitle \normalsize \setcounter{footnote}{0} \vfill
 
@@ -73,9 +84,14 @@ Rust) and {\sf bun} \cite{bun} programmed in the relatively unknown language
 Zig.
 
 No wonder, then, that JavaScript is also a popular language for implementing
-metaheuristics, especially evolutionary algorithms (EA). EA \cite{eiben2015evolutionary} are population-based stochastic optimization algorithms based on the representation of a problem as a (often binary) "chromosome", and {\em evolution} of population of these "chromosomes" by random change (via "genetic" operators, mutation and crossover) and survival of the fittest (evaluation of those chromosomes via a so-called "fitness" function, and selection and reproduction of those that achieve the best values).
-From the early
-implementations in the browser
+metaheuristics, especially evolutionary algorithms (EA). EA
+\cite{eiben2015evolutionary} are population-based stochastic optimization
+algorithms based on the representation of a problem as a (often binary)
+"chromosome", and {\em evolution} of population of these "chromosomes" by random
+change (via "genetic" operators, mutation and crossover) and survival of the
+fittest (evaluation of those chromosomes via a so-called "fitness" function, and
+selection and reproduction of those that achieve the best values).  From the
+early implementations in the browser
 \cite{smith1996ga,jesusIWANN99,langdon2004global}, whole libraries
 \cite{EvoStar2014:jsEO}, through complete implementations geared towards
 volunteer computing \cite{2016arXiv160101607M}. However, one of the criticisms
