@@ -1,42 +1,41 @@
-\documentclass[a4paper,twoside]{article}
-
-\usepackage{epsfig}
-\usepackage{subcaption}
-\usepackage{calc}
-\usepackage{amssymb}
-\usepackage{amstext}
-\usepackage{amsmath}
-\usepackage{amsthm}
-\usepackage{multicol}
-\usepackage{pslatex}
-\usepackage{apalike}
-\usepackage[bottom]{footmisc}
-\usepackage{hyperref}
-\usepackage{SCITEPRESS}     % Please add other packages that you may need BEFORE the SCITEPRESS.sty package.
-
-\newcommand{\pinp}{\texttt{pinpoint}}
-\newcommand{\lik}{\texttt{likwid}}
+\documentclass[runningheads]{llncs}
+%
+\usepackage[T1]{fontenc}
+% T1 fonts will be used to generate the final print and online PDFs,
+% so please use T1 fonts in your manuscript whenever possible.
+% Other font encondings may result in incorrect characters.
+%
+\usepackage{graphicx}
+% Used for displaying a sample figure. If possible, figure files should
+% be included in EPS format.
+%
+% If you use the hyperref package, please uncomment the following two lines
+% to display URLs in blue roman font according to Springer's eBook style:
+%
+\usepackage{color}
+\renewcommand\UrlFont{\color{blue}\rmfamily}
 
 
 \begin{document}
 
-\title{An analysis of energy consumption of JavaScript interpreters with evolutionary algorithm workloads}
+\title{Energy consumption of evolutionary algorithms in JavaScript}
 
-\author{ \authorname{
-  Juan J. Merelo-Guervós\sup{1}\orcidAuthor{0000-0002-1385-9741}
+\author{ 
+  Juan J. Merelo-Guervós\inst{1}\orcidID{0000-0002-1385-9741}
 and
-  Mario García-Valdez\sup{2}\orcidAuthor{0000-0002-2593-1114}
+  Mario García-Valdez\inst{2}\orcidID{0000-0002-2593-1114}
 and
-  Pedro A. Castillo\sup{1}\orcidAuthor{0000-0002-5258-0620}
+  Pedro A. Castillo\inst{1}\orcidID{0000-0002-5258-0620}
   }
-\affiliation{\sup{1}Department of Computer Engineering, Automatics and Robotics, University of Granada, Granada, Spain}
-\affiliation{\sup{2}Department of Graduate Studies, National Technological Institute of Mexico, Tijuana, Mexico}
+\institute{Department of Computer Engineering, Automatics and Robotics, University of Granada, Granada, Spain \and
+Department of Graduate Studies, National Technological Institute of Mexico, Tijuana, Mexico}
 \email{jmerelo@ugr.es, mario@tectijuana.edu.mx, pacv@ugr.es}
 }
 
-\keywords{Green computing, metaheuristics, JavaScript, energy-aware computing, evolutionary algorithms}
+\maketitle
 
-\abstract{ Energy-aware computing includes taking into account many different
+\begin{abstract}
+Energy-aware computing includes taking into account many different
 variables and parameters when designing an application, which makes it necessary
 to focus on a single one to obtain meaningful results. In this paper, we will
 look at the energy consumption of three different JavaScript interpreters: {\sf
@@ -50,9 +49,10 @@ performing different experiments on a workload similar to the one carried out by
 EA, we will focus on EA-specific functions and operators and measure how much
 energy they consume for different problem sizes. From this, we will try to draw
 a conclusion on which JavaScript interpreter should be used in this kind of
-workloads if energy (or related expenses) has a limited budget.  }
+workloads if energy (or related expenses) has a limited budget.
 
-\onecolumn \maketitle \normalsize \setcounter{footnote}{0} \vfill
+\keywords{Green computing, metaheuristics, JavaScript, energy-aware computing, evolutionary algorithms}
+\end{abstract}
 
 \section{\uppercase{Introduction}}
 \label{sec:introduction}
@@ -569,9 +569,9 @@ Competitividad (Spanish Ministry of Competitivity and Economy) under project
 PID2020-115570GB-C22 (DemocratAI::UGR).
 
 
-\bibliographystyle{apalike}
-{\small
-\bibliography{energy,javascript,geneura}}
+\bibliographystyle{splncs04}
+
+\bibliography{energy,javascript,geneura}
 
 
 \end{document}
