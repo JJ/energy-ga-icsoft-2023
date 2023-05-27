@@ -12,9 +12,12 @@
 % If you use the hyperref package, please uncomment the following two lines
 % to display URLs in blue roman font according to Springer's eBook style:
 %
+\usepackage{hyperref}
 \usepackage{color}
 \renewcommand\UrlFont{\color{blue}\rmfamily}
 
+\newcommand{\pinp}{\texttt{pinpoint}}
+\newcommand{\lik}{\texttt{likwid}}
 
 \begin{document}
 
@@ -26,11 +29,12 @@ and
   Mario García-Valdez\inst{2}\orcidID{0000-0002-2593-1114}
 and
   Pedro A. Castillo\inst{1}\orcidID{0000-0002-5258-0620}
-  }
+}
 \institute{Department of Computer Engineering, Automatics and Robotics, University of Granada, Granada, Spain \and
-Department of Graduate Studies, National Technological Institute of Mexico, Tijuana, Mexico}
+Department of Graduate Studies, National Technological Institute of Mexico, Tijuana, Mexico
 \email{jmerelo@ugr.es, mario@tectijuana.edu.mx, pacv@ugr.es}
 }
+
 
 \maketitle
 
