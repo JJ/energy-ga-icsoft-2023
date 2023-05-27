@@ -39,21 +39,7 @@ Department of Graduate Studies, National Technological Institute of Mexico, Tiju
 \maketitle
 
 \begin{abstract}
-Energy-aware computing includes taking into account many different
-variables and parameters when designing an application, which makes it necessary
-to focus on a single one to obtain meaningful results. In this paper, we will
-look at the energy consumption of three different JavaScript interpreters: {\sf
-bun}, {\sf node} and {\sf deno}; given their different conceptual designs, we
-should expect different energy budgets for running the (roughly) same workload,
-operations related to evolutionary algorithms (EA), a population-based
-stochastic optimization algorithm. In this paper we will first test different
-tools to measure per-process energy consumption in a precise way, trying to find
-the one that gives the most accurate estimation; after choosing the tool by
-performing different experiments on a workload similar to the one carried out by
-EA, we will focus on EA-specific functions and operators and measure how much
-energy they consume for different problem sizes. From this, we will try to draw
-a conclusion on which JavaScript interpreter should be used in this kind of
-workloads if energy (or related expenses) has a limited budget.
+
 
 \keywords{Green computing, metaheuristics, JavaScript, energy-aware computing, evolutionary algorithms}
 \end{abstract}
