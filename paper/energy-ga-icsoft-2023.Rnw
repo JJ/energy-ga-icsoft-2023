@@ -36,7 +36,7 @@ and
 
 \keywords{Green computing, metaheuristics, JavaScript, energy-aware computing, evolutionary algorithms}
 
-\abstract{ Energy-aware computing includes taking into account many different
+\abstract{What is known as energy-aware computing includes taking into account many different
 variables and parameters when designing an application, which makes it necessary
 to focus on a single one to obtain meaningful results. In this paper, we will
 look at the energy consumption of three different JavaScript interpreters: {\sf
