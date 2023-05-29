@@ -193,6 +193,7 @@ format that would allow examination of the experiments. As indicated in \cite{js
 \label{sec:res}
 
 <<r onemax, echo=F, fig.cap="Boxplot of energy consumption vs. time taken for all three sizes and VMs.\\protect\\label{fig:onemax}">>=
+library(ggplot2)
 library(ggthemes)
 onemax <- read.csv("../code/data/pinpoint-vms-onemax-11-Apr-10-19-29.csv")
 onemax$size <- as.factor(onemax$size)
