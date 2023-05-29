@@ -297,56 +297,6 @@ at these two, and proceed to the conclusions.
 \section{Conclusions}
 \label{sec:conc}
 
-In this paper, we set out to study the energy efficiency of different
-JavaScript interpreters in EA workloads, by studying how
-short scripts that are extensively used in implementations of these algorithms
-work and how these energy expenses scale with the chromosome size. We have
-developed a methodology to accurately measure per-process consumption; we have
-also adopted a tool, \pinp, that is able to give good estimations of sensor
-readings, discarding experiments where that estimation was not adequate; this
-tool has been calibrated by comparing its readings with other tools, which were
-also evaluated for the same purpose and eventually discarded. We have also adopted a
-benchmark-based approach, similar to the one used to measure performance, so
-that consumption for specific operations can be pinpointed, discarding noise
-produced by an implementation of a complete algorithm; that is, a whole program includes different operations, applied in different proportion, that might cancel each other. Testing short code paths, as proposed by \cite{10.1145/2425248.2425252} makes easier to understand their individual contribution to the overall consumption of the algorithm, and eventually optimize their specific code, or the number of times they are applied in the algorithm.
-% I did not understand the last sentence. - M
-% Clarified and added citation - JJ
-
-During the exploratory data analysis, we have established that, in Linux
-machines, \pinp{} can be profitably used to measure per-process energy
-consumption, as long as these measurements are repeated and the process
-themselves include short snippets of business logic; this tool should be
-preferred over others that are either less accurate or simply take into account
-different aspects of energy consumption.
-
-The main point of this paper, however, was to check which JavaScript
-interpreter should be used if our objective is to consume the minimum amount of
-energy; the experiments have reliably confirmed {\sf bun} to be that tool. Not
-only it consumes less for all the range of chromosome sizes used; it also takes
-less time and can run applications written for Node (mostly) unmodified; its
-consumption also scales better with problem size. This might be due to design
-considerations, but also to the fact that the language used to write it, Zig,
-emphasizes compile-time safety and manual memory allocation by default, and avoids hidden control flow. % JJ please check if the last sentence is correct. - M
-% Changed to claims from the ziglang.org website - JJ
-The only inconvenience of this interpreter is that it has not
-reached version 1.0 yet, being currently in version 0.5.9; this might prevent
-any company or organization from using it in production environments.
-
-If that is an issue, {\sf deno} might be a good alternative. Except in a
-specific case, it is going to be faster and consume less energy than {\sf
-node}, even more so when memory requirements are high. According to our initial
-exploration, it will also consume less energy {\em per second}, thus for
-workloads that take roughly the same time, it will be a better candidate than
-{\sf node}. As an inconvenience, it needs minor modifications to run, at least
-if you need core or other kind of external libraries; its core library modules
-are different to those used in {\sf node/bun}, although that need not be a
-disadvantage per se.
-
-The previous two points imply that, energy-wise, there are no good reasons to
-use {\sf node.js} for running EAs. Except if the business logic
-uses specific, early-adoption, or some features that, for some reason, does not
-work with {\sf bun} yet, we would advise anyone to keep using {\sf bun} for this
-kind of workloads.
 
 As we have indicated in the experimental session, the wide advantage that {\sf
 bun} has over the other interpreters does not leave much room for adopting
@@ -359,7 +309,7 @@ GPU-free, there are some fitness functions that operate on floating point
 numbers and thus would need to use the GPU; how interpreters work in this area
 could be an interesting future line of work. This, along with testing different
 versions of the interpreters as they are published, will be the subject of
-future research.  % papers.
+future research.
 
 
 \section*{Acknowledgements}
