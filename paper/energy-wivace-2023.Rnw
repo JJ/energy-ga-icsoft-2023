@@ -31,7 +31,7 @@ and
   Pedro A. Castillo\inst{1}\orcidID{0000-0002-5258-0620}
 }
 \institute{Department of Computer Engineering, Automatics and Robotics, University of Granada, Granada, Spain \and
-Department of Graduate Studies, National Technological Institute of Mexico, Tijuana, Mexico
+Department of Graduate Studies, National Technological Institute of Mexico, Tijuana, Mexico\\
 \email{jmerelo@ugr.es, mario@tectijuana.edu.mx, pacv@ugr.es}
 }
 
@@ -110,6 +110,13 @@ on memory safety \cite{noseda2022rust}, Zig based on simplicity and performance
 languages can (roughly) run the same, unmodified source code, what we intend
 with this paper is to advise on which JS interpreter might give the lowest
 power consumption, the maximum performance, or both, so that EA practitioners can target it for their development.
+
+In a previous stage of this research \cite{js:energy}, we established a methodology and chose the tools we were going to use for these energy measurements. In this edition we will update the results looking at different factors\begin{itemize}
+\item Test new version of the virtual machines for energy consumption, since in general these evolve towards more efficient operation; at any rate, the balance of results might change in these new versions in unexpected ways.
+\item Test also in different power consumption environments, including an unplugged laptop, so that the interplay between the virtual machine and the power management can be observed; we will also test in a low-power laptop (as compared with a power-hungry desktop machine)
+\item More complete operation of an evolutionary algorithm will be tested: the ubiquitous mutation will be also tested, separately and in combination with crossover, to see what kind of power consumption profile it adds.
+\end{itemize}
+
 
 The rest of the paper follows this plan: next we will present the state of the
 art; then we will describe the experimental setup in Section \ref{sec:setup};
@@ -225,11 +232,11 @@ compiling their source code. \begin{itemize}
   the former together with the so-called ``uncore'' components.
 \end{itemize}
 
-On the JavaScript side, we used three different interpreters:\begin{itemize}
-\item \texttt{bun} version 0.5.8
-\item \texttt{deno} version 1.32.1, which includes the v8 library version
-  11.2.214.9 and typescript 5.0.2
-\item  \texttt{node.js} version 18.5.0
+On the JavaScript side, there are many interpreters available and under development, including those embedded in web browsers. Since these are more difficult to measure, and include consumption by the browser itself, we will focus on command line interpreters, and only those in more active development, including those we are most interested in: the high performance virtual machines that were released recently. These are the versions we use:\begin{itemize}
+\item \texttt{bun} version 0.6.4
+\item \texttt{deno} version 1.34, which includes the v8 library version
+  11.5.150.0 and typescript 5.0.4
+\item  \texttt{node.js} version 18.16.0
 \end{itemize}
 
 \texttt{bun} and \texttt{nodejs} are fully compatible, so they run exactly the
