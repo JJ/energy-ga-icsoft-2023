@@ -249,29 +249,15 @@ Since our interest is first to try and find the JavaScript VM that has the best 
 %
 <<r onemax.vms, echo=F, fig.cap="Boxplot of PKG measurements OneMax problem and the three different virtual machines.\\protect\\label{fig:onemax:energy}">>=
 ggplot(onemax, aes(x=size,y=PKG))+geom_boxplot(aes(fill=VM))+ylim(0, NA)+theme_tufte()
-onemax$kwh <- onemax$PKG * 2.77778e-7
-onemax$cost.Spain <- onemax$kwh * 20
 @
 %
 
 %Rewrite
-The figure shows the almost-flat growth of energy consumption for {\sf bun}.
-How consumption grows for {\sf deno} is weird, since it takes less energy when
-the chromosome is bigger (4096). Once again, {\sf node} is the bigger energy
+The figure shows the how energy consumption grows less than lineally for {\sf bun}; this is a change with respect to \cite{js:energy}, when it was flat.
+How consumption changes for {\sf deno} is weird, since it decreases as the size of the chromosome grows; this is a slight change with respect to \cite{js:energy}, when it decreased only for the biggest size. {\sf node} is, however, the bigger energy
 guzzler, consuming up to 3 times more than {\sf deno} on average, and more than
-6 times as much as {\sf bun}. We will see how this is reflected in monetary
-terms, taking into account that the cost in Spain today is around 0.2€/kWh.
-This cost, shown in table \ref{tab:onemax:cost}, reaches almost one-hundredth
-of a euro for the most "expensive" VM, {\sf node}; that gives you an idea of
-the kind of cost the algorithms have, and also how this cost decreases almost
-an order of magnitude if {\sf bun} is used.
+5 times as much as {\sf bun} for the biggest size; however, this new version of the interpreter {\tt 18.15.0} has a consumption similar to {\sf bun} for the smallest size. Taking into account that, in most cases, we are going to deal with chromosomes with sizes that are around this order of magnitude, {\sf node} might be a good alternative if considerations other than raw speed, such as maturity of the product, enter into consideration.
 
-<<r onemax.cost, echo=F, message=F>>=
-library(dplyr)
-onemax.cost <- onemax %>% group_by( size, VM) %>% summarise( average = mean( cost.Spain ), sd = sd( cost.Spain))
-library(kableExtra)
-kable(onemax.cost, caption="Estimated cost of the OneMax runs for every VM and size, in €-cents. \\protect\\label{tab:onemax:cost}")
-@
 
 The crossover operation involves copy operations between strings, as well as
 creation of new strings. We will again generate 40K chromosomes and group them
