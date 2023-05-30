@@ -247,7 +247,7 @@ The scenario that is shown in Figure \ref{fig:crossover}, representing performan
 Since our interest is first to try and find the JavaScript VM that has the best energy profile, we will first compare the energy consumption of the ones available in March 2023, and published in \cite{js:energy}, and the ones available in May 2023, when this paper is being written. It does not seem like the slight disadvantage in energy consumption for this new version, in this specific operator, is enough to offset the savings obtained with the fitness function; let us not forget that fitness evaluation usually takes the bulk of the energy consumption and time. At any rate, the fact that unexpected variations in energy consumption may occur when versions change, and sometimes dramatic ones, is probably enough to warrant re-profiling of all workloads (evolutionary algorithms or otherwise) and another round of comparison of the performance and energy consumption for all three. This is what we will do next, using the newest published versions.
 
 %
-<<r onemax.vms, echo=F, fig.cap="Boxplot of PKG measurements OneMax problem and the three different virtual machines.\\protect\\label{fig:onemax:energy}">>=
+<<r onemax.vms, echo=F, fig.height=6, fig.cap="Boxplot of PKG measurements OneMax problem and the three different virtual machines.\\protect\\label{fig:onemax:energy}">>=
 ggplot(onemax, aes(x=size,y=PKG))+geom_boxplot(aes(fill=VM))+ylim(0, NA)+theme_tufte()
 @
 %
@@ -258,32 +258,18 @@ How consumption changes for {\sf deno} is weird, since it decreases as the size 
 guzzler, consuming up to 3 times more than {\sf deno} on average, and more than
 5 times as much as {\sf bun} for the biggest size; however, this new version of the interpreter {\tt 18.15.0} has a consumption similar to {\sf bun} for the smallest size. Taking into account that, in most cases, we are going to deal with chromosomes with sizes that are around this order of magnitude, {\sf node} might be a good alternative if considerations other than raw speed, such as maturity of the product, enter into consideration.
 
-
-The crossover operation involves copy operations between strings, as well as
-creation of new strings. We will again generate 40K chromosomes and group them
-in pairs; these strings will be crossed by interchanging a random
-fragment from one to the other and back. The resulting pairs will be stored in
+Another function we have tested, crossover, involves copy operations between strings that create new strings, since strings in JavaScript are immutable. We will again generate 40K chromosomes and group them
+in pairs; the strings in the pair will be crossed by interchanging a random
+fragment from one to the other and back in what is usually called two-point crossover. The resulting pairs will be stored in
 an array, which is eventually printed. The result of every experiment
-is shown in an energy vs. wallclock time chart in Figure \ref{fig:xover}.
+has been already shown in an energy vs. wallclock time chart in Figure \ref{fig:crossover}, comparing how it goes for different virtual machines. In Figure \ref{fig:xover:vms} we render a boxplot for different sizes and the different virtual machines, in order to compare their energy consumption and how it grows with chromosome size.
 
-<<r crossover, echo=F, fig.cap="PKG consumption, in Joules, vs. time in seconds, for the crossover and the three different virtual machines.\\protect\\label{fig:xover}">>=
-crossover.icsoft <- read.csv("../code/data/pinpoint-vms-crossover-11-Apr-17-06-52.csv")
-crossover.icsoft$size <- as.factor(crossover.icsoft$size)
-crossover <- read.csv("../code/data/pinpoint-vms-crossover-29-May-18-49-13.csv")
-crossover$size <- as.factor(crossover$size)
- ggplot(crossover, aes(x=seconds,y=PKG))+geom_point(size=3,aes(color=size,fill=size,shape=VM))+theme_tufte()
-@
-
-The scenario is remarkably similar to the one shown in Figure \ref{fig:onemax}.
-In the two cases, {\sf bun} achieves the top performance and lowest energy
-consumption, and {\sf node} is the worst. Average energy consumption is shown as a
-boxplot in Figure \ref{fig:crossover:energy}.
-
-%
-<<r crossover.energy, echo=F, fig.cap="Boxplot of PKG measurements for the crossover operator and the three different virtual machines.\\protect\\label{fig:crossover:energy}">>=
+<<r crossover, echo=F, fig.height=6, fig.cap="PKG consumption, in Joules, vs. time in seconds, for the crossover and the three different virtual machines, shown as a boxplot.\\protect\\label{fig:xover:vms}">>=
 ggplot(crossover, aes(x=size,y=PKG))+geom_boxplot(aes(fill=VM))+ylim(0, NA)+theme_tufte()
 @
-%
+
+The scenario is remarkably similar to the one shown in Figure \ref{fig:onemax}, and also similar to what we found with the previous versions of all command-line interpreters in \cite{js:energy}. {\sf bun} grows less than linearly with chromosome size, and {\sf node} grows more or less linearly; it is always better for {\sf bun}, and the difference increases with size. But, again, the surprising energy profile for {\sf deno}, which decreases with size, makes it the most energy-thrifty of the three for the biggest size. In any case, {\sf bun} continues to consistently yield very low energy consumption values across all sizes.
+
 
 Here we can see again the surprising fact that {\sf deno} takes the same amount
 of energy, on average, as {\sf node} for size 2048, in a similar case to what
