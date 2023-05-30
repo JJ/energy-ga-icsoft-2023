@@ -48,7 +48,7 @@ export function countOnes(chromosome) {
 
 /**
  *
- * @param {String} chrom1 the first
+ * @param {String} chrom1 the first one
  * @param {String} chrom2 the other
  * @returns { Array } a pair of resulting chromosomes
  */
@@ -65,4 +65,19 @@ export function crossover(chrom1, chrom2) {
     chrom1.substring(xover_point, xover_point + range) +
     chrom2.substring(xover_point + range, length);
   return [new_chrom1, new_chrom2];
+}
+
+/**
+ *
+ * @param {String} chrom1 the first
+ * @returns { String } Mutated chromosome
+ */
+export function mutation(chrom) {
+  const length = chrom.length;
+  const mutation_point = 1 + Math.floor(Math.random() * (length - 1));
+  return (
+    chrom.substring(0, mutation_point) +
+    (chrom[mutation_point] === "0" ? "1" : "0") +
+    chrom.substring(mutation_point + 1)
+  );
 }

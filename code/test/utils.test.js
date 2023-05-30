@@ -6,6 +6,7 @@ import {
   crossover,
   generateChromosomes,
   generateSets,
+  mutation,
 } from "../lib/utils.js";
 
 test("generate sets", () => {
@@ -47,4 +48,12 @@ test("Crossover ", () => {
   const hash2 = hashify(newChrom2.split(""));
   equal(hash1["0"], hash2["1"]);
   equal(hash1["1"], hash2["0"]);
+});
+
+test("Mutation ", () => {
+  const chrom = "000000000000";
+  const newChrom = mutation(chrom);
+  const hash = hashify(newChrom.split(""));
+  equal(hash["0"], chrom.length - 1);
+  equal(hash["1"], 1);
 });
