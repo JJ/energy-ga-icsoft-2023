@@ -264,24 +264,23 @@ fragment from one to the other and back in what is usually called two-point cros
 an array, which is eventually printed. The result of every experiment
 has been already shown in an energy vs. wallclock time chart in Figure \ref{fig:crossover}, comparing how it goes for different virtual machines. In Figure \ref{fig:xover:vms} we render a boxplot for different sizes and the different virtual machines, in order to compare their energy consumption and how it grows with chromosome size.
 
-<<r crossover, echo=F, fig.height=6, fig.cap="PKG consumption, in Joules, vs. time in seconds, for the crossover and the three different virtual machines, shown as a boxplot.\\protect\\label{fig:xover:vms}">>=
+<<r crossover, echo=F, fig.height=6, fig.cap="PKG consumption for the crossover and the three different virtual machines, shown as a boxplot.\\protect\\label{fig:xover:vms}">>=
 ggplot(crossover, aes(x=size,y=PKG))+geom_boxplot(aes(fill=VM))+ylim(0, NA)+theme_tufte()
 @
 
 The scenario is remarkably similar to the one shown in Figure \ref{fig:onemax}, and also similar to what we found with the previous versions of all command-line interpreters in \cite{js:energy}. {\sf bun} grows less than linearly with chromosome size, and {\sf node} grows more or less linearly; it is always better for {\sf bun}, and the difference increases with size. But, again, the surprising energy profile for {\sf deno}, which decreases with size, makes it the most energy-thrifty of the three for the biggest size. In any case, {\sf bun} continues to consistently yield very low energy consumption values across all sizes.
 
+In this paper we will be also testing a third operator, mutation. Mutation takes many different forms, but in its simplest form it changes a single bit in a bit string. Again, due to the fact that strings in this language are immutable, the mutated string must be built from pieces of the original string, which will have an impact on the performance.
 
-Here we can see again the surprising fact that {\sf deno} takes the same amount
-of energy, on average, as {\sf node} for size 2048, in a similar case to what
-happened for OneMax (shown in Figure \ref{fig:onemax:energy}). The difference
-between the thriftiest, {\sf bun}, and the heaviest consumer, {\sf node}, is
-approximately three times, in this case, less than in the case of the OneMax fitness
-function.
 
-Given that the results for the two EA-specific functions,
-as well as the test function, are quite conclusive, we should not expect
-anything different from the mutation function, so we will leave the experiments
-at these two, and proceed to the conclusions.
+<<r mutation, echo=F, fig.height=6, fig.cap="PKG consumption for the mutation operator and the three different virtual machines, shown as a boxplot.\\protect\\label{fig:mutation:vms}">>=
+mutation <- read.csv("../code/data/pinpoint-vms-mutation-30-May-09-29-50.csv")
+mutation$size <- as.factor(mutation$size)
+mutation$VM <- str_trim(mutation$VM)
+ggplot(mutation, aes(x=size,y=PKG))+geom_boxplot(aes(fill=VM))+ylim(0, NA)+theme_tufte()
+@
+
+What these measurements show is that, since they behave essentially as a set of copy operations, its behavior is quite similar to that shown in Figure \ref{fig:xover:vms}. {\sf deno} decreases with size, {\sf bun} increases very slowly, {\sf node} faster to the point that it spends three times more energy than {\sf bun} for the biggest size.
 
 \section{Conclusions}
 \label{sec:conc}
