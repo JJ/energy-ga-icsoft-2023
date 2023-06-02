@@ -172,9 +172,9 @@ energy to run the same algorithm.
 \section{Experimental results}
 \label{sec:res}
 
-From the different ways to measure energy consumption \cite{cruz21}, in \cite{js:energy} we chose {\sf pinpoint}~\cite{9307947}, a tool that uses the RAPL (Running Average Power Limit \cite{rapl}) interface, to report the power consumed. This tool was on one side accurate enough to take the measurements we needed and on the other hand it was taking the measures that we needed, so it will be the one used also in this paper. This tool sometimes returns 0 in energy measures. This was an error, and those runs were discarded and the run repeated until the desired number is reached.
+From the different ways to measure energy consumption \cite{cruz21}, in \cite{js:energy} we chose {\sf pinpoint}~\cite{9307947}, a tool that uses the RAPL (Running Average Power Limit \cite{rapl}) interface, to report the power consumed. This tool was on one side accurate enough to take the measurements we needed and on the other hand it was taking the measures that we needed, so it will be the one used also in this paper. This tool sometimes returns 0 in energy measures. This was an error, and those runs were discarded and the run repeated until the desired number is reached. Depending on the actual processor and chipset architecture, it will report different quantities; however, it will at least report the {\em package} ({\tt PKG}) energy consumption, which includes the CPU cores and the RAM. In architectures like Intel native where the RAM consumptions are available, it will report {\tt PKG} as two separate quantities, {\tt cores} and {\tt ram}.
 
-On the JavaScript side, there are many interpreters available and under development, including those embedded in web browsers. Since these are more difficult to measure, and include consumption by the browser itself, we will focus on command line interpreters, and only those in more active development, including those we are most interested in: the high performance virtual machines that were released recently. These are the versions we use:\begin{itemize}
+We are going to focus on command line JavaScript interpreters, in these versions:\begin{itemize}
 \item \texttt{bun} version 0.6.4
 \item \texttt{deno} version 1.34, which includes the v8 library version
   11.5.150.0 and typescript 5.0.4
