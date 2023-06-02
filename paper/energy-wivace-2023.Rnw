@@ -278,7 +278,7 @@ ggplot(mutation, aes(x=size,y=PKG))+geom_boxplot(aes(fill=VM))+ylim(0, NA)+theme
 
 What these measurements show is that, since they behave essentially as a set of copy operations, its behavior is quite similar to that shown in Figure \ref{fig:xover:vms}. {\sf deno} decreases with size, {\sf bun} increases very slowly, {\sf node} faster to the point that it spends three times more energy than {\sf bun} for the biggest size.
 
-It is interesting, however, to test the algorithms in different architectures, even more using a native Intel architecture with all its registers. This is why we have repeated the experiments in another computer, a Lenovo Carbon X1 with Ubuntu 22.04 and an Intel processor % Complete data here.
+It is interesting, however, to test the algorithms in different architectures, even more using a native Intel architecture with all its registers. This is why we have repeated the experiments in another computer, a Lenovo Carbon X1 with Ubuntu 22.04.1, kernel version {\tt 5.19.0-43-generic} and an Intel processor and an Intel Core i7-10610U CPU @ 1.80GHz, with 8 cores.
 
 One of the advantages of using the native Intel architecture is that it gives you more accurate estimations of consumption for specific parts of the system; namely, it breaks the {\tt PKG} reading into two, {\tt cores} and {\tt ram}. In this case, we will be changing slightly the script so that we get separate readings for these two sensors.
 
