@@ -14,7 +14,7 @@ my ($mon,$day,$hh,$mm,$ss) = localtime() =~ /(\w+)\s+(\d+)\s+(\d+)\:(\d+)\:(\d+)
 my $suffix = "$day-$mon-$hh-$mm-$ss";
 
 open my $fh, ">", "data/pinpoint-intel-vms-$script-$suffix.csv";
-say $fh "Tool,VM,size,GPU,PKG,seconds";
+say $fh "Tool,VM,size,cores,RAM,seconds";
 
 my $pinpoint_cli = "/home/jmerelo/bin/pinpoint -e rapl:cores,rapl:ram";
 
@@ -46,10 +46,10 @@ for my $c ( qw(node bun deno) ) {
     my ( $cores, $ram ) = $baseline_output =~ /(\d+\.\d+)\s+J/g;
     foreach  my $row (@results) {
       my @pkg = @$row;
-      my $ram_diff = $pkg[0] - $ram;
+      my $cores_diff = $pkg[0] - $cores;
       say $fh "pinpoint, $c, $l, ",
-        $ram_diff > 0 ?$ram_diff:0,  ", " ,
-        $pkg[1]-$cores,", ",
+        $cores_diff > 0 ?$cores_diff:0,  ", " ,
+        $pkg[1]-$ram,", ",
         $pkg[2];
     }
   }
