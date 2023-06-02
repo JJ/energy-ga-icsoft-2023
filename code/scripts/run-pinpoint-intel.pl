@@ -34,7 +34,7 @@ for my $c ( qw(node bun deno) ) {
         my ( $cores, $ram ) = $output =~ /(\d+\.\d+)\s+J/g;
         my ( $seconds ) = $output =~ /(\d+\.\d+) seconds/;
         $total_seconds += $seconds;
-        say "pinpoint, $c, $l , $ram ,$cores";
+        say "pinpoint, $c, $l , $cores, $ram";
         push @results, [$cores, $ram,$seconds];
       }
     } while ( $successful < $ITERATIONS );
