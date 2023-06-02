@@ -113,14 +113,13 @@ power consumption, the maximum performance, or both, so that EA practitioners ca
 
 In a previous stage of this research \cite{js:energy}, we established a methodology and chose the tools we were going to use for these energy measurements. In this edition we will update the results looking at different factors\begin{itemize}
 \item Test new version of the virtual machines for energy consumption, since in general these evolve towards more efficient operation; at any rate, the balance of results might change in these new versions in unexpected ways.
-\item Test also in different power consumption environments, including an unplugged laptop, so that the interplay between the virtual machine and the power management can be observed; we will also test in a low-power laptop (as compared with a power-hungry desktop machine)
+\item Test also in different power consumption environments, including a native Intel machine, so that the interplay between the virtual machine and the power management can be observed with more precision, with a full implementation of the API used for reading energy consumption sensors.
 \item More complete operation of an evolutionary algorithm will be tested: the ubiquitous mutation will be also tested, separately and in combination with crossover, to see what kind of power consumption profile it adds.
 \end{itemize}
 
 
 The rest of the paper follows this plan: next we will present the state of the
-art; then we will describe the experimental setup in Section \ref{sec:setup};
-results will be presented next in Section \ref{sec:res}, and we will end with a
+art; then we will describe the results with its experimental setup will be presented next in Section \ref{sec:res}, and we will end with a
 discussion of results, conclusions and future lines of work.
 
 \section{State of the art}
@@ -170,8 +169,8 @@ single-board computers (SBCs) required an order of magnitude less
 energy to run the same algorithm.
 
 
-\section{Methodology and experimental setup}
-\label{sec:setup}
+\section{Experimental results}
+\label{sec:res}
 
 From the different ways to measure energy consumption \cite{cruz21}, in \cite{js:energy} we chose {\sf pinpoint}~\cite{9307947}, a tool that uses the RAPL (Running Average Power Limit \cite{rapl}) interface, to report the power consumed. This tool was on one side accurate enough to take the measurements we needed and on the other hand it was taking the measures that we needed, so it will be the one used also in this paper. This tool sometimes returns 0 in energy measures. This was an error, and those runs were discarded and the run repeated until the desired number is reached.
 
@@ -188,9 +187,6 @@ These were running in an Ubuntu version 20.04.1 with kernel version
 A Perl script was created to run the experiments; it executed the scripts
 and collected results by parsing the standard output and putting it in a CSV
 format that would allow examination of the experiments. As indicated in \cite{js:energy}, consumption for a no-op task run in the same environment was substracted from the reading taken, before computing the average in this script.
-
-\section{Experimental results}
-\label{sec:res}
 
 As was done in \cite{DBLP:conf/evoW/MereloCBRGFRV16}, which was focused on
 wallclock performance, the experiments will be focused on the key operations
