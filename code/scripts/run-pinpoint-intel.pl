@@ -44,12 +44,14 @@ for my $c ( qw(node bun deno) ) {
       $baseline_output = `$pinpoint_cli sleep $average 2>&1`;
     } while ($baseline_output =~  /0.00\s+J/);
     my ( $cores, $ram ) = $baseline_output =~ /(\d+\.\d+)\s+J/g;
+    say "Baseline $cores $ram";
     foreach  my $row (@results) {
       my @pkg = @$row;
       my $cores_diff = $pkg[0] - $cores;
+      my $ram_diff = $pkg[1]- $ram;
       say $fh "pinpoint, $c, $l, ",
         $cores_diff > 0 ?$cores_diff:0,  ", " ,
-        $pkg[1]-$ram,", ",
+        $ram_diff > 0?$ram_diff:0,", ",
         $pkg[2];
     }
   }
