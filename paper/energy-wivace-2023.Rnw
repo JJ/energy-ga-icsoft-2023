@@ -308,8 +308,9 @@ These new experiments with the mutation operator, which basically involves copyi
 
 Finally, our experiment with a (powered) laptop shows that, as should be expected, opting for a energy-saving computer architecture will give you energy savings that can go from 50\% to over 80\%, depending on the size; these savings do not imply a decrease in performance in the same scale; even in some cases, it can be faster, in the case of {\sf deno}. This leads us to encourage to perform evolutionary algorithms, wherever possible, in laptops, even more so if they have an Intel processor and chipset.
 
+Even if energy saving is not the main concern of the evolutionary algorithm practitioner, we encourage researchers to always follow a strategy of energy and performance profiling to be able to extract the most from the existing hardware architecture; this is always a software engineering best practice that we really need to encourage in our area.
 
-
+The fact that mutation is so power-hungry leads us to designing algorithms that try and save energy in this area; this will probably imply changes in the data structures used in the evolutionary algorithm. Since in this case we have used immutable strings, that might be the reason why it consumes so much energy. Implementation matters, \cite{DBLP:conf/iwann/MereloRACML11}, so exploring and measuring will always help you take the best decisions in the direction of making computing greener.
 
 \section*{Acknowledgements}
 
