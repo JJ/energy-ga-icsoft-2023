@@ -47,74 +47,14 @@ Green computing is a methodology for saving energy in the implementation of algo
 \section{\uppercase{Introduction}}
 \label{sec:introduction}
 
-From a language designed in the nineties for simple browser widgets and
-client-side validations \cite{goodman2007javascript,flanagan1998javascript},
-JavaScript is nowadays the language most widely used by developers in their
-GitHub repositories \cite{ogrady22:ranking}, occupying this position since 2014
-\cite{ogrady14:ranking}, mainly because it is almost exclusively the language
-needed for front-end programming (competing only with app development languages,
-such as Swift or Kotlin, or languages transpiled to JavaScript, such as Dart),
-while at the same time being strong for full-stack development, with solid
-support for the back end, including application servers, middleware, and
-database programming. Other popularity indices, such as
-TIOBE\footnote{\url{https://www.tiobe.com/tiobe-index/}}, that take into account other
-factors besides lines of code production, currently (2023) rank it as the seventh,
-although it was also the most popular language in 2014. It can
-be claimed, then, that it is among the most popular, if not the most popular
-language in current development.
-
-Due to its popularity and the fact that it has a
-continuously evolving standard \cite{ecma1999262}, traditionally, there have
-been different virtual machines (or interpreters) to run its programs. During
-the first years, browsers were the only running platform available; however, the
-introduction of Node.js running on the V8 JavaScript Engine \cite{5617064} gave
-it the popularity it has today; this popularity, in turn, provoked new
-interpreters to spawn like {\sf deno} \cite{runtimeintroducing} (written in
+Since the first papers that used it for implementing metaheuristics \cite{jesusIWANN99,jesusIWANN99}, JavaScript is nowadays a great alternative for evolutionary algorithms and machine learning models, making it a target for energy efficiency studies in that area. However, unlike other languages, there are different interpreters with different objectives: besides the well known and established {\sf node}, already in its version 20, {\sf deno} \cite{runtimeintroducing} (written in
 Rust) and {\sf bun} \cite{bun} programmed in the relatively unknown language
-Zig.
+Zig have been produced lately. We already compared them in a previous paper \cite{js:energy}. However, in that paper we established a general methodology for measuring energy consumption: using the energy profiler {\sf pinpoint}  \cite{9307947}, that reads from the RAPL registers \cite{rapl,khan2018rapl}, and using experiments run from the command line, without any additional instrumentation, to measure power extracted by evolutionary algorithm operators from the source.
 
-No wonder, then, that JavaScript is also a popular language for implementing
-metaheuristics, especially evolutionary algorithms (EA). EA
-\cite{eiben2015evolutionary} are population-based stochastic optimization
-algorithms based on the representation of a problem as a (often binary)
-"chromosome", and {\em evolution} of population of these "chromosomes" by random
-change (via "genetic" operators, mutation and crossover) and survival of the
-fittest (evaluation of those chromosomes via a so-called "fitness" function, and
-selection and reproduction of those that achieve the best values).  From the
-early implementations in the browser
-\cite{smith1996ga,jesusIWANN99,langdon2004global}, whole libraries
-\cite{EvoStar2014:jsEO}, through complete implementations geared towards
-volunteer computing \cite{2016arXiv160101607M}. However, one of the criticisms
-leveraged towards these implementations is the (possible) lack of speed when
-compared to other compiled languages (mainly Java, very popular in
-metaheuristics implementations, or C++).
-
-This is why, since implementation matters \cite{DBLP:conf/iwann/MereloRACML11},
-choosing the right interpreter is going to have a significant impact on the performance
-of any workload; if you decide to choose JavaScript for any reason (such as
-seamless client/server integration, or be able to run your algorithm either on
-the browser or from the command line if desired) knowing which VM delivers the
-best performance is essential, either from the scientific, or software engineering
-points of view.
-
-At the same time, with the advent of the concept of green computing
-\cite{kurp2008green}, it becomes increasingly important to measure not only the
-raw wall clock performance (which was the focus of papers such as
-\cite{DBLP:conf/evoW/GuervosBCRGRVHR17}), but also to achieve a certain level
-of performance with a certain amount of energy consumption, or else to minimize
-the consumption needed to run a certain workload. This will be the main focus
-of this paper; since the core of the different JS virtual machines is
-different, and are created with languages with different focus (Rust is focused
-on memory safety \cite{noseda2022rust}, Zig based on simplicity and performance
-\cite{zig}), different energy consumption should be expected. Since all three
-languages can (roughly) run the same, unmodified source code, what we intend
-with this paper is to advise on which JS interpreter might give the lowest
-power consumption, the maximum performance, or both, so that EA practitioners can target it for their development.
-
-In a previous stage of this research \cite{js:energy}, we established a methodology and chose the tools we were going to use for these energy measurements. In this edition we will update the results looking at different factors\begin{itemize}
+We validated this approach, and applied it to a single fitness function (OneMax) and a common operator (crossover). However, this study left a few issues open. In this edition we will widen the results looking at different factors\begin{itemize}
 \item Test new version of the virtual machines for energy consumption, since in general these evolve towards more efficient operation; at any rate, the balance of results might change in these new versions in unexpected ways.
 \item Test also in different power consumption environments, including a native Intel machine, so that the interplay between the virtual machine and the power management can be observed with more precision, with a full implementation of the API used for reading energy consumption sensors.
-\item More complete operation of an evolutionary algorithm will be tested: the ubiquitous mutation will be also tested, separately and in combination with crossover, to see what kind of power consumption profile it adds.
+\item More complete operation of an evolutionary algorithm will be tested: the ubiquitous mutation will be also tested, to see what kind of power consumption profile it adds.
 \end{itemize}
 
 
@@ -123,8 +63,6 @@ art; then we will describe the results with its experimental setup will be prese
 discussion of results, conclusions and future lines of work.
 
 \section{State of the art}
-
-% First, CPU and general algorithmic impact on power consumption
 
 
 In the last few years, evaluating the energy efficiency of algorithms as well as changing algorithms or implementations in such a way that their energy consumption is decreased has increasingly become a research topic \cite{demaine2016energy}; in many cases
