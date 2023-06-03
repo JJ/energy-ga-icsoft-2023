@@ -128,7 +128,7 @@ discussion of results, conclusions and future lines of work.
 
 
 In the last few years, evaluating the energy efficiency of algorithms, as well as changing algorithms or implementations in such a way that their energy consumption is decreased has increasingly become a research topic \cite{demaine2016energy}; in many cases
-algorithms are compared with respect their power efficiency. Of course, machine learning applications \cite{garcia2019estimation} have also been included.
+algorithms are compared with respect their power efficiency. Machine learning/AI applications \cite{verdecchia2023systematic} have been studied from the green perspective more strongly since 2020, mainly using experimental studies, establishing it as the best practice, which we will follow also in this paper.
 
 In the area of evolutionary algorithms, initial energy efficiency estimations affected 
 genetic programming (GP) \cite{diaz2018fuzzy}; bug since then, and due to the fact that metaheuristics are so extensively used
