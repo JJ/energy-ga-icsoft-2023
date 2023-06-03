@@ -126,28 +126,13 @@ discussion of results, conclusions and future lines of work.
 
 % First, CPU and general algorithmic impact on power consumption
 
-The power efficiency of CPUs (computations per kilowatt-hour) has
-doubled roughly every year and a half from 1946 to 2009
-\cite{koomey2011web}, this improvement has been mainly a by-product
-of Moore's law, the trend of chip manufacturers to decrease in half
-the size and distance between transistors every two
-years. Unfortunately, it is expected that physical limits of
-electronics will slow down this miniaturization in the near future.
-Nonetheless, energy efficiency is becoming the most important metric
-of performance and selling point in hardware development, and it is an
-important driver for current innovation. The challenge of building
-more power-efficient systems, can be addressed at the hardware and
-software levels. In the software level, developers focus their
-attention on the energy consumption of software, proposing
-optimizations for more energy-efficient algorithm implementations.
-Algorithm comparatives nowadays include power efficiency as a
-performance metric, these include encryption algorithms
-\cite{mota2017comparative,thakor2021lightweight}, estimation models
-for machine learning applications \cite{garcia2019estimation} and
-genetic programming (GP) \cite{diaz2018fuzzy}, and code refactoring
-\cite{ournani2021tales}. Since metaheuristics are so extensively used
-in machine learning applications, its interest in research has grown
-in parallel to its number of applications. Many papers focus on
+
+In the last few years, evaluating the energy efficiency of algorithms, as well as changing algorithms or implementations in such a way that their energy consumption is decreased has increasingly become a research topic \cite{demaine2016energy}; in many cases
+algorithms are compared with respect their power efficiency. Of course, machine learning applications \cite{garcia2019estimation} have also been included.
+
+In the area of evolutionary algorithms, initial energy efficiency estimations affected 
+genetic programming (GP) \cite{diaz2018fuzzy}; bug since then, and due to the fact that metaheuristics are so extensively used
+in machine learning applications, studies in this area have grown. Many papers focus on
 analyzing how certain metaheuristics parameters have an impact on
 energy consumption.  Díaz-Álvarez et al. \cite{diaz2022population}
 studies how the populations size of EAs
@@ -167,6 +152,8 @@ al. \cite{10.1007/978-3-319-45823-6_51} experimented with different
 parameters for a GP algorithm and concluded that hand-held devices and
 single-board computers (SBCs) required an order of magnitude less
 energy to run the same algorithm.
+
+This points to several best practices in the area: first, evaluate separately different operators and fitness functions, and second, perform experiments on different devices. After the initial exploration and establishment of technology in \cite{js:energy}, this paper will also test the mutation operator, as well as carry out tests in different computers with different architecture.
 
 
 \section{Experimental results}
