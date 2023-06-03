@@ -230,7 +230,7 @@ The scenario that is shown in Figure \ref{fig:crossover}, representing performan
 Since our interest is first to try and find the JavaScript VM that has the best energy profile, we will first compare the energy consumption of the ones available in March 2023, and published in \cite{js:energy}, and the ones available in May 2023, when this paper is being written. It does not seem like the slight disadvantage in energy consumption for this new version, in this specific operator, is enough to offset the savings obtained with the fitness function; let us not forget that fitness evaluation usually takes the bulk of the energy consumption and time. At any rate, the fact that unexpected variations in energy consumption may occur when versions change, and sometimes dramatic ones, is probably enough to warrant re-profiling of all workloads (evolutionary algorithms or otherwise) and another round of comparison of the performance and energy consumption for all three. This is what we will do next, using the newest published versions.
 
 %
-<<r onemax.vms, echo=F, fig.height=4, fig.cap="Boxplot of PKG measurements OneMax problem and the three different virtual machines.\\protect\\label{fig:onemax:energy}">>=
+<<r onemax.vms, echo=F, fig.height=4, fig.cap="Boxplot of PKG measurements for the OneMax fitness function and the three different virtual machines.\\protect\\label{fig:onemax:energy}">>=
 ggplot(onemax, aes(x=size,y=PKG))+geom_boxplot(aes(fill=VM))+ylim(0, NA)+theme_tufte()
 @
 %
@@ -300,19 +300,10 @@ A comparison of consumption and performance (running time) is shown in Table \re
 \section{Conclusions}
 \label{sec:conc}
 
+In this paper we set out to study the influence on energy consumption of evolutionary algorithms in three different directions: first, testing different versions of the interpreters; second, including the mutation operator, since it seems to be the one that consumes the most; and third, test different types of computers.
 
-As we have indicated in the experimental session, the wide advantage that {\sf
-bun} has over the other interpreters does not leave much room for adopting
-different benchmarks that could make that ranking vary; at any rate, these
-experiments have shown how much faster and energy-saving {\sf bun} is (from 1/3
-to 1/6 the energy consumed by {\sf node}), but it would be interesting to know
-what happens to this gap under different operations like selection or different
-kind of mutation. At the same time, even if EAs are mostly
-GPU-free, there are some fitness functions that operate on floating point
-numbers and thus would need to use the GPU; how interpreters work in this area
-could be an interesting future line of work. This, along with testing different
-versions of the interpreters as they are published, will be the subject of
-future research.
+While in our previous paper, \cite{js:energy}, the measurements showed clearly that {\sf bun} was the less energy-consuming interpreter across all evolutionary operators and fitness functions, the experiments performed in this paper show a more nuanced scenario. The first interesting conclusion is that there is nothing inherently energy-saving in the architecture of that interpreter, and that the supremacy can change when current versions of the interpreters are compared with each other; subsequent release might increase or decrease the energy consumption, and do so differentially across different problem sizes, so this leads again to experimentation as the only possible way to really ascertain which interpreter is best. The counter-intuitive behavior of {\sf deno}, which consumes less as the size increases, also leads to this conclusion. We cannot even discard {\sf node} as the most energy-consuming interpreter, since it beats {\sf deno} in the mutation operator, which is the one that consumes the most, at the smallest sizes, as well as the onemax operator, also quite energy-consuming. 
+
 
 
 \section*{Acknowledgements}
