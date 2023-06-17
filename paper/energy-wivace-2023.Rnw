@@ -83,18 +83,21 @@ discussion of results, conclusions and future lines of work.
 In the last few years, evaluating the energy efficiency of algorithms as well as changing algorithms or implementations in such a way that their energy consumption is decreased has increasingly become a research topic \cite{demaine2016energy}; in many cases
 algorithms are compared with respect their power efficiency. Machine learning/AI applications \cite{verdecchia2023systematic} have been studied from the green perspective more strongly since 2020, mainly using experimental studies, establishing it as the best practice, which we will also follow in this paper.
 
-In the area of evolutionary algorithms, initial energy efficiency estimations
-included their behaviour in different platforms \cite{10.1007/978-3-319-45823-6_51}, its interaction with cloud services \cite{maryam2018evolutionary} and how it affected 
-genetic programming (GP) \cite{diaz2018fuzzy}; but since then, and due to the fact that metaheuristics are so extensively used
-in machine learning applications, studies in this area have grown. Many papers focus on
+In the area of evolutionary algorithms, initial energy efficiency
+estimations included their behaviour in different platforms
+\cite{10.1007/978-3-319-45823-6_51}, its interaction with cloud
+services \cite{maryam2018evolutionary} and how it affected genetic
+programming (GP) \cite{diaz2018fuzzy}; but since then, and due to the
+fact that metaheuristics are so extensively used in machine learning
+applications, studies in this area have grown. Many papers focus on
 analysing how certain metaheuristics parameters have an impact on
 energy consumption.  Díaz-Álvarez et al. \cite{diaz2022population}
-studies how the populations size of EAs
-influences power consumption. In an earlier work, centred on genetic
-algorithms (GAs) \cite{10.1007/978-3-030-45715-0_8}, power-consumption
-of battery-powered devices was measured for various parameter
+studies how the populations size of EAs influences power
+consumption. In an earlier work, centred on genetic algorithms (GAs)
+\cite{10.1007/978-3-030-45715-0_8}, power-consumption of
+battery-powered devices was measured for various parameter
 configurations including chromosome and population sizes. The
-experiments used the OneMax and Trap function benchmark problems, and 
+experiments used the OneMax and Trap function benchmark problems, and
 they concluded that execution time and energy consumption do not
 linearly correlate and there is a connection between the GA parameters
 and power consumption.  In GAs, the mutation operator appears to be a
@@ -113,7 +116,21 @@ These results point to several best practices in the area: first, evaluate separ
 \section{Experimental results}
 \label{sec:res}
 
-From the different ways to measure energy consumption \cite{cruz21}, in \cite{js:energy} we chose {\sf pinpoint}~\cite{9307947}, a tool that uses the RAPL (Running Average Power Limit \cite{rapl}) interface, to report the power consumed. This tool was on one side accurate enough to take the measurements we needed and on the other hand it was taking the measures that we needed, so it will be the one used also in this paper. This tool sometimes returns 0 in energy measures. This was an error, and those runs were discarded and the run repeated until the desired number is reached. Depending on the actual processor and chipset architecture, it will report different quantities; however, it will at least report the {\em package} ({\tt PKG}) energy consumption, which includes the CPU cores and the RAM. In architectures like Intel native where the RAM consumptions are available, it will report {\tt PKG} as two separate quantities, {\tt cores} and {\tt ram}.
+From the different ways to measure energy consumption \cite{cruz21},
+in \cite{js:energy} we chose {\sf pinpoint}~\cite{9307947}, a tool
+that uses the RAPL (Running Average Power Limit \cite{rapl})
+interface, to report the power consumed. This tool was on one side
+accurate enough to take the measurements we needed and on the other
+hand it was taking the measures that we needed, so it will be the one
+used also in this paper. This tool sometimes returns 0 in energy
+measures. This was an error, and those runs were discarded and the run
+repeated until the desired number is reached. Depending on the actual
+processor and chipset architecture, it will report different
+quantities; however, it will at least report the {\em package} ({\tt
+PKG}) energy consumption, which includes the CPU cores and the RAM. In
+architectures like Intel native where the RAM consumptions are
+available, it will report {\tt PKG} as two separate quantities, {\tt
+cores} and {\tt ram}.
 
 We are going to focus on command line JavaScript interpreters, in these versions:\begin{itemize}
 \item \texttt{bun} version 0.6.4
@@ -132,24 +149,25 @@ that would allow examination of the experiments. As indicated in
 \cite{js:energy}, consumption for a no-op task run in the same environment was
 subtracted from the reading taken, before computing the average in this script.
 
-As was done in \cite{DBLP:conf/evoW/MereloCBRGFRV16}, which was focused on
-wallclock performance, the experiments will be focused on the key operations
-performed by an EA: evaluation of fitness and "genetic"
-operators like mutation and crossover. 
-What we will do is: repeat the setup in the initial exploration, 
-check the energy consumption for the processing of
-40000 chromosomes, a number chosen to take a sizable amount of memory, but also
-on the ballpark of the usual number of operations in an EA
-benchmark, it is also small enough to not create garbage collection problems
-with the memory, something that was detected after the initial exploration.
-Experiments were repeated for the same chromosome size as before, 1024, 2048,
-and 4096, and for the three JS virtual machines used. Although the business
-logic is exactly the same for the experiments, the script run comes in two
-versions, one for {\sf deno} and the other for {\sf bun/node}, due to the different
-way they have of reading command-line arguments. This does not affect the
-overhead in any way. Code, as well as the data resulted from the experiments
-and analysed in this paper, are released with a free license (along with this
-paper) from the repository \url{https://github.com/JJ/energy-ga-icsoft-2023}.
+As was done in \cite{DBLP:conf/evoW/MereloCBRGFRV16}, which was
+focused on wallclock performance, the experiments will be focused on
+the key operations performed by an EA: evaluation of fitness and
+"genetic" operators like mutation and crossover.  What we will do is:
+repeat the setup in the initial exploration, check the energy
+consumption for the processing of 40000 chromosomes, a number chosen
+to take a sizable amount of memory, but also on the ballpark of the
+usual number of operations in an EA benchmark, it is also small enough
+to not create garbage collection problems with the memory, something
+that was detected after the initial exploration.  Experiments were
+repeated for the same chromosome size as before, 1024, 2048, and 4096,
+and for the three JS virtual machines used. Although the business
+logic is exactly the same for the experiments, the script run comes in
+two versions, one for {\sf deno} and the other for {\sf bun/node}, due
+to the different way they have of reading command-line arguments. This
+does not affect the overhead in any way. Code, as well as the data
+resulted from the experiments and analysed in this paper, are released
+with a free license (along with this paper) from the repository
+\url{https://github.com/JJ/energy-ga-icsoft-2023}.
 
 <<r onemax, echo=F, fig.show="hold", out.width="30%", fig.cap="Comparison between different versions of the VMs; left: node.js, center: bun, right:deno\\protect\\label{fig:onemax}">>=
 library(ggplot2)
