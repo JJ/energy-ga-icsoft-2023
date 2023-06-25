@@ -1,6 +1,7 @@
 ## ----r pinpoint, echo=F-------------------------------------------------------
 library(ggplot2)
-test.pinpoint <- read.csv("../code/data/pinpoint-sets-29-Mar-21-06-12.csv")
+library(ggthemes)
+ad.csv("../code/data/pinpoint-sets-29-Mar-21-06-12.csv")
 
 
 ## ----r pinpoint.gpu, echo=F, fig.cap="Boxplot of measurements of energy expenditures by the GPU in the sets problem. GPU energy consumption is measured in Joules.\\protect\\label{fig:gpu}"----
@@ -46,7 +47,6 @@ ggplot(sets.vms, aes(x=size,y=Joules.Second))+geom_boxplot(aes(fill=VM))
 
 
 ## ----r onemax, echo=F, fig.cap="Boxplot of energy consumption vs. time taken for all three sizes and VMs.\\protect\\label{fig:onemax}"----
-library(ggthemes)
 onemax <- read.csv("../code/data/pinpoint-vms-onemax-11-Apr-10-19-29.csv")
 onemax$size <- as.factor(onemax$size)
 ggplot(onemax, aes(x=seconds,y=PKG))+geom_point(size=3,aes(color=size,fill=size,shape=VM))+theme_tufte()
