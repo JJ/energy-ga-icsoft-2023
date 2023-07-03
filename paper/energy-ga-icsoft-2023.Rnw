@@ -154,7 +154,7 @@ in machine learning applications, its interest in research has grown
 in parallel to its number of applications. Many papers focus on
 analyzing how certain metaheuristics parameters have an impact on
 energy consumption.  Díaz-Álvarez et al. \cite{diaz2022population}
-studies how the populations size of EAs
+study how the populations size of EAs
 influences power consumption. In an earlier work, centered on genetic
 algorithms (GAs) \cite{10.1007/978-3-030-45715-0_8}, power-consumption
 of battery-powered devices was measured for various parameter
