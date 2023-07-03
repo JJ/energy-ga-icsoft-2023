@@ -5,6 +5,7 @@
  */
 @import url(https://fonts.googleapis.com/css?family=Quicksand:400,700,400italic,700italic);
 @import url(https://fonts.googleapis.com/css?family=Open+Sans:400italic,700italic,400,700);
+@import url('https://fonts.googleapis.com/css2?family=Gideon+Roman&family=Luxurious+Roman&family=MuseoModerno&family=Share+Tech&family=Share+Tech+Mono&family=Vesper+Libre&display=swap');
 .reveal a {
   line-height: 1.3em;
 }
@@ -98,11 +99,13 @@ section.has-dark-background, section.has-dark-background h1, section.has-dark-ba
 }
 
 .reveal h1 {
-  font-size: var(--r-heading1-size);
+    font-family: 'Gideon Roman', cursive;
+    font-size: var(--r-heading1-size);
 }
 
 .reveal h2 {
-  font-size: var(--r-heading2-size);
+    font-family: 'MuseoModerno', cursive;
+    font-size: var(--r-heading2-size);
 }
 
 .reveal h3 {
