@@ -8,6 +8,7 @@
 
 	<link rel="stylesheet" href="dist/reset.css">
 	<link rel="stylesheet" href="dist/reveal.css">
+        <link rel="stylesheet" href="dist/extra.css">
 	<link rel="stylesheet" href="dist/icsoft.css">
 
 	<!-- Theme used for syntax highlighted code -->
@@ -16,10 +17,12 @@
     <body>
 	<div class="reveal">
 	    <div class="slides">
-		<section><h1>An analysis of energy consumption of JavaScript
+		<section data-background="https://live.staticflickr.com/3107/2329735516_7ffc3f0af6_o_d.jpg"><h1>An analysis of energy consumption of JavaScript
 	            interpreters with evolutionary algorithm workloads</h1>
 
-                    <h2>Merelo (UGR-ES), García-Valdez (ITT-MX), Castillo (UGR-ES)</h2>
+                    <h2>Merelo (UGR-ES), García-Valdez (ITT-MX), Castillo
+                        (UGR-ES)</h2>
+                    <h3>ICSoft, 2023</h3>
                 </section>
 		<section>Slide 2</section>
 	    </div>
@@ -33,10 +36,14 @@
 			// - https://revealjs.com/initialization/
 			// - https://revealjs.com/config/
 			Reveal.initialize({
-				hash: true,
-
-				// Learn about plugins: https://revealjs.com/plugins/
-				plugins: [ RevealHighlight, RevealNotes ]
+			    hash: true,
+                            width: "95%",
+			    height: '100%',
+			    controls: true,
+			    progress: true,
+			    backgroundTransition: 'convex',
+			    // Learn about plugins: https://revealjs.com/plugins/
+			    plugins: [ RevealHighlight, RevealNotes ]
 			});
 		</script>
 	</body>
