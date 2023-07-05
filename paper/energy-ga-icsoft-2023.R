@@ -1,7 +1,7 @@
 ## ----r pinpoint, echo=F-------------------------------------------------------
 library(ggplot2)
 library(ggthemes)
-ad.csv("../code/data/pinpoint-sets-29-Mar-21-06-12.csv")
+test.pinpoint <- read.csv("../code/data/pinpoint-sets-29-Mar-21-06-12.csv")
 
 
 ## ----r pinpoint.gpu, echo=F, fig.cap="Boxplot of measurements of energy expenditures by the GPU in the sets problem. GPU energy consumption is measured in Joules.\\protect\\label{fig:gpu}"----
