@@ -120,6 +120,35 @@ function pairUnion(sacos) {
                             measures 15 times. </aside>
                     </section>
 
+                    <section><h1>OneMax: code</h1>
+                        <pre><code data-line-numbers="8|9">/**
+ *
+ * @param {String} A chromosome of zeros and ones
+ * @returns {Number} number of ones
+ */
+export function countOnes(chromosome) {
+  return chromosome
+    .split("")
+    .reduce((acc, bit) => acc + (bit === "1" ? 1 : 0), 0);
+}
+                        </code></pre>
+                        <aside class="notes">We have made a certain number of
+                        choices regarding the representation, as well as the
+                        functions uses. Reduce functions are usually faster,
+                        although since we're using strings we need to split on
+                        its components. Also, JS is strongly typed, so we need
+                            to transform to add.</aside>
+                    </section>
+                    <section><h1>Energy vs. time taken</h1>
+                        <img src="img/fig1-onemax-PKG-vs-seconds.png" alt="PKG
+                                  vs. seconds" height="1000">
+                        <aside class="notes">We can see how there's an increase
+                        with size, but it's not linear; at any rate, we can also
+                            see how little energy (and time) bun takes to run this workload</aside>
+                    </section>
+                    <section></section>
+                    <section></section>
+                    <section></section>
                 </section>
 
 		<section data-background="https://live.staticflickr.com/2212/2325626581_493c933226_o_d.jpg"><h1>Conclusions</h1>
