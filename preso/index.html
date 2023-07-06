@@ -139,21 +139,52 @@ export function countOnes(chromosome) {
                         its components. Also, JS is strongly typed, so we need
                             to transform to add.</aside>
                     </section>
-                    <section><h1>Energy vs. size</h1>
-                        <img src="img/fig2-onemax-PKG-vs-size.png" alt="PKG
-                                  vs. seconds" height="1000">
-                        <aside class="notes">Bun is consistently the best, saving almost 80% of energy with respect to the mainstream node.</aside>
-                    </section>
 
-                    <section><h1>Energy vs. time taken</h1>
+                    <section><h1>Onemax: Energy vs. time</h1>
                         <img src="img/fig1-onemax-PKG-vs-seconds.png" alt="PKG
-                                  vs. seconds" height="1000">
+                                  vs. seconds" height="800">
                         <aside class="notes">We can see how there's an increase
                         with size, but it's not linear; at any rate, we can also
                             see how little energy (and time) bun takes to run this workload</aside>
                     </section>
-                    <section></section>
-                    <section></section>
+		    
+                    <section><h1>Onemax: Energy vs. size</h1>
+                        <img src="img/fig2-onemax-PKG-vs-size.png" alt="PKG
+                                  vs. size" height="800">
+                        <aside class="notes">Bun is consistently the best, saving almost 80% of energy with respect to the mainstream node.</aside>
+                    </section>
+
+		    <section><h1>Crossover</h1>
+		      <pre><code>export function crossover(chrom1, chrom2) {
+  const length = chrom1.length;
+  const xover_point = 1 + Math.floor(Math.random() * (length - 1));
+  const range = 1 + Math.floor(Math.random() * (length - xover_point));
+  let new_chrom1 = chrom1.substring(0, xover_point);
+  let new_chrom2 = chrom2.substring(0, xover_point);
+  new_chrom1 +=
+    chrom2.substring(xover_point, xover_point + range) +
+    chrom1.substring(xover_point + range, length);
+  new_chrom2 +=
+    chrom1.substring(xover_point, xover_point + range) +
+    chrom2.substring(xover_point + range, length);
+  return [new_chrom1, new_chrom2];
+}		      </code></pre>
+		    </section>
+
+		    <section><h1>Crossover: Energy vs. time</h1>
+                        <img src="img/fig3-over-PKG-vs-seconds.png" alt="PKG
+                                  vs. seconds" height="800">
+                        <aside class="notes"></aside>
+                    </section>
+
+		        <section><h1>Onemax: Energy vs. time</h1>
+                        <img src="img/fig4-over-PKG-vs-size.png" alt="PKG
+                                  vs. size" height="800">
+                        <aside class="notes"></aside>
+                    </section>
+
+
+
                     <section></section>
                 </section>
 
