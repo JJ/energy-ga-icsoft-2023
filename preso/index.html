@@ -147,7 +147,7 @@ export function countOnes(chromosome) {
                         with size, but it's not linear; at any rate, we can also
                             see how little energy (and time) bun takes to run this workload</aside>
                     </section>
-		    
+
                     <section><h1>Onemax: Energy vs. size</h1>
                         <img src="img/fig2-onemax-PKG-vs-size.png" alt="PKG
                                   vs. size" height="800">
@@ -155,7 +155,7 @@ export function countOnes(chromosome) {
                     </section>
 
 		    <section><h1>Crossover</h1>
-		      <pre><code>export function crossover(chrom1, chrom2) {
+		      <pre><code data-line-numbers="5,6|7-12">export function crossover(chrom1, chrom2) {
   const length = chrom1.length;
   const xover_point = 1 + Math.floor(Math.random() * (length - 1));
   const range = 1 + Math.floor(Math.random() * (length - xover_point));
@@ -174,18 +174,21 @@ export function countOnes(chromosome) {
 		    <section><h1>Crossover: Energy vs. time</h1>
                         <img src="img/fig3-over-PKG-vs-seconds.png" alt="PKG
                                   vs. seconds" height="800">
-                        <aside class="notes"></aside>
+                        <aside class="notes">We should note that this energy is
+                        around 40% less than for onemax; that is, it's taking a
+                        considerable amount of energy, but individually it takes
+                        less. However, in the case of benchmarking fitness it's
+                        going to be in the same order of magnitude. </aside>
                     </section>
 
-		        <section><h1>Onemax: Energy vs. time</h1>
+		        <section><h1>Crossover: Energy vs. time</h1>
                         <img src="img/fig4-over-PKG-vs-size.png" alt="PKG
                                   vs. size" height="800">
-                        <aside class="notes"></aside>
+                        <aside class="notes">As in the case of Onemax, there is
+                        a strange behavior in the deno interpreter, that takes
+                        less energy (even if takes more time) for the bigger size.</aside>
                     </section>
 
-
-
-                    <section></section>
                 </section>
 
 		<section data-background="https://live.staticflickr.com/2212/2325626581_493c933226_o_d.jpg"><h1>Conclusions</h1>
