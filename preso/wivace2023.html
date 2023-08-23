@@ -4,7 +4,7 @@
 	<meta charset="utf-8">
 	<meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no">
 
-	<title>ICSoft 2023: Energy analysis JS VMs</title>
+	<title>Wivace 2023: Energy analysis JS VMs</title>
 
 	<link rel="stylesheet" href="dist/reset.css">
 	<link rel="stylesheet" href="dist/reveal.css">
@@ -17,46 +17,34 @@
     <body>
 	<div class="reveal">
 	    <div class="slides">
-		<section data-background="https://live.staticflickr.com/3107/2329735516_7ffc3f0af6_o_d.jpg"><h1>An analysis of energy consumption of JavaScript
-	            interpreters with evolutionary algorithm workloads</h1>
+		<section data-background=""><h1>Energy consumption of evolutionary algorithms in JavaScript</h1>
 
                     <h2>Merelo (UGR-ES), García-Valdez (ITT-MX), Castillo
                         (UGR-ES)</h2>
-                    <h3>ICSoft, 2023</h3>
+                    <h3>Wivace, 2023</h3>
                 </section>
-		<section data-background="https://live.staticflickr.com/2058/2325670201_9625d0c0a7_o_d.jpg"><h1>Green
+		<section data-background=""><h1>Green
                     computing</h1>
                     <h2>Minimize the amount of energy spent in algorithms/applications</h2>
                 </section>
 
-                <section data-background="img/tablas.jpg">
+                <section data-background="">
                     <h1>No fixed set of rules for "greening"</h1>
                     <h2 class="fragment">Algorithm/language specific experimental methodology</h2>
                 </section>
 
                 <section
-	    data-background="https://live.staticflickr.com/2386/2327230312_475172a086_o_d.jpg"><h1>Looking
-	            at evolutionary algorithms in JavaScript</h1>
-                    <h2 class="fragment">Choose sensors</h2>
-                    <h2 class="fragment">Design methodology and tools</h2>
-                    <h2 class="fragment">Create code and measure
-	                consumption</h2>
-                </section>
-
-                <section
-                data-background="https://live.staticflickr.com/3077/2332071868_d5065df5e6_o_d.jpg"><h1>JavaScript
+                data-background=""><h1>JavaScript
                     is here to stay</h1>
                     <h2 class="fragment">ECMA standard</h2>
                     <h2 class="fragment">And has different interpreters:
                         <code>bun</code>, <code>deno</code>,
                         <code>node.js</code></h2>
 
-                    <aside class="notes">These three interpreters are Frank Head
-                during the San Remo Festival, 2008; I was in my hotel room,
-                        during the last stay in Rome where I could take enough pictures.</aside>
+                    <aside class="notes"></aside>
                 </section>
 
-                <section data-background="https://live.staticflickr.com/2215/2328884455_7f427a2c60_3k_d.jpg"><h1>Using RAPL for energy profiling</h1>
+                <section data-background=""><h1>Using RAPL for energy profiling</h1>
                     <h2 class="fragment">Intel-defined machine readable machine
                         registers</h2>
                     <h2 class="fragment">PKG == CORE + RAM</h2>
@@ -67,8 +55,7 @@
                     used. This is the first phase: choosing sensors</aside>
                 </section>
 
-                <section>
-                <section data-background="https://live.staticflickr.com/2266/2307194436_83f8c82915_o_d.jpg"> <h1>Using command-line tools that measure single
+                <section data-background=""> <h1>Using command-line tools that measure single
                     processes</h1>
                     <h2 class="fragment">Measure 15 times, take average, measure
                         energy consumption of <code>sleep</code> during that
@@ -78,39 +65,6 @@
                         said process</aside>
                 </section>
 
-                <section><h1>Merging "bags" to select best tool</h1>
-                    <pre><code  data-line-numbers="1-2|3-6|8-13">const sacos = generateSets(size, NUMBER_OF_SETS).map((s) => hashify(s));
-let merged = sacos;
-do {
-  merged = pairUnion(merged);
-} while (merged.length > 1);
-console.log(merged);
-
-function pairUnion(sacos) {
-  const byPairs = sacos.flatMap((_, i, a) =>
-    i % 2 ? [] : [a.slice(i, i + 2)]
-  );
-  return byPairs.map((p) => sacoUnion(p[0], p[1]));
-}</code></pre>
-
-                    <aside class="notes">It's essentially integer manipulation,
-                with handling of arrays, similar to what we will find in
-                EAs. Also practically the same code for the three interpreters;
-                there are differences in handling command line arguments and
-                        external libraries.</aside>
-                </section>
-
-                <section data-background="img/herramientas.jpg"><h1>Find the right command line tool</h1>
-                    <h2 class="fragment">Consistency, accuracy, errors</h2>
-                    <h2 class="fragment"><code>perf</code>, <code>likwid</code>, <code>pinpoint</code></h2>
-                </section>
-
-                <section data-background="https://live.staticflickr.com/3081/2324820558_4c1fe09444_o_d.jpg"><h1>Choosing <code>pinpoint</code></h1>
-                    <h2 class="fragment">More consistent than <code>likwid</code></h2>
-                    <h2 class="fragment"><code>perf</code> unable to measure
-                        small sizes</h2>
-                </section>
-                </section>
 
                 <section>
                     <section data-background="https://live.staticflickr.com/2190/2316316334_0971ae370f_o_d.jpg"><h1>Fitness and crossover, most important
@@ -194,18 +148,11 @@ export function countOnes(chromosome) {
 
                 </section>
 
-		<section data-background="https://live.staticflickr.com/2212/2325626581_493c933226_o_d.jpg"><h1>Conclusions</h1>
-                    <h2 class="fragment">Bun is faster, consumes less
-                        energy</h2>
-                    <h2 class="fragment">Deno good contender at bigger problem
-                        size</h2>
-                    <h2 class="fragment">Onemax consumes more energy than xover:
-                        best target for optimization</h2>
-                    <h1 class="fragment">Consider and measure energy consumption
-                        for greener computing</h1>
+		<section data-background=""><h1>Conclusions</h1>
+            
 		</section>
 
-                <section data-background="https://live.staticflickr.com/2331/2323814243_7d9d17346f_o_d.jpg"><h1>Vi ringrazio per la vostra atenzione</h1></section>
+                <section data-background=""><h1>Vi ringrazio per la vostra atenzione</h1></section>
 
 	    </div>
 	</div>
