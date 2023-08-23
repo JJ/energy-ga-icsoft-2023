@@ -8,7 +8,7 @@ onemax.icsoft$VM <- str_trim(onemax.icsoft$VM)
 onemax <- read.csv("../code/data/pinpoint-vms-onemax-29-May-17-45-44.csv")
 onemax$size <- as.factor(onemax$size)
 onemax$VM <- str_trim(onemax$VM)
-ggplot(onemax[onemax$VM == "node",], aes(x=seconds,y=PKG, color="May",fill=size))+geom_point(pch=22, stroke=2)+geom_point(data=onemax.icsoft[onemax.icsoft$VM == "node",],pch=21, stroke=2,aes(x=seconds,y=PKG,color="March",fill=size))+theme_tufte()
+ggplot(onemax[onemax$VM == "node",], aes(x=seconds,y=PKG, color="May",fill=size,size=4))+geom_point(pch=22, stroke=1)+geom_point(data=onemax.icsoft[onemax.icsoft$VM == "node",],pch=21, stroke=1,aes(x=seconds,y=PKG,color="March",fill=size))+theme_tufte()
 ggplot(onemax[onemax$VM == "bun",], aes(x=seconds,y=PKG, color="May",fill=size))+geom_point(pch=22, stroke=2)+geom_point(data=onemax.icsoft[onemax.icsoft$VM == "bun",],pch=21, stroke=2,aes(x=seconds,y=PKG,color="March",fill=size))+theme_tufte()
 ggplot(onemax[onemax$VM == "deno",], aes(x=seconds,y=PKG, color="May",fill=size))+geom_point(pch=22, size=4, stroke=2)+geom_point(data=onemax.icsoft[onemax.icsoft$VM == "deno",],pch=21, size=4, stroke=2,aes(x=seconds,y=PKG,color="March",fill=size))+theme_tufte()
 
