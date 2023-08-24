@@ -23,7 +23,7 @@
 
 \title{Energy consumption of evolutionary algorithms in JavaScript}
 
-\author{ 
+\author{
   Juan J. Merelo-Guervós\inst{1}\orcidID{0000-0002-1385-9741}
 and
   Mario García-Valdez\inst{2}\orcidID{0000-0002-2593-1114}
@@ -121,9 +121,9 @@ in \cite{js:energy} we chose {\sf pinpoint}~\cite{9307947}, a tool
 that uses the RAPL (Running Average Power Limit \cite{rapl})
 interface, to report the power consumed. This tool was on one side
 accurate enough to take the measurements we needed and on the other
-hand it was taking the measures that we needed, so it will be the one
-used also in this paper. This tool sometimes returns 0 in energy
-measures. This was an error, and those runs were discarded and the run
+it was measuring what we needed, so it will be the one
+used in this paper. This tool sometimes returns 0 in energy
+measures; when this happened, the run were discarded and the run
 repeated until the desired number is reached. Depending on the actual
 processor and chipset architecture, it will report different
 quantities; however, it will at least report the {\em package} ({\tt
@@ -152,11 +152,11 @@ subtracted from the reading taken, before computing the average in this script.
 As was done in \cite{DBLP:conf/evoW/MereloCBRGFRV16}, which was
 focused on wallclock performance, the experiments will be focused on
 the key operations performed by an EA: evaluation of fitness and
-"genetic" operators like mutation and crossover.  What we will do is:
+"genetic" operators like mutation and crossover. What we will do in this paper is:
 repeat the setup in the initial exploration, check the energy
 consumption for the processing of 40000 chromosomes, a number chosen
 to take a sizable amount of memory, but also on the ballpark of the
-usual number of operations in an EA benchmark, it is also small enough
+usual number of operations in an EA benchmark; it is also small enough
 to not create garbage collection problems with the memory, something
 that was detected after the initial exploration.  Experiments were
 repeated for the same chromosome size as before, 1024, 2048, and 4096,
@@ -169,7 +169,7 @@ resulted from the experiments and analysed in this paper, are released
 with a free license (along with this paper) from the repository
 \url{https://github.com/JJ/energy-ga-icsoft-2023}.
 
-<<r onemax, echo=F, fig.show="hold", out.width="30%", fig.cap="Comparison between different versions of the VMs; left: node.js, center: bun, right:deno\\protect\\label{fig:onemax}">>=
+<<r onemax, echo=F, fig.show="hold", out.width="30%", fig.cap="Comparison between different versions of the VMs on the OneMax problem; left: node.js, center: bun, right:deno\\protect\\label{fig:onemax}">>=
 library(ggplot2)
 library(ggthemes)
 library(stringr)
@@ -181,11 +181,11 @@ onemax$size <- as.factor(onemax$size)
 onemax$VM <- str_trim(onemax$VM)
 ggplot(onemax[onemax$VM == "node",], aes(x=seconds,y=PKG, color="May",fill=size))+geom_point(pch=22, stroke=2)+geom_point(data=onemax.icsoft[onemax.icsoft$VM == "node",],pch=21, stroke=2,aes(x=seconds,y=PKG,color="March",fill=size))+theme_tufte()
 ggplot(onemax[onemax$VM == "bun",], aes(x=seconds,y=PKG, color="May",fill=size))+geom_point(pch=22, stroke=2)+geom_point(data=onemax.icsoft[onemax.icsoft$VM == "bun",],pch=21, stroke=2,aes(x=seconds,y=PKG,color="March",fill=size))+theme_tufte()
-ggplot(onemax[onemax$VM == "deno",], aes(x=seconds,y=PKG, color="May",fill=size))+geom_point(pch=22, size=4, stroke=2)+geom_point(data=onemax.icsoft[onemax.icsoft$VM == "deno",],pch=21, size=4, stroke=2,aes(x=seconds,y=PKG,color="March",fill=size))+theme_tufte()
+ggplot(onemax[onemax$VM == "deno",], aes(x=seconds,y=PKG, color="May",fill=size))+geom_point(pch=22,  stroke=2)+geom_point(data=onemax.icsoft[onemax.icsoft$VM == "deno",],pch=21, stroke=2,aes(x=seconds,y=PKG,color="March",fill=size))+theme_tufte()
 @
-% 
+%
 
-The charts presented in Figure \ref{fig:onemax} show that there is indeed a variation for all three virtual machines, how they vary along every one of them is different. In the case of node.js, newer VMs take more or less the same time, but the consumption of energy is much less; since \cite{energy:js} showed that this is, indeed, one of the choke points of this VM, it makes it more interesting in low-consumption environment. The case of {\sf bun} is more complicated: performance is the same, but energy consumption seems to be lowered only for smaller chromosome sizes, getting an increase in size 4096. The case of {\sf deno} is even more complicated: there is change towards higher performance (experiments taking less time), which more or less correspond to the decrease in consumption. However, the strange behavior of this VM regarding chromosome size (already observed in \cite{energy:js}) will have to be checked further.
+The charts presented in Figure \ref{fig:onemax} show that there is indeed a variation for all three virtual machines, how they vary along every one of them is different. In the case of node.js, newer VMs take more or less the same time, but the consumption of energy is much less; since \cite{js:energy} showed that this is, indeed, one of the choke points of this VM, it makes it more interesting in low-consumption environment. The case of {\sf bun} is more complicated: performance is the same, but energy consumption seems to be lowered only for smaller chromosome sizes, getting an increase in size 4096. The case of {\sf deno} is even more complicated: there is change towards higher performance (experiments taking less time), which more or less correspond to the decrease in consumption. However, the strange behavior of this VM regarding chromosome size (already observed in \cite{js:energy}) will have to be checked further.
 
 
 <<r crossoverx, echo=F, fig.show="hold", out.width="30%", fig.cap="Consumption and time for the crossover operator in the three different VMs; node left, bun center, deno right.\\protect\\label{fig:crossover}">>=
@@ -248,7 +248,7 @@ It is interesting, however, to test the algorithms in different architectures, e
 
 One of the advantages of using the native Intel architecture is that it gives you more accurate estimations of consumption for specific parts of the system; namely, it breaks the {\tt PKG} reading into two, {\tt cores} and {\tt ram}. In this case, we will be changing slightly the script so that we get separate readings for these two sensors.
 
-<<r intel.onemax, echo=F, message=FALSE,fig.show="hold", out.width="50%", fig.height=5, fig.cap="Cores consumption for the onemax fitness function and the three different virtual machines, shown as a notched boxplot; cores component (left) and RAM component (right). Please observe that the scales in the y axes are different.\\protect\\label{fig:onemax:intel}">>=
+<<r intel.onemax, echo=F, message=FALSE,fig.show="hold", out.width="50%", fig.height=5, fig.cap="Consumption for the OneMax fitness function in the Intel architecture and the three different virtual machines, shown as a notched boxplot; cores component (left) and RAM component (right). Please observe that the scales in the y axes are different.\\protect\\label{fig:onemax:intel}">>=
 onemax.intel <- read.csv("../code/data/pinpoint-intel-vms-onemax-2-Jun-12-07-14.csv")
 onemax.intel$size <- as.factor(onemax.intel$size)
 onemax.intel$VM <- str_trim(onemax.intel$VM)
@@ -258,7 +258,7 @@ ggplot(onemax.intel, aes(x=size,y=RAM))+geom_boxplot(aes(fill=VM),notch=T)+ylim(
 
 Results of these experiments for tne OneMax fitness function, shown in Figure
 \ref{fig:onemax:intel}, first allow us to check the influence on the overall
-energy expenses of the memory operations, which are shown in the right-hand side panel. They are first barely above the baseline, with averages rarely exceeding 20 joules; but the most important thing is that there are no significant differences among the  interpreters. The consumption by {\sf node} seems to increase slightly with size, but it is not enough to outspend the other two interpreters. 
+energy expenses of the memory operations, which are shown in the right-hand side panel. They are first barely above the baseline, with averages rarely exceeding 20 joules; but the most important thing is that there are no significant differences among the  interpreters. The consumption by {\sf node} seems to increase slightly with size, but it is not enough to outspend the other two interpreters.
 The left-hand side panel in Figure \ref{fig:onemax:intel} does show significant
 differences in every size. We can affirm that {\sf bun} is, in general, better
 than {\sf node}, although the difference is not significant at the bigger size.
@@ -321,7 +321,7 @@ savings that can go from 50\% to over 80\%, depending on the size; these savings
 do not imply a decrease in performance in the same scale; even in some cases, it
 can be faster, in the case of {\sf deno}. This leads us to encourage performing
 evolutionary algorithms, wherever possible, in laptops, even more so if they
-have an Intel processor and chipset. % or Apple Silicon :) - M 
+have an Intel processor and chipset. % or Apple Silicon :) - M
 
 Even if energy saving is not the main concern of the evolutionary algorithm practitioner, we encourage researchers to always follow a strategy of energy and performance profiling to be able to extract the most from the existing hardware architecture; this is always a software engineering best practice that we really need to encourage in our area.
 
