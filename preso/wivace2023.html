@@ -41,7 +41,7 @@
                         <code>bun</code>, <code>deno</code>,
                         <code>node.js</code></h2>
 
-                    <aside class="notes"></aside>
+                    <aside class="notes">It's overall a pretty good deal, very popular and good for your career. It shouldn't be left aside for GAs. At any rate, we can generalize this methodology to any language that has different VMs (like Java) or compilers (like C or C++, with different open source compilers).</aside>
                 </section>
 
                 <section data-background=""><h1>Using RAPL for energy profiling</h1>
@@ -67,7 +67,7 @@
 
 
                 <section>
-                    <section data-background="https://live.staticflickr.com/2190/2316316334_0971ae370f_o_d.jpg"><h1>Fitness and crossover, most important
+                    <section data-background="https://live.staticflickr.com/2190/2316316334_0971ae370f_o_d.jpg"><h1>Fitness, mutation and crossover, most important
                         operations</h1>
                         <h2 class="fragment">Involves integer arithmetic +
                             list/string manipulation</h2>
@@ -76,6 +76,18 @@
                     subtracting the "background consumption", and repeating
                             measures 15 times. </aside>
                     </section>
+
+		    <section><h1>So far:</h1>
+		      <h3>Measurements March 2023, published July 2023</h3>
+		      <h2 class='fragment'><code>bun</code> rocks</h2>
+		      <h2 class='fragment'><code>pinpoint</code>, best tool for command-line measures</h2>
+		    </section>
+
+		    <section><h1>What we'll be doing now</h1>
+		      <h2 class='fragment'>Is there any change with new runtime versions?</h2>
+		      <h2 class='fragment'>Is mutation also a significant operator?</h2>
+		      <h2 class='fragment'>What happens with different hardware architectures?</h2>
+		    </section>
 
                     <section><h1>OneMax: code</h1>
                         <pre><code data-line-numbers="8|9">/**
