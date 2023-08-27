@@ -89,76 +89,8 @@
 		      <h2 class='fragment'>What happens with different hardware architectures?</h2>
 		    </section>
 
-                    <section><h1>OneMax: code</h1>
-                        <pre><code data-line-numbers="8|9">/**
- *
- * @param {String} A chromosome of zeros and ones
- * @returns {Number} number of ones
- */
-export function countOnes(chromosome) {
-  return chromosome
-    .split("")
-    .reduce((acc, bit) => acc + (bit === "1" ? 1 : 0), 0);
-}
-                        </code></pre>
-                        <aside class="notes">We have made a certain number of
-                        choices regarding the representation, as well as the
-                        functions uses. Reduce functions are usually faster,
-                        although since we're using strings we need to split on
-                        its components. Also, JS is strongly typed, so we need
-                            to transform to add.</aside>
-                    </section>
-
-                    <section><h1>Onemax: Energy vs. time</h1>
-                        <img src="img/fig1-onemax-PKG-vs-seconds.png" alt="PKG
-                                  vs. seconds" height="800">
-                        <aside class="notes">We can see how there's an increase
-                        with size, but it's not linear; at any rate, we can also
-                            see how little energy (and time) bun takes to run this workload</aside>
-                    </section>
-
-                    <section><h1>Onemax: Energy vs. size</h1>
-                        <img src="img/fig2-onemax-PKG-vs-size.png" alt="PKG
-                                  vs. size" height="800">
-                        <aside class="notes">Bun is consistently the best, saving almost 80% of energy with respect to the mainstream node.</aside>
-                    </section>
-
-		    <section><h1>Crossover</h1>
-		      <pre><code data-line-numbers="5,6|7-12">export function crossover(chrom1, chrom2) {
-  const length = chrom1.length;
-  const xover_point = 1 + Math.floor(Math.random() * (length - 1));
-  const range = 1 + Math.floor(Math.random() * (length - xover_point));
-  let new_chrom1 = chrom1.substring(0, xover_point);
-  let new_chrom2 = chrom2.substring(0, xover_point);
-  new_chrom1 +=
-    chrom2.substring(xover_point, xover_point + range) +
-    chrom1.substring(xover_point + range, length);
-  new_chrom2 +=
-    chrom1.substring(xover_point, xover_point + range) +
-    chrom2.substring(xover_point + range, length);
-  return [new_chrom1, new_chrom2];
-}		      </code></pre>
-		    </section>
-
-		    <section><h1>Crossover: Energy vs. time</h1>
-                        <img src="img/fig3-over-PKG-vs-seconds.png" alt="PKG
-                                  vs. seconds" height="800">
-                        <aside class="notes">We should note that this energy is
-                        around 40% less than for onemax; that is, it's taking a
-                        considerable amount of energy, but individually it takes
-                        less. However, in the case of benchmarking fitness it's
-                        going to be in the same order of magnitude. </aside>
-                    </section>
-
-		        <section><h1>Crossover: Energy vs. time</h1>
-                        <img src="img/fig4-over-PKG-vs-size.png" alt="PKG
-                                  vs. size" height="800">
-                        <aside class="notes">As in the case of Onemax, there is
-                        a strange behavior in the deno interpreter, that takes
-                        less energy (even if takes more time) for the bigger size.</aside>
-                    </section>
-
-                </section>
+		</section>
+		
 
 		<section data-background=""><h1>Conclusions</h1>
             
