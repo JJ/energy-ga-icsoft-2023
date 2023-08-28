@@ -157,6 +157,137 @@
 		  </section>
 		</section>
 
+		<section>
+		  <section><h1>What happens with different hardware
+		      architectures?</h1>
+		    <h2 class='fragment'>Energy consumption will
+		      depend on hardware implementation</h2>
+		    <h2 class='fragment'>What is measured also
+		      changes: AMD emulates, Intel does not</h2>
+		  </section>
+
+		  <section><h1>Measuring core energy consumption</h1>
+		    <img height='700'
+			 src='img/fig6-onemax-cores-intel.png'>
+		    <aside class='notes'>Among other things, Intel
+		    emulates every register separatedly, not in a
+		    single PKG value; we can measure how much the
+		    cores (the CPUs themselves) spend, and how much
+		      the memory (next)</aside>
+		  </section>
+
+		  
+		  <section><h1>Measuring RAM energy consumption</h1>
+		    <img height='700'
+			 src='img/fig6-onemax-RAM-intel.png'>
+		    <aside class='notes'>Memory is not so
+		    significant, it's around 1/5th. Besides, behavior
+		      is the usual, with <code>bun</code> being the
+		    best all around.</aside>
+		  </section>
+
+		  <section><h1>Average time (s) and cost (Joules) </h1>
+		    <table>
+ <thead>
+  <tr >
+   <th style="text-align:left;"> VM </th>
+   <th style="text-align:left;"> Size </th>
+   <th style="text-align:right;"> AMD - s </th>
+   <th style="text-align:right;"> AMD - J </th>
+   <th style="text-align:right;"> Intel - s </th>
+   <th style="text-align:right;"> Intel - J </th>
+  </tr>
+ </thead>
+<tbody>
+  <tr class="fragment" data-fragment-index="1">
+   <td style="text-align:left;"> bun </td>
+   <td style="text-align:left;"> 1024 </td>
+   <td style="text-align:right;" class='fragment highlight-current-red' data-fragment-index="2"> 5.074043 </td>
+   <td style="text-align:right;"  class='fragment highlight-current-red' data-fragment-index="3"> 141.1920 </td>
+   <td style="text-align:right;"  class='fragment highlight-current-blue' data-fragment-index="2"> 7.951114 </td>
+   <td style="text-align:right;"  class='fragment highlight-current-blue' data-fragment-index="3"> 78.30800 </td>
+  </tr>
+  <tr class="fragment" data-fragment-index="1">
+   <td style="text-align:left;"> bun </td>
+   <td style="text-align:left;"> 2048 </td>
+   <td style="text-align:right;"> 7.839581 </td>
+   <td style="text-align:right;"> 253.4840 </td>
+   <td style="text-align:right;"> 12.520187 </td>
+   <td style="text-align:right;"> 117.62600 </td>
+  </tr>
+  <tr class="fragment" data-fragment-index="1">
+   <td style="text-align:left;"> bun </td>
+   <td style="text-align:left;"> 4096 </td>
+   <td style="text-align:right;"  class='fragment highlight-current-red' data-fragment-index="5"> 13.743342 </td>
+   <td style="text-align:right;"> 377.8240 </td>
+   <td style="text-align:right;"> 24.408003 </td>
+   <td style="text-align:right;"> 193.08267 </td>
+  </tr>
+  <tr class="fragment" data-fragment-index="4">
+   <td style="text-align:left;"> deno </td>
+   <td style="text-align:left;"> 1024 </td>
+   <td style="text-align:right;"> 12.607883 </td>
+   <td style="text-align:right;"> 400.6260 </td>
+   <td style="text-align:right;"> 19.325474 </td>
+   <td style="text-align:right;"> 143.78200 </td>
+  </tr>
+  <tr class="fragment" data-fragment-index="4">
+   <td style="text-align:left;"> deno </td>
+   <td style="text-align:left;"> 2048 </td>
+   <td style="text-align:right;"> 9.969686 </td>
+   <td style="text-align:right;"> 319.4293 </td>
+   <td style="text-align:right;"> 19.350870 </td>
+   <td style="text-align:right;"> 70.27667 </td>
+  </tr>
+  <tr class="fragment" data-fragment-index="4">
+   <td style="text-align:left;"> deno </td>
+   <td style="text-align:left;"> 4096 </td>
+   <td style="text-align:right;"  class='fragment highlight-current-blue' data-fragment-index="5"> 9.699899 </td>
+   <td style="text-align:right;"> 297.8767 </td>
+   <td style="text-align:right;"  class='fragment highlight-current-red' data-fragment-index="5"> 20.078916 </td>
+   <td style="text-align:right;"> 132.41000 </td>
+  </tr>
+  <tr class="fragment" data-fragment-index="6">
+   <td style="text-align:left;"> node </td>
+   <td style="text-align:left;"> 1024 </td>
+   <td style="text-align:right;"> 11.132792 </td>
+   <td style="text-align:right;"> 167.4040 </td>
+   <td style="text-align:right;"> 15.823338 </td>
+   <td style="text-align:right;"> 100.29200 </td>
+  </tr>
+  <tr class="fragment" data-fragment-index="6">
+   <td style="text-align:left;"> node </td>
+   <td style="text-align:left;"> 2048 </td>
+   <td style="text-align:right;"> 17.748798 </td>
+   <td style="text-align:right;"> 460.2467 </td>
+   <td style="text-align:right;"> 32.422865 </td>
+   <td style="text-align:right;"> 203.13200 </td>
+  </tr>
+  <tr class="fragment" data-fragment-index="6">
+   <td style="text-align:left;"> node </td>
+   <td style="text-align:left;"> 4096 </td>
+   <td style="text-align:right;"  class='fragment highlight-current-red' data-fragment-index="7"> 32.627382 </td>
+   <td style="text-align:right;"> 1145.8933 </td>
+   <td style="text-align:right;"  class='fragment highlight-current-blue' data-fragment-index="7"> 29.285567 </td>
+   <td style="text-align:right;"> 228.25267 </td>
+  </tr>
+</tbody>
+		    </table>
+		    <aside class='notes'>Speed is not our main
+		    concern, however, but it's noteworthy to check
+		    that faster processors (the AMD architecture is a
+		    multi-core desktop) do not necessarily mean faster
+		      operation for some workload</aside>
+		  </section>
+
+		  <section data-background='img/gondolas.jpg'><h1 class='fragment'>Laptops are much more energy
+		      efficient</h1>
+		    <h2 class='fragment'>Speed and energy savings
+		    depending on factors such as size</h2>
+		  </section>
+		</section>
+
+		
 		<section data-background=""><h1>Conclusions</h1>
             
 		</section>
