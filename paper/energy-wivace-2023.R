@@ -10,9 +10,9 @@ onemax$size <- as.factor(onemax$size)
 onemax$VM <- str_trim(onemax$VM)
 ggplot(onemax[onemax$VM == "node",], aes(x=seconds,y=PKG, color=size,fill="May",size=4))+geom_point(pch=22, stroke=1)+geom_point(data=onemax.icsoft[onemax.icsoft$VM == "node",],pch=21, stroke=1,aes(x=seconds,y=PKG,color=size,fill="March"))+theme_tufte()
 ggsave("../preso/img/fig1-onemax-node-versions.png", width=12, height=8)
-ggplot(onemax[onemax$VM == "bun",], aes(x=seconds,y=PKG, color="May",fill=size))+geom_point(pch=22, stroke=2)+geom_point(data=onemax.icsoft[onemax.icsoft$VM == "bun",],pch=21, stroke=2,aes(x=seconds,y=PKG,color="March",fill=size))+theme_tufte()
+ggplot(onemax[onemax$VM == "bun",], aes(x=seconds,y=PKG, color=size,fill="May"))+geom_point(pch=22, stroke=2)+geom_point(data=onemax.icsoft[onemax.icsoft$VM == "bun",],pch=21, stroke=2,aes(x=seconds,y=PKG,color=size,fill="March"))+theme_tufte()
 ggsave("../preso/img/fig1-onemax-bun-versions.png", width=12, height=8)
-ggplot(onemax[onemax$VM == "deno",], aes(x=seconds,y=PKG, color="May",fill=size))+geom_point(pch=22, size=4, stroke=2)+geom_point(data=onemax.icsoft[onemax.icsoft$VM == "deno",],pch=21, size=4, stroke=2,aes(x=seconds,y=PKG,color="March",fill=size))+theme_tufte()
+ggplot(onemax[onemax$VM == "deno",], aes(x=seconds,y=PKG, color=size,fill="May"))+geom_point(pch=22, size=4, stroke=2)+geom_point(data=onemax.icsoft[onemax.icsoft$VM == "deno",],pch=21, size=4, stroke=2,aes(x=seconds,y=PKG,color=size,fill="March"))+theme_tufte()
 ggsave("../preso/img/fig1-onemax-deno-versions.png", width=12, height=8)
 
 
@@ -41,14 +41,17 @@ mutation <- read.csv("../code/data/pinpoint-vms-mutation-30-May-09-29-50.csv")
 mutation$size <- as.factor(mutation$size)
 mutation$VM <- str_trim(mutation$VM)
 ggplot(mutation, aes(x=size,y=PKG))+geom_boxplot(aes(fill=VM))+ylim(0, NA)+theme_tufte()
-
+ggsave("../preso/img/fig5-mutation-vms.png", width=12, height=8)
 
 ## ----r intel.onemax, echo=F, message=FALSE,fig.show="hold", out.width="50%", fig.height=5, fig.cap="Cores consumption for the onemax fitness function and the three different virtual machines, shown as a notched boxplot; cores component (left) and RAM component (right). Please observe that the scales in the y axes are different.\\protect\\label{fig:onemax:intel}"----
 onemax.intel <- read.csv("../code/data/pinpoint-intel-vms-onemax-2-Jun-12-07-14.csv")
 onemax.intel$size <- as.factor(onemax.intel$size)
 onemax.intel$VM <- str_trim(onemax.intel$VM)
 ggplot(onemax.intel, aes(x=size,y=cores))+geom_boxplot(aes(fill=VM),notch=T)+ylim(0, NA)+theme_tufte()
+ggsave("../preso/img/fig6-onemax-cores-intel.png", width=12, height=8)
+
 ggplot(onemax.intel, aes(x=size,y=RAM))+geom_boxplot(aes(fill=VM),notch=T)+ylim(0, NA)+theme_tufte()
+ggsave("../preso/img/fig6-onemax-RAM-intel.png", width=12, height=8)
 
 
 ## ----r times.energy, message=F, echo=F----------------------------------------
