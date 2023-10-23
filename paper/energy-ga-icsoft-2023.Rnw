@@ -1,42 +1,29 @@
-\documentclass[a4paper,twoside]{article}
+\documentclass[runningheads]{llncs}
 
-\usepackage{epsfig}
-\usepackage{subcaption}
-\usepackage{calc}
-\usepackage{amssymb}
-\usepackage{amstext}
+\usepackage{graphicx}
 \usepackage{amsmath}
-\usepackage{amsthm}
-\usepackage{multicol}
-\usepackage{pslatex}
-\usepackage{apalike}
-\usepackage[bottom]{footmisc}
-\usepackage{hyperref}
-\usepackage{SCITEPRESS}     % Please add other packages that you may need BEFORE the SCITEPRESS.sty package.
+\usepackage{amssymb}
 
 \newcommand{\pinp}{\texttt{pinpoint}}
 \newcommand{\lik}{\texttt{likwid}}
 
-
 \begin{document}
 
-\title{An analysis of energy consumption of JavaScript interpreters with evolutionary algorithm workloads}
+\title{An Analysis of Energy Consumption of JavaScript Interpreters with Evolutionary Algorithm Workloads}
 
-\author{ \authorname{
-  Juan J. Merelo-Guervós\sup{1}\orcidAuthor{0000-0002-1385-9741}
-and
-  Mario García-Valdez\sup{2}\orcidAuthor{0000-0002-2593-1114}
-and
-  Pedro A. Castillo\sup{1}\orcidAuthor{0000-0002-5258-0620}
-  }
-\affiliation{\sup{1}Department of Computer Engineering, Automatics and Robotics, University of Granada, Granada, Spain}
-\affiliation{\sup{2}Department of Graduate Studies, National Technological Institute of Mexico, Tijuana, Mexico}
-\email{jmerelo@ugr.es, mario@tectijuana.edu.mx, pacv@ugr.es}
-}
+\author{Juan J. Merelo-Guervós\inst{1}\and
+Mario García-Valdez\inst{2} \and
+Pedro A. Castillo\inst{1}}
 
-\keywords{Green computing, metaheuristics, JavaScript, energy-aware computing, evolutionary algorithms}
+\authorrunning{Merelo-Guervós et al.}
 
-\abstract{What is known as energy-aware computing includes taking into account many different
+\institute{Department of Computer Engineering, Automatics and Robotics, University of Granada, Granada, Spain \and
+Department of Graduate Studies, National Technological Institute of Mexico, Tijuana, Mexico}
+
+\maketitle
+
+\begin{abstract}
+What is known as energy-aware computing includes taking into account many different
 variables and parameters when designing an application, which makes it necessary
 to focus on a single one to obtain meaningful results. In this paper, we will
 look at the energy consumption of three different JavaScript interpreters: {\sf
@@ -50,9 +37,10 @@ performing different experiments on a workload similar to the one carried out by
 EA, we will focus on EA-specific functions and operators and measure how much
 energy they consume for different problem sizes. From this, we will try to draw
 a conclusion on which JavaScript interpreter should be used in this kind of
-workloads if energy (or related expenses) has a limited budget.  }
+workloads if energy (or related expenses) has a limited budget.
+\end{abstract}
 
-\onecolumn \maketitle \normalsize \setcounter{footnote}{0} \vfill
+\keywords{Green computing, metaheuristics, JavaScript, energy-aware computing, evolutionary algorithms}
 
 \section{\uppercase{Introduction}}
 \label{sec:introduction}
@@ -191,7 +179,7 @@ in a time period. Tools that give these measures, either with a
 graphic or a command line interface, have been available for some time already,
 and have become more popular lately. One of the mainstream processor architectures,
 Intel, includes an interface called RAPL, or Running Average Power Limit
-\cite{rapl}. Essentially, it consists of a series of machine-specific registers
+\cite{10.1145/2425248.2425252}. Essentially, it consists of a series of machine-specific registers
 (MSRs) that contain information on the wattage drawn by different parts of the
 architecture; the content of these registers will be processed (through the
 corresponding library) and consumed by different command line utilities. We will
@@ -224,7 +212,7 @@ compiling their source code. \begin{itemize}
   these devices. In this paper, we will use it since it is the only one out of
   the three tools that can show the GPU consumption.
 \item {\sf
-    perf}\footnote{\url{https://perf.wiki.kernel.org/index.php/Main_Page}}~\cite{treibig2010likwid} is a
+    perf}\footnote{\url{https://perf.wiki.kernel.org/index.php/Main\_Page}}~\cite{treibig2010likwid} is a
   system tool that measures all kinds of performance events, including power
   consumption. It will be used mainly for the  \texttt{pkg} domain; this is a
   domain that it is measured by all tools, but all of them would process device
