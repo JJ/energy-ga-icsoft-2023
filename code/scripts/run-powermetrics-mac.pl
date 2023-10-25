@@ -14,9 +14,9 @@ my ($mon,$day,$hh,$mm,$ss) = localtime() =~ /(\w+)\s+(\d+)\s+(\d+)\:(\d+)\:(\d+)
 my $suffix = "$day-$mon-$hh-$mm-$ss";
 
 open my $fh, ">", "data/powermetrics-mac-vms-$script-$suffix.csv";
-say $fh "Tool,VM,size,cores,RAM,seconds";
+say $fh "Tool,VM,size,CPU,seconds";
 
-my $pinpoint_cli = "/home/jmerelo/bin/pinpoint -e rapl:cores,rapl:ram";
+my $powermetrics_cli = "/usr/bin/powermetrics -i 1000 -o /tmp/output.csv";
 
 for my $c ( qw(node bun deno) ) {
   my $infix = $c eq "deno" ? "deno": "node";
@@ -24,24 +24,23 @@ for my $c ( qw(node bun deno) ) {
     my $total_seconds;
     my $successful = 0;
     my @results;
-    do {
+    for (1..$ITERATIONS) {
       my $command = $command_lines{$c}.$script.".".$infix.".js ". $l;
-      say $command;
-      say "$pinpoint_cli $command 2>&1";
-      my $output = `$pinpoint_cli $command 2>&1`;
-      if ($output !~ /0.00\s+J/) {
-        $successful++;
-        my ( $cores, $ram ) = $output =~ /(\d+\.\d+)\s+J/g;
-        my ( $seconds ) = $output =~ /(\d+\.\d+) seconds/;
-        $total_seconds += $seconds;
-        say "pinpoint, $c, $l , $cores, $ram";
-        push @results, [$cores, $ram,$seconds];
-      }
-    } while ( $successful < $ITERATIONS );
+      my $pid = open(my $h, "$powermetrics_cli 2>&1 |");
+      say $pid;
+      system($command);
+      kill 9, $pid;
+      # Read /tmp/output.csv
+      open my $fh, "<", "/tmp/output.csv";
+      my $output = <$fh>;
+      close $fh;
+
+      say $output;
+    };
     my $average=$total_seconds/ $ITERATIONS;
     my $baseline_output;
     do {
-      $baseline_output = `$pinpoint_cli sleep $average 2>&1`;
+      $baseline_output = system( "$powermetrics_cli sleep $average 2>&1");
     } while ($baseline_output =~  /0.00\s+J/);
     my ( $cores, $ram ) = $baseline_output =~ /(\d+\.\d+)\s+J/g;
     say "Baseline $cores $ram";
