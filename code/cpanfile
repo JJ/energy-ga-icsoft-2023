@@ -1,2 +1,1 @@
 requires 'Test::More';
-requires 'DateTime::Format::Strptime';
