@@ -10,10 +10,12 @@ jobs:
     runs-on: ubuntu-latest
     steps:
       - uses: actions/checkout@v4
-      - name: Install Perl
-        uses: shogo82148/actions-setup-perl@v1
-        with:
-          perl-version: "5.32"
-          install-modules: "Test::More"
+      - name: Install cpanm
+        run: |
+          curl -L https://cpanmin.us | perl - App::cpanminus
+          export PATH=$HOME/perl5/bin:$PATH
+      - name: Install dependencies
+        run: |
+          cpanm --installdeps .
       - name: Test with prove
         run: cd code&& prove -l
