@@ -16,7 +16,7 @@ my $suffix = "$day-$mon-$hh-$mm-$ss";
 open my $fh, ">", "data/powermetrics-mac-vms-$script-$suffix.csv";
 say $fh "Tool,VM,size,CPU,seconds";
 
-my $powermetrics_cli = "/usr/bin/powermetrics -i 1000 -o /tmp/output.txt";
+my $powermetrics_cli = "/usr/bin/powermetrics -i 1000 -o /tmp/output.csv";
 
 for my $c ( qw(node bun deno) ) {
   my $infix = $c eq "deno" ? "deno": "node";
@@ -26,9 +26,10 @@ for my $c ( qw(node bun deno) ) {
     my @results;
     for (1..$ITERATIONS) {
       my $command = $command_lines{$c}.$script.".".$infix.".js ". $l;
-      my $pid = open(my $h, "time $powermetrics_cli > /tmp/time.txt 2>&1 |");
+      my $pid = open(my $h, "$powermetrics_cli 2>&1 |");
       say $pid;
-      system($command);
+      my $elapsed_time = `time $command`;
+      say $elapsed_time;
       kill 9, $pid;
       # Read /tmp/output.csv
       open my $fh, "<", "/tmp/output.csv";
