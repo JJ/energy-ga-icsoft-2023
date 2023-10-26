@@ -11,9 +11,7 @@ jobs:
     steps:
       - uses: actions/checkout@v4
       - name: Install cpanm
-        run: |
-          curl -L https://cpanmin.us | perl - App::cpanminus
-          export PATH=$HOME/perl5/bin:$PATH
+        run: sudo curl -L https://cpanmin.us | perl - App::cpanminus
       - name: Install dependencies
         run: |
           cpanm --installdeps .
