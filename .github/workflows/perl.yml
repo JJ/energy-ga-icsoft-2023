@@ -1,0 +1,19 @@
+name: Test perl code
+on:
+  push:
+    paths:
+      - "**/*.pl"
+      - "**/*.pm"
+      - "**/*.t"
+jobs:
+  test-perl:
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v4
+      - name: Install Perl
+        uses: shogo82148/actions-setup-perl@v1
+        with:
+          perl-version: "5.32"
+          install-modules: "Test::More"
+      - name: Test with prove
+        run: cd code&& prove -l
