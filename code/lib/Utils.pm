@@ -1,6 +1,6 @@
 package Utils;
 use Exporter 'import';
-
+use List::Util qw(reduce);
 use Time::Piece;
 
 use feature qw(say);
@@ -20,7 +20,16 @@ sub process_powermetrics_output {
   };
 
   my @samples = split /\s+\*\*\* Sampled system activity/, $content;
-
+  my @results;
+  for my $s (@samples) {
+    my ($e_cluster_idle, $p_cluster_idle, $cpu ) = $s =~ /E-Cluster idle \w+\:\s+(\d+\.\d+)%.+P-Cluster idle \w+\:\s+(\d+\.\d+)%.+CPU Power:\s+(\w+)\s+mW/sg;
+    push @results, [$e_cluster_idle, $p_cluster_idle, $cpu];
+  }
+  # Compute average first column
+  my $average_e_cluster_idle = ( reduce { $a + $b } map { $_->[0] } @results ) / scalar @results;
+  my $average_p_cluster_idle = ( reduce { $a + $b } map { $_->[1] } @results ) / scalar @results;
+  my $sum_cpu =  reduce { $a + $b } map { $_->[2] } @results ;
+  return ($average_e_cluster_idle, $average_p_cluster_idle, $sum_cpu);
 }
 
 sub convert_to_date {
