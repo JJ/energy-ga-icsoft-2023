@@ -26,7 +26,7 @@ for my $c ( qw(node bun deno) ) {
     my @results;
     for (1..$ITERATIONS) {
       my $command = $command_lines{$c}.$script.".".$infix.".js ". $l;
-      my $pid = open(my $h, "$powermetrics_cli 2>&1 |");
+      my $pid = open(my $h, "time $powermetrics_cli 2>&1 |");
       say $pid;
       system($command);
       kill 9, $pid;
