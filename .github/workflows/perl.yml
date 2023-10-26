@@ -13,7 +13,7 @@ jobs:
     steps:
       - uses: actions/checkout@v4
       - name: Install cpanm
-        run: sudo curl -L https://cpanmin.us | perl - App::cpanminus
+        run: sudo apt install cpanminus
       - name: Install dependencies
         run: |
           cpanm --installdeps .

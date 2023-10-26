@@ -31,7 +31,6 @@ for my $c ( qw(node bun deno) ) {
       my $elapsed_time = `time $command`;
       say $elapsed_time;
       kill 9, $pid;
-      # Read /tmp/output.csv
       open my $fh, "<", "/tmp/output.csv";
       my $output = <$fh>;
       close $fh;
