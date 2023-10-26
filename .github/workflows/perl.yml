@@ -5,6 +5,8 @@ on:
       - "**/*.pl"
       - "**/*.pm"
       - "**/*.t"
+      - "cpanfile"
+
 jobs:
   test-perl:
     runs-on: ubuntu-latest

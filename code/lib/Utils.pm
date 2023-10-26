@@ -1,7 +1,7 @@
 package Utils;
 use Exporter 'import';
 
-use DateTime::Format::Strptime;
+use Time::Piece;
 
 use feature qw(say);
 
@@ -21,16 +21,15 @@ sub process_powermetrics_output {
 
   my @samples = split /\s+\*\*\* Sampled system activity/, $content;
   my @times = map { /^\s+\((.+?)\)/ } @samples;
-  my $elapsed_seconds = convert_to_date($times[-1]) - convert_to_date($times[0]);
-
-  say $elapsed_seconds;
+  say convert_to_date($times[-1]);
+  say convert_to_date($times[0]);
+  my $duration = convert_to_date($times[-1]) - convert_to_date($times[0]);
+  say $duration;
 
 }
 
 sub convert_to_date {
   my $date_string = shift;
-  return DateTime::Format::Strptime->new(
-    pattern => '%Y-%m-%d %H:%M:%S',
-    time_zone => 'Europe/Madrid',
-  )->parse_datetime($date_string);
+  my $no_weekday = substr $date_string, 4;
+  return Time::Piece->strptime( $no_weekday,'%b %d %H:%M:%S %Y %z');
 }
