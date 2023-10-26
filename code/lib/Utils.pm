@@ -20,11 +20,6 @@ sub process_powermetrics_output {
   };
 
   my @samples = split /\s+\*\*\* Sampled system activity/, $content;
-  my @times = map { /^\s+\((.+?)\)/ } @samples;
-  say convert_to_date($times[-1]);
-  say convert_to_date($times[0]);
-  my $duration = convert_to_date($times[-1]) - convert_to_date($times[0]);
-  say $duration;
 
 }
 

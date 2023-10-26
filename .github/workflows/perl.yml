@@ -15,7 +15,6 @@ jobs:
       - name: Install cpanm
         run: sudo apt install cpanminus
       - name: Install dependencies
-        run: |
-          cpanm --installdeps .
+        run: cd code && cpanm --installdeps .
       - name: Test with prove
         run: cd code&& prove -l
