@@ -1,0 +1,20 @@
+name: Test perl code
+on:
+  push:
+    paths:
+      - "**/*.pl"
+      - "**/*.pm"
+      - "**/*.t"
+      - "cpanfile"
+
+jobs:
+  test-perl:
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v4
+      - name: Install cpanm
+        run: sudo apt install cpanminus
+      - name: Install dependencies
+        run: cd code && cpanm --installdeps .
+      - name: Test with prove
+        run: cd code&& prove -l

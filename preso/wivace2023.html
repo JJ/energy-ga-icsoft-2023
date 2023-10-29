@@ -21,15 +21,30 @@
 
                     <h2>Merelo (UGR-ES), García-Valdez (ITT-MX), Castillo
                         (UGR-ES)</h2>
-                    <h3>Wivace, 2023</h3>
+                    <h3>Wivace, 2023, Venice</h3>
 
 		    <aside class='notes'>Let's start this trip through
-		      the history of Venice and through green computing.</aside>
+		      the history of Venice and green computing.</aside>
                 </section>
 
 		<section data-background="https://live.staticflickr.com/65535/51996070362_bd05d4c7bd_k_d.jpg"><h1>Green
                     computing</h1>
-                    <h2>Minimize the amount of energy spent in algorithms/applications</h2>
+                    <h2>Minimize the amount of energy spent in
+                        algorithms/applications</h2>
+
+                    <aside class="notes">Check out these gondoliers, and how
+                they minimize the amount of energy needed to take you from one
+                place to another. Gondolas are optimized in a number of ways,
+                starting with the fact that they are asymmetric, that they use
+                        the <em>fero da prua</em> to avoid pitch, unbalance
+                between prow and stern, and you steer and push at the same time
+                with a single oar. There are many different ways to move through
+                water, Venetians seem to have reached an optimum. What we will
+                try and do here is how to do the same with evolutionary
+                algorithms written in JavaScript, although it would be appliable
+                to any language that uses different virtual machines,
+                interpreters or compilers, including several versions of the
+                        same</aside>
                 </section>
 
                 <section data-background="">
@@ -47,8 +62,10 @@
                     <aside class="notes">It's overall a pretty good deal, very popular and good for your career. It shouldn't be left aside for GAs. At any rate, we can generalize this methodology to any language that has different VMs (like Java) or compilers (like C or C++, with different open source compilers).</aside>
                 </section>
 
-                <section data-background=""><h1>Using RAPL for energy profiling</h1>
-                    <h2 class="fragment">Intel-defined machine readable machine
+                <section
+                    data-background="https://live.staticflickr.com/65535/51998177628_31cd1fcf67_k_d.jpg"><h1>Profiling
+                    the energy: finding how much energy the system spends</h1>
+                    <h2 class="fragment">Using RAPL: Intel-defined machine readable machine
                         registers</h2>
                     <h2 class="fragment">PKG == CORE + RAM</h2>
                     <aside class="notes">PKG is the name of the register, and
@@ -62,7 +79,7 @@
                     processes</h1>
                     <h2 class="fragment">Measure 15 times, take average, measure
                         energy consumption of <code>sleep</code> during that
-                        time</h2>
+                        time, substract from measure</h2>
                     <h3 class="fragment">Not ideal but roughly accurate</h3>
                     <aside class="notes">Really, they measure everything during
                         said process. Here, we have a single gondola in a "rio"</aside>
@@ -80,20 +97,24 @@
                             measures 15 times. </aside>
                     </section>
 
-		    <section data-background='https://live.staticflickr.com/65535/52004883299_2429319299_k_d.jpg'><h1>So far:</h1>
+		    <section data-background="https://live.staticflickr.com/65535/53038632132_395ab2a95e_k_d.jpg"><h1>So far:</h1>
 		      <h3>Measurements March 2023, published July 2023</h3>
 		      <h2 class='fragment'><code>bun</code> rocks</h2>
-		      <h2 class='fragment'><code>pinpoint</code>, best tool for command-line measures</h2>
+		      <h2 class='fragment'><code>pinpoint</code>, best tool for
+		          command-line measures</h2>
+                      <aside class="notes">This conference ICSoft took place in
+		      Rome (ish, it was 40 minutes away by car), which explains
+		          the background. It was faaar away from Rome. So far that when I paid the taxi driver, he told me "Wow, now I'll be able to almost pay a coffee at the Florian". I could hear when I went out "E mo, guaglio!". It was the Ryanair airport equivalente of a conference in a major capital, you know, like the "Venice east" airport that might be some place in Slovenia  </aside>
 		    </section>
 
-		    <section><h1>What we'll be doing now</h1>
+		    <section data-background="https://live.staticflickr.com/65535/52550244706_020fa56ad2_k_d.jpg"><h1>What we'll be doing now</h1>
 		      <h2 class='fragment'>Is there any change with new runtime versions?</h2>
 		      <h2 class='fragment'>Is mutation also a significant operator?</h2>
 		      <h2 class='fragment'>What happens with different hardware architectures?</h2>
 		    </section>
 
 		</section>
-		
+
 		<section>
 		  <section><h1>Is there any change with new runtime versions?</h1>
 		    <h2 class='fragment'>Definitely</h2>
@@ -103,12 +124,15 @@
 		    <aside class='notes'>Check for actual versions on the paper, they are mainly minor versions, 2 or or sometimes more, in the case of node.js. No major versions in any way; major is still 0 for bun, 1 for deno, and 18 for node.js, although it's changed since</aside>
 		  </section>
 
-		  <section><h1>Version change: node uses less energy</h1>
+		  <section><h1>Version change: <code>node.js</code> uses less energy</h1>
 		    <img height='700' src="img/fig1-onemax-node-versions.png">
 		  </section>
 
 		  <section><h2>Version change: <code>bun</code> uses less energy... to a point</h2>
-		    <img height='700' src="img/fig1-onemax-bun-versions.png">
+		      <img height='700' src="img/fig1-onemax-bun-versions.png">
+                      <aside class="notes">It's using more for the bigger size
+		      (which we include mainly for completeness, since the size
+		          is not very realistic for a chromosome</aside>
 		  </section>
 
 		  <section><h3>Version change: <code>deno</code> improves energy <em>and</em> time only for big chromosome sizes</h3>
@@ -119,7 +143,9 @@
 		      get the picture.</aside>
 		  </section>
 
-		  <section data-background='https://live.staticflickr.com/65535/52546940876_861638322a_k_d.jpg'><h1>The <em>promissione ducale</em> was renovated every doge</h1>
+		  <section
+		    data-background='https://live.staticflickr.com/65535/52546940876_861638322a_k_d.jpg'><h1>The
+		    <em>promissione ducale</em> was renovated for every new doge</h1>
 		    <h2 class='fragment'>Measurements are only valid for a single <em>minor</em> version</h2>
 		    <aside class='notes'>This doge was Michele Steno,
 		    who was heading the Republic by the beginning of
@@ -161,12 +187,17 @@
 		</section>
 
 		<section>
-		  <section><h1>What happens with different hardware
+		    <section data-background="https://live.staticflickr.com/65535/52001459182_ca9d8e7746_k_d.jpg"><h1>What happens with different hardware
 		      architectures?</h1>
 		    <h2 class='fragment'>Energy consumption will
 		      depend on hardware implementation</h2>
 		    <h2 class='fragment'>What is measured also
-		      changes: AMD emulates, Intel does not</h2>
+		        changes: AMD emulates, Intel does not</h2>
+                    <aside class="notes">The Barbaro Wolkoff palace is in
+		    Venetian gothic architecture, while Ca' Dario is clearly
+		    Renaissance; Artom House comes from the XIX century, palazzo
+		    Venier from the XVIII century; architectures are different,
+		        and appreciation needs to be measured in different ways.</aside>
 		  </section>
 
 		  <section><h1>Measuring core energy consumption</h1>
@@ -179,7 +210,6 @@
 		      the memory (next)</aside>
 		  </section>
 
-		  
 		  <section><h1>Measuring RAM energy consumption</h1>
 		    <img height='700'
 			 src='img/fig6-onemax-RAM-intel.png'>
@@ -283,8 +313,11 @@
 		      operation for some workload</aside>
 		  </section>
 
-		  <section data-background='img/gondolas.jpg'><h1 class='fragment'>Laptops are much more energy
-		      efficient</h1>
+		  <section data-background='img/gondolas.jpg'><h1
+		    class='fragment'>There's usually a speed/energy efficiency
+		      tradeoff</h1>
+                      <h2 class="fragment">With speed losses overcome by bigger
+		          energy savings, usually</aside>
 		    <h2 class='fragment'>Speed and energy savings
 		      depending on factors such as size</h2>
 
@@ -300,14 +333,15 @@
 		  </section>
 		</section>
 
-		
 		<section data-background="https://live.staticflickr.com/65535/52009302512_cca8685349_k_d.jpg"><h1>Conclusions</h1>
 
 		  <h2 class='fragment'>Energy expenses are minimized
 		    using <code>bun</code> and Intel laptops</h2>
 
 		  <h3 class='fragment'>But measures are needed for
-		    every change in platform/interpreters</h3>
+		      every change in platform/interpreters</h3>
+
+                  <h2 class="fragment">Any VM consumes less than <code>node.js</code></h2>
 
 		  <aside class='notes'>The Arsenale, or Arsenal, was
 		  not only a place where ships were built, it was a
@@ -324,7 +358,7 @@
 		  algorithm that uses JavaScript</aside>
 		</section>
 
-                <section data-background="https://live.staticflickr.com/65535/52010571419_5e1ec113e6_k_d.jpg"><h1>Vi ringrazio per la vostra atenzione</h1></section>
+                <section data-background="https://live.staticflickr.com/65535/52010571419_5e1ec113e6_k_d.jpg"><h1>Vi ringrazio per la vostra attenzione</h1></section>
 
 	    </div>
 	</div>
