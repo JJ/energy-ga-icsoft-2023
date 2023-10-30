@@ -9,7 +9,7 @@
 
 \begin{document}
 
-\title{An Analysis of Energy Consumption of JavaScript Interpreters with Evolutionary Algorithm Workloads}
+\title{Green evolutionary algorithms and JavaScript: a study on different architectures}
 
 \author{Juan J. Merelo-Guervós\inst{1}\and
 Mario García-Valdez\inst{2} \and
