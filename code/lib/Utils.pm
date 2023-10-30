@@ -9,7 +9,7 @@ our @EXPORT_OK = qw( %command_lines process_powermetrics_output);
 
 our %command_lines = ( deno => "/home/jmerelo/.deno/bin/deno run scripts/",
                      bun => "/home/jmerelo/.bun/bin/bun run scripts/",
-                     node => "/home/jmerelo/.nvm/versions/node/v20.9.0/bin/node scripts/" );
+                     node => "/home/jmerelo/.nvm/versions/v20.9.0/bin/node scripts/" );
 
 sub process_powermetrics_output {
   my $output_file_name = shift;
