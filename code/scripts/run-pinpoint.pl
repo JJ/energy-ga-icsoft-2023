@@ -13,7 +13,7 @@ my $ITERATIONS = 15;
 my ($mon,$day,$hh,$mm,$ss) = localtime() =~ /(\w+)\s+(\d+)\s+(\d+)\:(\d+)\:(\d+)/;
 my $suffix = "$day-$mon-$hh-$mm-$ss";
 
-open my $fh, ">", "data/pinpoint-vms-$script-$suffix.csv";
+open my $fh, ">", "data/pinpoint-v2-$script-$suffix.csv";
 say $fh "Tool,VM,size,GPU,PKG,seconds";
 
 for my $c ( qw(node bun deno) ) {
