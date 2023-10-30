@@ -130,12 +130,10 @@ more power-efficient systems \cite{Richard2023}.
 
 
 This challenge can be addressed at the hardware and
-software levels. At the hardware level, it is leading towards the development of heterogeneous CPU architectures that include both ¨performance" and "efficiency" cores; while the former vie for executing workloads as fast as possible, the latter are geared towards running them without incurring in high energy costs \cite{9988933}. Most modern processors, such as the Apple Silicon line, as well as other ARM-based architectures, adopt this kind of architecture.
+software levels. At the hardware level, it is leading towards the development of heterogeneous CPU architectures that include both ¨performance" and "efficiency" cores; while the former vie for executing workloads as fast as possible, the latter are geared towards running them without incurring in high energy costs \cite{9988933}. Most modern processors, such as the Apple Silicon line, as well as other ARM-based architectures, adopt this kind of architecture. We also find increasingly processors that are designed with machine learning workloads in mind, specially for trained models, such as the Google TPU or the Apple Neural Engine \cite{9950755}. As the cited paper points out, integrating them in algorithm implementations to make them faster and also more efficient is a challenge.
 
-
-At the software level, developers focus their
-attention on the energy consumption of software, proposing
-optimizations for more energy-efficient algorithm implementations.
+These new challenges are tackled at the software level, with developers proposing
+increasingly more energy-efficient algorithm implementations.
 Algorithm comparatives nowadays include power efficiency as a
 performance metric, these include encryption algorithms
 \cite{mota2017comparative,thakor2021lightweight}, estimation models
