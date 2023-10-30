@@ -123,13 +123,17 @@ doubled roughly every year and a half from 1946 to 2009
 \cite{koomey2011web}, this improvement has been mainly a by-product
 of Moore's law, the trend of chip manufacturers to decrease in half
 the size and distance between transistors every two
-years. Unfortunately, it is expected that physical limits of
-electronics will slow down this miniaturization in the near future.
-Nonetheless, energy efficiency is becoming the most important metric
-of performance and selling point in hardware development, and it is an
-important driver for current innovation. The challenge of building
-more power-efficient systems, can be addressed at the hardware and
-software levels. In the software level, developers focus their
+years. Unfortunately, the physical limits of
+electronics imply that performance is no longer the single metric a processor is judged by; energy efficiency is at least as important an
+important driver for current innovation; creating the challenge of building
+more power-efficient systems \cite{Richard2023}.
+
+
+This challenge can be addressed at the hardware and
+software levels. At the hardware level, it is leading towards the development of heterogeneous CPU architectures that include both ¨performance" and "efficiency" cores; while the former vie for executing workloads as fast as possible, the latter are geared towards running them without incurring in high energy costs \cite{9988933}. Most modern processors, such as the Apple Silicon line, as well as other ARM-based architectures, adopt this kind of architecture.
+
+
+At the software level, developers focus their
 attention on the energy consumption of software, proposing
 optimizations for more energy-efficient algorithm implementations.
 Algorithm comparatives nowadays include power efficiency as a
@@ -154,11 +158,13 @@ and power consumption.  In GAs, the mutation operator appears to be a
 power-hungry component according to Abdelhafez et
 al. \cite{abdelhafez2019component}, in their paper they also report
 that in a distributed evaluation setting, the communication scheme has
-a grater impact. Fernández de Vega et
+a greater impact. Fernández de Vega et
 al. \cite{10.1007/978-3-319-45823-6_51} experimented with different
 parameters for a GP algorithm and concluded that hand-held devices and
 single-board computers (SBCs) required an order of magnitude less
 energy to run the same algorithm.
+
+Of course, it is also a challenge to check how the software and hardware architecture interact so that effectively the most efficient configuration is used for every kind of workload. This is why, in this paper, we will focus on the software side of the equation, and check how different JS interpreters perform when running the same workload, as well as how they interact with the "performance" and "efficiency" hardware cores of the Apple Silicon M1 processor.
 
 
 \section{Methodology and experimental setup}
@@ -192,7 +198,7 @@ paper\footnote{Systems based on the AMD architecture have a similar power
   processors also include the aforementioned MSRs so RAPL-based utilities can
   run on them}.
 
-Energy profiling, as measured by RAPL or other APIs, includes different
+Energy profiles, as measured by RAPL or other APIs, include different
 \emph{domains} \cite{khan2015energy}, essentially the computing devices or
 peripherals requiring the reported amount of energy.
 DRAM or dynamic RAM, CORE, or GPU will report what happens on those specific devices,
