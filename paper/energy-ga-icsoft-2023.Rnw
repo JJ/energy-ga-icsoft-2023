@@ -22,9 +22,26 @@ Department of Graduate Studies, National Technological Institute of Mexico, Tiju
 
 \maketitle
 
-\begin{abstract}
-Energy-aware computing is the design and operation of hardware and software system to minimize their energy consumption. This requires consideration of many variables and parameters, making it necessary to focus on a single one or a few to obtain meaningful results; this why in this paper we will investigate the energy consumption of three JavaScript interpreters ({\sf bun}, {\sf node.js}, and {\sf deno}) for evolutionary algorithms (EAs), a type of population-based stochastic optimization algorithm. We expect different energy budgets for running the same EA workload on these interpreters, due to their different conceptual designs. We will also compare the energy consumption of the different operators and functions of the EA, to see if there are differences in the energy consumption of the different interpreters. Additionally, we will perform these measurements across different architectures, homogeneous (Intel) and heterogeneous (ARM), to profile their energy consumption.
-In order to obtain these results, we will test different tools to measure per-process energy consumption accurately. After choosing a tool, we will perform experiments on a workload similar to EAs to measure the energy consumption of EA-specific functions and operators for different problem sizes. Finally, we will draw a conclusion on which JavaScript interpreter and architecture is most energy-efficient for EA workloads, if energy is a limited concern.
+\begin{abstract} Energy-aware computing is the design and operation of hardware
+and software system to minimize their energy consumption. This requires
+consideration of many variables and parameters, making it necessary to focus on
+a single one or a few to obtain meaningful results; this why in this paper we
+will investigate the energy consumption of three JavaScript interpreters ({\sf
+bun}, {\sf node.js}, and {\sf deno}) for evolutionary algorithms (EAs), a type
+of population-based stochastic optimization algorithm. We expect different
+energy budgets for running the same EA workload on these interpreters, due to
+their different conceptual designs. We will also compare the energy consumption
+of the different operators and functions of the EA, to see if there are
+differences in the energy consumption of the different
+interpreters. Additionally, we will perform these measurements across different
+architectures, homogeneous (Intel) and heterogeneous (ARM), to profile their
+energy consumption.  In order to obtain these results, we will test different
+tools to measure per-process energy consumption accurately. After choosing a
+tool, we will perform experiments on a workload similar to EAs to measure the
+energy consumption of EA-specific functions and operators for different problem
+sizes. Finally, we will draw a conclusion on which JavaScript interpreter and
+architecture is most energy-efficient for EA workloads, if energy is a limited
+concern.
 \end{abstract}
 
 \keywords{Green computing, metaheuristics, JavaScript, energy-aware computing, evolutionary algorithms}
@@ -42,21 +59,20 @@ such as Swift or Kotlin, or languages transpiled to JavaScript, such as Dart),
 while at the same time being strong for full-stack development, with solid
 support for the back end, including application servers, middleware, and
 database programming. Other popularity indices, such as
-TIOBE\footnote{\url{https://www.tiobe.com/tiobe-index/}}, that take into account other
-factors besides lines of code production, currently (2023) rank it as the seventh,
-although it was also the most popular language in 2014. It can
-be claimed, then, that it is among the most popular, if not the most popular
+TIOBE\footnote{\url{https://www.tiobe.com/tiobe-index/}}, that take into account
+other factors besides lines of code production, currently (2023) rank it as the
+seventh, although it was also the most popular language in 2014. It can be
+claimed, then, that it is among the most popular, if not the most popular
 language in current development.
 
-Due to its popularity and the fact that it has a
-continuously evolving standard \cite{ecma1999262}, traditionally, there have
-been different virtual machines (or interpreters) to run its programs. During
-the first years, browsers were the only running platform available; however, the
-introduction of Node.js running on the V8 JavaScript Engine \cite{5617064} gave
-it the popularity it has today; this popularity, in turn, provoked new
-interpreters to spawn like {\sf deno} \cite{runtimeintroducing} (written in
-Rust) and {\sf bun} \cite{bun} programmed in the relatively unknown language
-Zig.
+Due to its popularity and the fact that it has a continuously evolving standard
+\cite{ecma1999262}, traditionally, there have been different virtual machines
+(or interpreters) to run its programs. During the first years, browsers were the
+only running platform available; however, the introduction of Node.js running on
+the V8 JavaScript Engine \cite{5617064} gave it the popularity it has today;
+this popularity, in turn, provoked new interpreters to spawn like {\sf deno}
+\cite{runtimeintroducing} (written in Rust) and {\sf bun} \cite{bun} programmed
+in the relatively unknown language Zig.
 
 No wonder, then, that JavaScript is also a popular language for implementing
 metaheuristics, especially evolutionary algorithms (EA). EA
@@ -75,26 +91,27 @@ compared to other compiled languages (mainly Java, very popular in
 metaheuristics implementations, or C++).
 
 This is why, since implementation matters \cite{DBLP:conf/iwann/MereloRACML11},
-choosing the right interpreter is going to have a significant impact on the performance
-of any workload; if you decide to choose JavaScript for any reason (such as
-seamless client/server integration, or be able to run your algorithm either on
-the browser or from the command line if desired) knowing which VM delivers the
-best performance is essential, either from the scientific, or software engineering
-points of view.
+choosing the right interpreter is going to have a significant impact on the
+performance of any workload; if you decide to choose JavaScript for any reason
+(such as seamless client/server integration, or be able to run your algorithm
+either on the browser or from the command line if desired) knowing which VM
+delivers the best performance is essential, either from the scientific, or
+software engineering points of view.
 
 At the same time, with the advent of the concept of green computing
 \cite{kurp2008green}, it becomes increasingly important to measure not only the
 raw wall clock performance (which was the focus of papers such as
-\cite{DBLP:conf/evoW/GuervosBCRGRVHR17}), but also to achieve a certain level
-of performance with a certain amount of energy consumption, or else to minimize
-the consumption needed to run a certain workload. This will be the main focus
-of this paper; since the core of the different JS virtual machines is
-different, and are created with languages with different focus (Rust is focused
-on memory safety \cite{noseda2022rust}, Zig based on simplicity and performance
+\cite{DBLP:conf/evoW/GuervosBCRGRVHR17}), but also to achieve a certain level of
+performance with a certain amount of energy consumption, or else to minimize the
+consumption needed to run a certain workload. This will be the main focus of
+this paper; since the core of the different JS virtual machines is different,
+and are created with languages with different focus (Rust is focused on memory
+safety \cite{noseda2022rust}, Zig based on simplicity and performance
 \cite{zig}), different energy consumption should be expected. Since all three
 languages can (roughly) run the same, unmodified source code, what we intend
-with this paper is to advise on which JS interpreter might give the lowest
-power consumption, the maximum performance, or both, so that EA practitioners can target it for their development.
+with this paper is to advise on which JS interpreter might give the lowest power
+consumption, the maximum performance, or both, so that EA practitioners can
+target it for their development.
 
 The rest of the paper follows this plan: next we will present the state of the
 art; then we will describe the experimental setup in Section \ref{sec:setup};
@@ -103,53 +120,62 @@ discussion of results, conclusions and future lines of work.
 
 \section{State of the art}
 
-% First, CPU and general algorithmic impact on power consumption
-
-The power efficiency of CPUs (computations per kilowatt-hour) has
-doubled roughly every year and a half from 1946 to 2009
-\cite{koomey2011web}, this improvement has been mainly a by-product
-of Moore's law, the trend of chip manufacturers to decrease in half
-the size and distance between transistors every two
-years. Unfortunately, the physical limits of
-electronics imply that performance is no longer the single metric a processor is judged by; energy efficiency is at least as important an
-important driver for current innovation; creating the challenge of building
-more power-efficient systems \cite{Richard2023}.
+The power efficiency of CPUs (computations per kilowatt-hour) has doubled
+roughly every year and a half from 1946 to 2009 \cite{koomey2011web}, this
+improvement has been mainly a by-product of Moore's law, the trend of chip
+manufacturers to decrease in half the size and distance between transistors
+every two years. Unfortunately, the physical limits of electronics imply that
+performance is no longer the single metric a processor is judged by; energy
+efficiency is at least as important an important driver for current innovation;
+creating the challenge of building more power-efficient systems
+\cite{Richard2023}.
 
 
-This challenge can be addressed at the hardware and
-software levels. At the hardware level, it is leading towards the development of heterogeneous CPU architectures that include both ¨performance" and "efficiency" cores; while the former vie for executing workloads as fast as possible, the latter are geared towards running them without incurring in high energy costs \cite{9988933}. Most modern processors, such as the Apple Silicon line, as well as other ARM-based architectures, adopt this kind of architecture. We also find increasingly processors that are designed with machine learning workloads in mind, specially for trained models, such as the Google TPU or the Apple Neural Engine \cite{9950755}. As the cited paper points out, integrating them in algorithm implementations to make them faster and also more efficient is a challenge.
+This challenge can be addressed at the hardware and software levels. At the
+hardware level, it is leading towards the development of heterogeneous CPU
+architectures that include both ¨performance" and "efficiency" cores; while the
+former vie for executing workloads as fast as possible, the latter are geared
+towards running them without incurring in high energy costs \cite{9988933}. Most
+modern processors, such as the Apple Silicon line, as well as other ARM-based
+architectures, adopt this kind of architecture. We also find increasingly
+processors that are designed with machine learning workloads in mind, specially
+for trained models, such as the Google TPU or the Apple Neural Engine
+\cite{9950755}. As the cited paper points out, integrating them in algorithm
+implementations to make them faster and also more efficient is a challenge.
 
-These new challenges are tackled at the software level, with developers proposing
-increasingly more energy-efficient algorithm implementations.
-Algorithm comparatives nowadays include power efficiency as a
-performance metric, these include encryption algorithms
-\cite{mota2017comparative,thakor2021lightweight}, estimation models
-for machine learning applications \cite{garcia2019estimation} and
-genetic programming (GP) \cite{diaz2018fuzzy}, and code refactoring
-\cite{ournani2021tales}. Since metaheuristics are so extensively used
-in machine learning applications, its interest in research has grown
-in parallel to its number of applications. Many papers focus on
-analyzing how certain metaheuristics parameters have an impact on
-energy consumption.  Díaz-Álvarez et al. \cite{diaz2022population}
-study how the populations size in genetic programming
-influences power consumption. In an earlier work, centered on genetic
-algorithms (GAs) \cite{10.1007/978-3-030-45715-0_8}, power-consumption
-of battery-powered devices was measured for various parameter
-configurations including chromosome and population sizes. The
-experiments used the OneMax and Trap function benchmark problems, and 
-they concluded that execution time and energy consumption do not
-linearly correlate and there is a connection between the GA parameters
-and power consumption.  In GAs, the mutation operator appears to be a
-power-hungry component according to Abdelhafez et
-al. \cite{abdelhafez2019component}, in their paper they also report
-that in a distributed evaluation setting, the communication scheme has
-a greater impact. Fernández de Vega et
-al. \cite{10.1007/978-3-319-45823-6_51} experimented with different
-parameters for a GP algorithm and concluded that hand-held devices and
-single-board computers (SBCs) required an order of magnitude less
-energy to run the same algorithm.
+These new challenges are tackled at the software level, with developers
+proposing increasingly more energy-efficient algorithm implementations.
+Algorithm comparatives nowadays include power efficiency as a performance
+metric, these include encryption algorithms
+\cite{mota2017comparative,thakor2021lightweight}, estimation models for machine
+learning applications \cite{garcia2019estimation} and genetic programming (GP)
+\cite{diaz2018fuzzy}, and code refactoring \cite{ournani2021tales}. Since
+metaheuristics are so extensively used in machine learning applications, its
+interest in research has grown in parallel to its number of applications. Many
+papers focus on analyzing how certain metaheuristics parameters have an impact
+on energy consumption.  Díaz-Álvarez et al. \cite{diaz2022population} study how
+the populations size in genetic programming influences power consumption. In an
+earlier work, centered on genetic algorithms (GAs)
+\cite{10.1007/978-3-030-45715-0_8}, power-consumption of battery-powered devices
+was measured for various parameter configurations including chromosome and
+population sizes. The experiments used the OneMax and Trap function benchmark
+problems, and they concluded that execution time and energy consumption do not
+linearly correlate and there is a connection between the GA parameters and power
+consumption.  In GAs, the mutation operator appears to be a power-hungry
+component according to Abdelhafez et al. \cite{abdelhafez2019component}, in
+their paper they also report that in a distributed evaluation setting, the
+communication scheme has a greater impact. Fernández de Vega et
+al. \cite{10.1007/978-3-319-45823-6_51} experimented with different parameters
+for a GP algorithm and concluded that hand-held devices and single-board
+computers (SBCs) required an order of magnitude less energy to run the same
+algorithm.
 
-Of course, it is also a challenge to check how the software and hardware architecture interact so that effectively the most efficient configuration is used for every kind of workload. This is why, in this paper, we will focus on the software side of the equation, and check how different JS interpreters perform when running the same workload, as well as how they interact with the "performance" and "efficiency" hardware cores of the Apple Silicon M1 processor.
+Of course, it is also a challenge to check how the software and hardware
+architecture interact so that effectively the most efficient configuration is
+used for every kind of workload. This is why, in this paper, we will focus on
+the software side of the equation, and check how different JS interpreters
+perform when running the same workload, as well as how they interact with the
+"performance" and "efficiency" hardware cores of the Apple Silicon M1 processor.
 
 
 \section{Methodology and experimental setup}
@@ -159,29 +185,29 @@ There are many ways to measure the consumption of applications running in a
 computer; besides measuring directly from the power intake, those running as
 applications and tapping the computer sensors fall roughly into two fields:
 power monitors and energy profilers \cite{cruz21}. Power monitors need
-additional hardware to measure the power drawn by the whole machine;
-besides being expensive, their setup is difficult, and it is complicated 
-to measure precisely how much a specific process consumes.
+additional hardware to measure the power drawn by the whole machine; besides
+being expensive, their setup is difficult, and it is complicated to measure
+precisely how much a specific process consumes.
 
 On the other hand, energy profilers are programs that draw information from
 hardware sensors \cite{sinha2001jouletrack}, generally exposed through kernel
-calls or higher-level wrapper libraries, to pinpoint consumption by specific processes
-in a time period. Tools that give these measures, either with a
+calls or higher-level wrapper libraries, to pinpoint consumption by specific
+processes in a time period. Tools that give these measures, either with a
 graphic or a command line interface, have been available for some time already,
-and have become more popular lately. One of the mainstream processor architectures,
-Intel, includes an interface called RAPL, or Running Average Power Limit
-\cite{10.1145/2425248.2425252}. Essentially, it consists of a series of machine-specific registers
-(MSRs) that contain information on the wattage drawn by different parts of the
-architecture; the content of these registers will be processed (through the
-corresponding library) and consumed by different command line utilities. We will
-use these command line utilities since they produce an output that can be
-automatically processed and evaluated, which is what we are looking for in this
-paper\footnote{Systems based on the AMD architecture have a similar power
-  profiling system called AMP with its corresponding command line
-  tool. However, we found that it was not well documented, and excessively
-  complicated for the purposes of this article. Although not as complete, AMD
-  processors also include the aforementioned MSRs so RAPL-based utilities can
-  run on them}.
+and have become more popular lately. One of the mainstream processor
+architectures, Intel, includes an interface called RAPL, or Running Average
+Power Limit \cite{10.1145/2425248.2425252}. Essentially, it consists of a series
+of machine-specific registers (MSRs) that contain information on the wattage
+drawn by different parts of the architecture; the content of these registers
+will be processed (through the corresponding library) and consumed by different
+command line utilities. We will use these command line utilities since they
+produce an output that can be automatically processed and evaluated, which is
+what we are looking for in this paper\footnote{Systems based on the AMD
+architecture have a similar power profiling system called AMP with its
+corresponding command line tool. However, we found that it was not well
+documented, and excessively complicated for the purposes of this
+article. Although not as complete, AMD processors also include the
+aforementioned MSRs so RAPL-based utilities can run on them}.
 
 Energy profiles, as measured by RAPL or other APIs, include different
 \emph{domains} \cite{khan2015energy}, essentially the computing devices or
@@ -258,8 +284,9 @@ processes running at the same time, what we did was to run every program 15
 times, compute the average time, and then use the same tool to measure the
 energy consumption for the \texttt{sleep} program during the average amount of
 time. The energy readings shown are the result of subtracting this measurement
-from every one of the 15 other measurements taken, so that we can analyze
-the differential of energy that has been consumed by our programs; the result is clipped at 0, since negative energy differentials would make no sense.
+from every one of the 15 other measurements taken, so that we can analyze the
+differential of energy that has been consumed by our programs; the result is
+clipped at 0, since negative energy differentials would make no sense.
 
 <<r pinpoint, echo=F>>=
 library(ggplot2)
@@ -321,10 +348,10 @@ pinlik <- data.frame(tool=c(rep("pinpoint",45),rep("likwid",48)),
 ggplot(pinlik, aes(x=tool,y=PKG))+geom_boxplot(aes(fill=size))
 @
 
-Since several tools are available to measure PKG, we need to find out
-what kind of measurements they have, and if there is a correlation or even
-equality between them. We show how PKG energy consumption is registered by
-\pinp{} and \lik{} in Figure \ref{fig:pinlik}. We have already seen in Figure
+Since several tools are available to measure PKG, we need to find out what kind
+of measurements they have, and if there is a correlation or even equality
+between them. We show how PKG energy consumption is registered by \pinp{} and
+\lik{} in Figure \ref{fig:pinlik}. We have already seen in Figure
 \ref{fig:likwid} how the measurements registered by \lik{} have some strange
 behavior; this chart shows that while \pinp{} shows a reasonable amount of
 consumption for all three sizes, \lik{} just registers zero, which is not
@@ -353,7 +380,13 @@ ggplot(sets.vms, aes(x=size,y=PKG))+geom_boxplot(aes(fill=VM))
 sets.vms$Joules.Second <- sets.vms$PKG / sets.vms$seconds
 @
 
-Eventually, since \pinp{} is able to measure all size ranges accurately, we will use it exclusively, as well as the quantity it measures, for comparison of different virtual machines. The initial results for this test drive are shown in Figure \ref{fig:testvms}. This is due, in part, to the fact that they take a different amount of time, so it would be interesting to find out whether the energy density, or the consumption of energy per second, is similar. This is shown in Figure \ref{fig:jouls}.
+Eventually, since \pinp{} is able to measure all size ranges accurately, we will
+use it exclusively, as well as the quantity it measures, for comparison of
+different virtual machines. The initial results for this test drive are shown in
+Figure \ref{fig:testvms}. This is due, in part, to the fact that they take a
+different amount of time, so it would be interesting to find out whether the
+energy density, or the consumption of energy per second, is similar. This is
+shown in Figure \ref{fig:jouls}.
 
 <<r sets.vms.jouls, echo=F, fig.pos="h!tbp", fig.cap="Boxplot of energy consumption per second, in Joules/s.\\protect\\label{fig:jouls}">>=
 ggplot(sets.vms, aes(x=size,y=Joules.Second))+geom_boxplot(aes(fill=VM))
@@ -381,26 +414,28 @@ ggplot(onemax, aes(x=seconds,y=PKG))+geom_point(size=3,aes(color=size,fill=size,
 
 As was done in \cite{DBLP:conf/evoW/MereloCBRGFRV16}, which was focused on
 wallclock performance, the experiments will be focused on the key operations
-performed by an EA: evaluation of fitness and "genetic"
-operators like mutation and crossover. We will first measure again the performance of the three interpreters involved, and then compare these new measurements to old versions of the same VMs.
+performed by an EA: evaluation of fitness and "genetic" operators like mutation
+and crossover. We will first measure again the performance of the three
+interpreters involved, and then compare these new measurements to old versions
+of the same VMs.
 
 \subsection{Comparing performance of JS interpreters}
 \label{ss:perf}
 
-What we will do is, repeating the setup in the initial exploration, 
-check the energy consumption for the processing of
-40000 chromosomes, a number chosen to take a sizable amount of memory, but also
-on the ballpark of the usual number of operations in an EA
-benchmark, it is also small enough to not create garbage collection problems
-with the memory, something that was detected after the initial exploration.
-Experiments were repeated for the same chromosome size as before, 1024, 2048,
-and 4096, and for the three JS virtual machines used. Although the business
-logic is exactly the same for the experiments, the script run comes in two
-versions, one for {\sf deno} and the other for {\sf bun/node}, due to the different
-way they have of reading command-line arguments. This does not affect the
-overhead in any way. Code, as well as the data resulted from the experiments
-and analyzed in this paper, are released with a free license (along with this
-paper) from the repository \url{https://github.com/JJ/energy-ga-icsoft-2023}.
+What we will do is, repeating the setup in the initial exploration, to check the
+energy consumption for the processing of 40000 chromosomes, a number chosen to
+take a sizable amount of memory, but also on the ballpark of the usual number of
+operations in an EA benchmark, it is also small enough to not create garbage
+collection problems with the memory, something that was detected after the
+initial exploration.  Experiments were repeated for the same chromosome size as
+before, 1024, 2048, and 4096, and for the three JS virtual machines
+used. Although the business logic is exactly the same for the experiments, the
+script run comes in two versions, one for {\sf deno} and the other for {\sf
+bun/node}, due to the different way they have of reading command-line
+arguments. This does not affect the overhead in any way. Code, as well as the
+data resulted from the experiments and analyzed in this paper, are released with
+a free license (along with this paper) from the repository
+\url{https://github.com/JJ/energy-ga-icsoft-2023}.
 
 First, we will evaluate a typical fitness function, OneMax, which counts the
 number of ones in a binary (1s and 0s) string. This type of functions, which
@@ -474,7 +509,16 @@ function.
 
 \subsection{Comparison between different interpreter versions}
 
-Since \cite{DBLP:conf/icsoft/GuervosGC23} was written, the interpreters used in that and this paper have evolved; {\sf bun} has gone from beta to production with its 1.0 version, while {\sf node.js} has gone from its LTS (long term support) version 18 to 20. While new versions always try to improve performance, it is not a given that they do so while keeping a low energy profile or optimizing for energy consumption in any way. In this subsection, we will compare the energy consumption of the different versions of the interpreters used in the previous installment of this line of research, to see if there are any significant differences. In that paper, the versions for the three JS interpreters were:
+Since \cite{DBLP:conf/icsoft/GuervosGC23} was written, the interpreters used in
+that and this paper have evolved; {\sf bun} has gone from beta to production
+with its 1.0 version, while {\sf node.js} has gone from its LTS (long term
+support) version 18 to 20. While new versions always try to improve performance,
+it is not a given that they do so while keeping a low energy profile or
+optimizing for energy consumption in any way. In this subsection, we will
+compare the energy consumption of the different versions of the interpreters
+used in the previous installment of this line of research, to see if there are
+any significant differences. In that paper, the versions for the three JS
+interpreters were:
 
 \begin{itemize}
 \item \texttt{bun} version 0.5.8
@@ -503,25 +547,48 @@ kable(improvements, caption="Ratio of PKG energy consumption, new version vs. ol
 @
 
 
-In Table \ref{tab:improvements}, we can see the ratio of energy consumption for these old versions vs. the new ones; it is obvious that there are changes, and mostly improvements, making new versions better for green computing; however, there are differences across interpreters, sizes and the workload involved. While in general {\sf bun} spends less energy, sometimes remarkably so, like in the case of the OneMax function and the smalles size, there are cases, like Crossover for the medium size, where it can be slightly worse. {\sf deno} is the interpreter that has the most irregular energy consumption changes; while it is remarkably worse for the smallest size, it shows very good improvements in the others. {\sf node.js} shows a more consistent improvement, improving energy consumption by roughly 50\% in the case of OneMax, and slight improvements of around 10\% in the case of Crossover.
+In Table \ref{tab:improvements}, we can see the ratio of energy consumption for
+these old versions vs. the new ones; it is obvious that there are changes, and
+mostly improvements, making new versions better for green computing; however,
+there are differences across interpreters, sizes and the workload
+involved. While in general {\sf bun} spends less energy, sometimes remarkably
+so, like in the case of the OneMax function and the smalles size, there are
+cases, like Crossover for the medium size, where it can be slightly worse. {\sf
+deno} is the interpreter that has the most irregular energy consumption changes;
+while it is remarkably worse for the smallest size, it shows very good
+improvements in the others. {\sf node.js} shows a more consistent improvement,
+improving energy consumption by roughly 50\% in the case of OneMax, and slight
+improvements of around 10\% in the case of Crossover.
 
-This tells us that, in general, we should always try to use the latest version of the interpreter, as it will most likely be more energy efficient. However, benchmarking these new versions is still necessary, as there are cases where the new version is not better than the old one. At the same time, these results confirms that {\sf bun}, even after the introduction of the 1.0 version, is still the most energy efficient interpreter, and it is probably a reasonable rule-of-thumb to make it our first choice when dealing with evolutionary algorithms workloads.
+This tells us that, in general, we should always try to use the latest version
+of the interpreter, as it will most likely be more energy efficient. However,
+benchmarking these new versions is still necessary, as there are cases where the
+new version is not better than the old one. At the same time, these results
+confirms that {\sf bun}, even after the introduction of the 1.0 version, is
+still the most energy efficient interpreter, and it is probably a reasonable
+rule-of-thumb to make it our first choice when dealing with evolutionary
+algorithms workloads.
 
 \section{Conclusions}
 \label{sec:conc}
 
-In this paper, we set out to study the energy efficiency of different
-JavaScript interpreters in EA workloads, by studying how
-short scripts that are extensively used in implementations of these algorithms
-work and how these energy expenses scale with the chromosome size. We have
-developed a methodology to accurately measure per-process consumption; we have
-also adopted a tool, \pinp, that is able to give good estimations of sensor
-readings, discarding experiments where that estimation was not adequate; this
-tool has been calibrated by comparing its readings with other tools, which were
-also evaluated for the same purpose and eventually discarded. We have also adopted a
-benchmark-based approach, similar to the one used to measure performance, so
-that consumption for specific operations can be pinpointed, discarding noise
-produced by an implementation of a complete algorithm; that is, a whole program includes different operations, applied in different proportion, that might cancel each other. Testing short code paths, as proposed by \cite{10.1145/2425248.2425252} makes easier to understand their individual contribution to the overall consumption of the algorithm, and eventually optimize their specific code, or the number of times they are applied in the algorithm.
+In this paper, we set out to study the energy efficiency of different JavaScript
+interpreters in EA workloads, by studying how short scripts that are extensively
+used in implementations of these algorithms work and how these energy expenses
+scale with the chromosome size. We have developed a methodology to accurately
+measure per-process consumption; we have also adopted a tool, \pinp, that is
+able to give good estimations of sensor readings, discarding experiments where
+that estimation was not adequate; this tool has been calibrated by comparing its
+readings with other tools, which were also evaluated for the same purpose and
+eventually discarded. We have also adopted a benchmark-based approach, similar
+to the one used to measure performance, so that consumption for specific
+operations can be pinpointed, discarding noise produced by an implementation of
+a complete algorithm; that is, a whole program includes different operations,
+applied in different proportion, that might cancel each other. Testing short
+code paths, as proposed by \cite{10.1145/2425248.2425252} makes easier to
+understand their individual contribution to the overall consumption of the
+algorithm, and eventually optimize their specific code, or the number of times
+they are applied in the algorithm.
 
 
 During the exploratory data analysis, we have established that, in Linux
