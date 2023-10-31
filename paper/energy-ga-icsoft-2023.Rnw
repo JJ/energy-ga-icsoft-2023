@@ -626,18 +626,26 @@ uses specific, early-adoption, or some features that, for some reason, does not
 work with {\sf bun} yet, we would advise anyone to keep using {\sf bun} for this
 kind of workloads.
 
-As we have indicated in the experimental session, the wide advantage that {\sf
+As we have indicated in the experimental section, the wide advantage that {\sf
 bun} has over the other interpreters does not leave much room for adopting
 different benchmarks that could make that ranking vary; at any rate, these
 experiments have shown how much faster and energy-saving {\sf bun} is (from 1/3
 to 1/6 the energy consumed by {\sf node}), but it would be interesting to know
 what happens to this gap under different operations like selection or different
-kind of mutation. At the same time, even if EAs are mostly
+kind of mutation.
+
+At the same time, even if EAs are mostly
 GPU-free, there are some fitness functions that operate on floating point
 numbers and thus would need to use the GPU; how interpreters work in this area
-could be an interesting future line of work. This, along with testing different
+could be an interesting future line of work.
+
+Another interesting venue of research is the way different architectures affect energy consumption, not only at the processor design level, but also at the machine design level. Different computers with different cooling strategies, passive or active, will spend energy in a different way and interact in non-trivial ways with workloads and interpreters. This will also open interesting and new lines of research seeking the best software/hardware combination to run EAs in a green way.
+
+Finally, we have seen that the energy consumption of the interpreters is
+
+This, along with testing new
 versions of the interpreters as they are published, will be the subject of
-future research.  % papers.
+future research.
 
 
 \section*{Acknowledgements}
