@@ -405,7 +405,7 @@ interpreters were:
 \item  \texttt{node.js} version 18.5.0
 \end{itemize}
 
-Current versions, up-to-date by November 1st 2023, are shown above in section \ref{sec:setup}.
+Current versions, up-to-date by November 1st 2023, are shown above in section \ref{sec:res}.
 
 <<r load.process.data, echo=F, message=F>>=
 
@@ -430,7 +430,7 @@ these old versions vs. the new ones; it is obvious that there are changes, and
 mostly improvements, making new versions better for green computing; however,
 there are differences across interpreters, sizes and the workload
 involved. While in general {\sf bun} spends less energy, sometimes remarkably
-so, like in the case of the OneMax function and the smalles size, there are
+so, like in the case of the OneMax function and the smallest size, there are
 cases, like Crossover for the medium size, where it can be slightly worse. {\sf
 deno} is the interpreter that has the most irregular energy consumption changes;
 while it is remarkably worse for the smallest size, it shows very good
