@@ -468,10 +468,27 @@ between the thriftiest, {\sf bun}, and the heaviest consumer, {\sf node}, is
 approximately three times, in this case, less than in the case of the OneMax fitness
 function.
 
-Given that the results for the two EA-specific functions,
-as well as the test function, are quite conclusive, we should not expect
-anything different from the mutation function, so we will leave the experiments
-at these two, and proceed to the conclusions.
+\subsection{Comparison between different interpreter versions}
+
+Since \cite{DBLP:conf/icsoft/GuervosGC23} was written, the interpreters used in that and this paper have evolved; {\sf bun} has gone from beta to production with its 1.0 version, while {\sf node.js} has gone from its LTS (long term support) version 18 to 20. While new versions always try to improve performance, it is not a given that they do so while keeping a low energy profile or optimizing for energy consumption in any way. In this subsection, we will compare the energy consumption of the different versions of the interpreters used in the previous installment of this line of research, to see if there are any significant differences.
+
+<<r load.process.data, echo=F, message=F>>=
+
+onemax %>% group_by( size, VM) %>% summarise( average = mean( PKG ) ) -> onemax.avg
+onemax.old <- read.csv("../code/data/pinpoint-vms-onemax-11-Apr-10-19-29.csv")
+onemax.old %>% group_by( size, VM) %>% summarise( average = mean( PKG ) ) -> onemax.old.avg
+onemax.avg.ratio <-data.frame( size = onemax.avg$size, vm = onemax.avg$VM, ratio.onemax = onemax.avg$average / onemax.old.avg$average)
+
+crossover %>% group_by( size, VM) %>% summarise( average = mean( PKG ) ) -> crossover.avg
+crossover.old <- read.csv("../code/data/pinpoint-vms-crossover-11-Apr-17-06-52.csv")
+crossover.old %>% group_by( size, VM) %>% summarise( average = mean( PKG ) ) -> crossover.old.avg
+crossover.avg.ratio <-data.frame( size = crossover.avg$size, vm = crossover.avg$VM, ratio.crossover = crossover.avg$average / crossover.old.avg$average)
+
+improvements <- merge( onemax.avg.ratio, crossover.avg.ratio, by = c("size", "vm"))
+kable(improvements, caption="Ratio of PKG energy consumption, new version vs. old version. \\protect\\label{tab:improvements}",row.names=F,col.names=c("VM","Size","OneMax","Crossover"))
+
+
+@
 
 \section{Conclusions}
 \label{sec:conc}
