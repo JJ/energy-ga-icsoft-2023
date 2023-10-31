@@ -437,7 +437,7 @@ library(kableExtra)
 kable(onemax.cost, caption="Estimated cost of the OneMax runs for every VM and size, in €-cents. \\protect\\label{tab:onemax:cost}")
 @
 
-% The crossover operation involves copy operations between strings, as well as
+The crossover operation involves copy operations between strings, as well as
 creation of new strings. We will again generate 40K chromosomes and group them
 in pairs; these strings will be crossed by interchanging a random
 fragment from one to the other and back. The resulting pairs will be stored in
@@ -488,8 +488,7 @@ also evaluated for the same purpose and eventually discarded. We have also adopt
 benchmark-based approach, similar to the one used to measure performance, so
 that consumption for specific operations can be pinpointed, discarding noise
 produced by an implementation of a complete algorithm; that is, a whole program includes different operations, applied in different proportion, that might cancel each other. Testing short code paths, as proposed by \cite{10.1145/2425248.2425252} makes easier to understand their individual contribution to the overall consumption of the algorithm, and eventually optimize their specific code, or the number of times they are applied in the algorithm.
-% I did not understand the last sentence. - M
-% Clarified and added citation - JJ
+
 
 During the exploratory data analysis, we have established that, in Linux
 machines, \pinp{} can be profitably used to measure per-process energy
@@ -505,8 +504,7 @@ only it consumes less for all the range of chromosome sizes used; it also takes
 less time and can run applications written for Node (mostly) unmodified; its
 consumption also scales better with problem size. This might be due to design
 considerations, but also to the fact that the language used to write it, Zig,
-emphasizes compile-time safety and manual memory allocation by default, and avoids hidden control flow. % JJ please check if the last sentence is correct. - M
-% Changed to claims from the ziglang.org website - JJ
+emphasizes compile-time safety and manual memory allocation by default, and avoids hidden control flow.
 The only inconvenience of this interpreter is that it has not
 reached version 1.0 yet, being currently in version 0.5.9; this might prevent
 any company or organization from using it in production environments.
