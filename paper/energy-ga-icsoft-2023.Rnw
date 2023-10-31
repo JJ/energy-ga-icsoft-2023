@@ -101,6 +101,8 @@ with this paper is to find rule of thumbs on which JS interpreter might give the
 consumption, the maximum performance, or both, so that EA practitioners can
 use it for deploying its applications to production.
 
+In the first version published of this line of research \cite{DBLP:conf/icsoft/GuervosGC23} we established a methodology for choosing an energy profile and performer measures in the versionf of the interpreters that were current back then. In this paper we will update the methodology and the results, using the latest versions of the interpreters, and extend the methodology to other architectures, namely Apple Silicon, whicn allows us to gather some insight also on how energy results are achieved for the different virtual machines.
+
 The rest of the paper follows this plan: next we will present the state of the
 art; then we will describe the experimental setup in Section \ref{sec:setup};
 results will be presented next in Section \ref{sec:res}, and we will end with a
