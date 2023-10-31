@@ -62,9 +62,9 @@ Green computing is a methodology for saving energy in the implementation of
 \section{\uppercase{Introduction}}
 \label{sec:introduction}
 
-Since the first papers that used it for implementing metaheuristics \cite{jesusIWANN99,jesusIWANN99}, JavaScript is nowadays a great alternative for evolutionary algorithms and machine learning models, making it a target for energy efficiency studies in that area. However, unlike other languages, there are different interpreters with different objectives: besides the well known and established {\sf node}, already in its version 20, {\sf deno} \cite{runtimeintroducing} (written in
+From the first papers that used it for implementing metaheuristics \cite{jesusIWANN99}, JavaScript is nowadays a great alternative for evolutionary algorithms and machine learning models, making it a target for energy efficiency studies in that area. However, unlike other languages, there are different interpreters with different objectives: besides the well known and established {\sf node}, already in its version 20, {\sf deno} \cite{runtimeintroducing} (written in
 Rust) and {\sf bun} \cite{bun} (programmed in the relatively unknown language
-Zig) have been produced lately. We already compared them in a previous paper \cite{js:energy}. However, in that paper we established a general methodology for measuring energy consumption: using the energy profiler {\sf pinpoint}  \cite{9307947}, that reads from the RAPL registers \cite{rapl,khan2018rapl}, and using experiments run from the command line, without any additional instrumentation, to measure power extracted by evolutionary algorithm operators from the source.
+Zig) have been produced lately. We already compared them in a previous paper \cite{DBLP:conf/icsoft/GuervosGC23}. However, in that paper we established a general methodology for measuring energy consumption: using the energy profiler {\sf pinpoint}  \cite{9307947}, that reads from the RAPL registers \cite{10.1145/2425248.2425252,khan2018rapl}, and using experiments run from the command line, without any additional instrumentation, to measure power extracted by evolutionary algorithm operators from the source.
 
 We validated this approach, and applied it to a single fitness function (OneMax) and a common operator (crossover). However, this study left a few issues open. In this edition, we will widen the results, looking at different factors\begin{itemize}
 \item Test new versions of the virtual machines considering energy consumption, since in general these evolve towards more efficient operation; at any rate, the balance of results might change in these new versions in unexpected ways.
@@ -110,14 +110,14 @@ parameters for a GP algorithm and concluded that hand-held devices and
 single-board computers (SBCs) required an order of magnitude less
 energy to run the same algorithm.
 
-These results point to several best practices in the area: first, evaluate separately different operators and fitness functions, and second, perform experiments on different devices. After the initial exploration and establishment of technology in \cite{js:energy}, this paper will also test the mutation operator, as well as carry out tests in different computers with different architecture.
+These results point to several best practices in the area: first, evaluate separately different operators and fitness functions, and second, perform experiments on different devices. After the initial exploration and establishment of technology in \cite{DBLP:conf/icsoft/GuervosGC23}, this paper will also test the mutation operator, as well as carry out tests in different computers with different architecture.
 
 
 \section{Experimental results}
 \label{sec:res}
 
 From the different ways to measure energy consumption \cite{cruz21},
-in \cite{js:energy} we chose {\sf pinpoint}~\cite{9307947}, a tool
+in \cite{DBLP:conf/icsoft/GuervosGC23} we chose {\sf pinpoint}~\cite{9307947}, a tool
 that uses the RAPL (Running Average Power Limit \cite{rapl})
 interface, to report the power consumed. This tool was on one side
 accurate enough to take the measurements we needed and on the other
@@ -146,7 +146,7 @@ are available in this case, since it is a processor with a different architectur
 A Perl script was created to run the experiments; it executed the scripts and
 collected results by parsing the standard output and putting it in a CSV format
 that would allow examination of the experiments. As indicated in
-\cite{js:energy}, consumption for a no-op task run in the same environment was
+\cite{DBLP:conf/icsoft/GuervosGC23}, consumption for a no-op task run in the same environment was
 subtracted from the reading taken, before computing the average in this script.
 
 As was done in \cite{DBLP:conf/evoW/MereloCBRGFRV16}, which was
@@ -185,7 +185,7 @@ ggplot(onemax[onemax$VM == "deno",], aes(x=seconds,y=PKG, color="May",fill=size)
 @
 %
 
-The charts presented in Figure \ref{fig:onemax} show that there is indeed a variation for all three virtual machines, how they vary along every one of them is different. In the case of node.js, newer VMs take more or less the same time, but the consumption of energy is much less; since \cite{js:energy} showed that this is, indeed, one of the choke points of this VM, it makes it more interesting in low-consumption environment. The case of {\sf bun} is more complicated: performance is the same, but energy consumption seems to be lowered only for smaller chromosome sizes, getting an increase in size 4096. The case of {\sf deno} is even more complicated: there is change towards higher performance (experiments taking less time), which more or less correspond to the decrease in consumption. However, the strange behavior of this VM regarding chromosome size (already observed in \cite{js:energy}) will have to be checked further.
+The charts presented in Figure \ref{fig:onemax} show that there is indeed a variation for all three virtual machines, how they vary along every one of them is different. In the case of node.js, newer VMs take more or less the same time, but the consumption of energy is much less; since \cite{DBLP:conf/icsoft/GuervosGC23} showed that this is, indeed, one of the choke points of this VM, it makes it more interesting in low-consumption environment. The case of {\sf bun} is more complicated: performance is the same, but energy consumption seems to be lowered only for smaller chromosome sizes, getting an increase in size 4096. The case of {\sf deno} is even more complicated: there is change towards higher performance (experiments taking less time), which more or less correspond to the decrease in consumption. However, the strange behavior of this VM regarding chromosome size (already observed in \cite{DBLP:conf/icsoft/GuervosGC23}) will have to be checked further.
 
 
 <<r crossoverx, echo=F, fig.show="hold", out.width="30%", fig.cap="Consumption and time for the crossover operator in the three different VMs; node left, bun center, deno right.\\protect\\label{fig:crossover}">>=
@@ -205,7 +205,7 @@ performance for crossover, has some similarities with the one shown in Figure
 \ref{fig:onemax}, showing again the strange performance correlations for the
 {\sf deno} VM. In the other two cases, there is no great difference, it can even be slightly worse, although the difference does not seem to be significant.
 
-Since our interest is first to try and find the JavaScript VM that has the best energy profile, we will first compare the energy consumption of the ones available in March 2023, and published in \cite{js:energy}, and the ones available in May 2023, when this paper is being written. It does not seem like the slight disadvantage in energy consumption for this new version, in this specific operator, is enough to offset the savings obtained with the fitness function; let us not forget that fitness evaluation usually takes the bulk of the energy consumption and time. At any rate, the fact that unexpected variations in energy consumption may occur when versions change, and sometimes dramatic ones, is probably enough to warrant re-profiling of all workloads (evolutionary algorithms or otherwise) and another round of comparison of the performance and energy consumption for all three. This is what we will do next, using the newest published versions.
+Since what we are seeking is the JavaScript VM that has the best energy profile, we will first compare the energy consumption of the ones available in March 2023, and published in \cite{DBLP:conf/icsoft/GuervosGC23}, and the ones available in May 2023, when this paper is being written. It does not seem like the slight disadvantage in energy consumption for this new version, in this specific operator, is enough to offset the savings obtained with the fitness function; let us not forget that fitness evaluation usually takes the bulk of the energy consumption and time. At any rate, the fact that unexpected variations in energy consumption may occur when versions change, and sometimes dramatic ones, is probably enough to warrant re-profiling of all workloads (evolutionary algorithms or otherwise) and another round of comparison of the performance and energy consumption for all three. This is what we will do next, using the newest published versions.
 
 %
 <<r onemax.vms, echo=F, fig.height=4, fig.cap="Boxplot of PKG measurements for the OneMax fitness function and the three different virtual machines.\\protect\\label{fig:onemax:energy}">>=
@@ -214,8 +214,8 @@ ggplot(onemax, aes(x=size,y=PKG))+geom_boxplot(aes(fill=VM))+ylim(0, NA)+theme_t
 %
 
 %Rewrite
-The figure shows how energy consumption grows less than linearly for {\sf bun}; this is a change with respect to \cite{js:energy}, when it was flat.
-How consumption changes for {\sf deno} is weird, since it decreases as the size of the chromosome grows; this is a slight change with respect to \cite{js:energy}, when it decreased only for the biggest size. {\sf node} is, however, the bigger energy
+The figure shows how energy consumption grows less than linearly for {\sf bun}; this is a change with respect to \cite{DBLP:conf/icsoft/GuervosGC23}, when it was flat.
+How consumption changes for {\sf deno} is weird, since it decreases as the size of the chromosome grows; this is a slight change with respect to \cite{DBLP:conf/icsoft/GuervosGC23}, when it decreased only for the biggest size. {\sf node} is, however, the bigger energy
 guzzler, consuming up to 3 times more than {\sf deno} on average, and more than
 5 times as much as {\sf bun} for the biggest size; however, this new version of the interpreter {\tt 18.15.0} has a consumption similar to {\sf bun} for the smallest size. Taking into account that, in most cases, we are going to deal with chromosomes with sizes that are around this order of magnitude, {\sf node} might be a good alternative if considerations other than raw speed, such as maturity of the product, enter into consideration.
 
@@ -229,7 +229,7 @@ has been already shown in an energy vs. wallclock time chart in Figure \ref{fig:
 ggplot(crossover, aes(x=size,y=PKG))+geom_boxplot(aes(fill=VM))+ylim(0, NA)+theme_tufte()
 @
 
-The scenario is remarkably similar to the one shown in Figure \ref{fig:onemax}, and also similar to what we found with the previous versions of all command-line interpreters in \cite{js:energy}. {\sf bun} grows less than linearly with chromosome size, and {\sf node} grows more or less linearly; it is always better for {\sf bun}, and the difference increases with size. But, again, the surprising energy profile for {\sf deno}, which decreases with size, makes it the most energy-thrifty of the three for the biggest size. In any case, {\sf bun} continues to consistently yield very low-energy consumption values across all sizes.
+The scenario is remarkably similar to the one shown in Figure \ref{fig:onemax}, and also similar to what we found with the previous versions of all command-line interpreters in \cite{DBLP:conf/icsoft/GuervosGC23}. {\sf bun} grows less than linearly with chromosome size, and {\sf node} grows more or less linearly; it is always better for {\sf bun}, and the difference increases with size. But, again, the surprising energy profile for {\sf deno}, which decreases with size, makes it the most energy-thrifty of the three for the biggest size. In any case, {\sf bun} continues to consistently yield very low-energy consumption values across all sizes.
 
 In this paper, we will also be testing a third operator, mutation. Mutation takes many different forms, but in its simplest form it changes a single bit in a bit string. Again, due to the fact that strings in this language are immutable, the mutated string must be built from pieces of the original string, which will have an impact on the performance.
 
@@ -267,7 +267,7 @@ But the main issue here is that {\sf deno} seems to be the best for any size abo
 At any rate, comparing this graph with Figure \ref{fig:onemax}, we can see that
 the average consumption for the smaller size, around 100 Joules, is less than
 half what is consumed in the desktop system we have initially tested here and in
-\cite{js:energy}. The average time needed to find the solution, however, is higher, although not by an order of magnitude.
+\cite{DBLP:conf/icsoft/GuervosGC23}. The average time needed to find the solution, however, is higher, although not by an order of magnitude.
 
 <<r times.energy, message=F, echo=F>>=
 library(dplyr)
@@ -291,7 +291,7 @@ On the other hand, there is no single combination of interpreter and size that o
 
 In this paper we set out to study the influence on energy consumption of evolutionary algorithms in three different directions: first, testing different versions of the interpreters; second, including the mutation operator, since it seems to be the one that consumes the most; and third, test different types of computers.
 
-While in our previous paper, \cite{js:energy}, the measurements showed clearly
+While in our previous paper, \cite{DBLP:conf/icsoft/GuervosGC23}, the measurements showed clearly
 that {\sf bun} was the less energy-consuming interpreter across all evolutionary
 operators and fitness functions, the experiments performed in this paper show a
 more nuanced scenario. The first interesting conclusion is that there is nothing
