@@ -207,28 +207,10 @@ with a core being every one of the computing units within the central processing
 unit; other domains, like PKG or package, will report what happens in the
 ``package'', or CPU together with other devices in the chipset.
 
-Considering that the available system has an AMD architecture, which is
-roughly compatible with the RAPL architecture, we will use two command line
-utilities, as they are the only ones available that can wrap the execution of a command
-and report on consumption for that specific command. These are open source tools
-that can be obtained directly from the corresponding repositories or by downloading and
-compiling their source code. \begin{itemize}
-\item {\sf pinpoint}~\cite{9307947} (available from
-  \url{https://github.com/osmhpi/pinpoint}) is a tool that uses the RAPL
-  interface, as well as the NVIDIA registers, to report the power consumed by
-  these devices. In this paper, we will use it since it is the only one out of
-  the three tools that can show the GPU consumption.
-\item {\sf
-    perf}\footnote{\url{https://perf.wiki.kernel.org/index.php/Main\_Page}}~\cite{treibig2010likwid} is a
-  system tool that measures all kinds of performance events, including power
-  consumption. It will be used mainly for the  \texttt{pkg} domain; this is a
-  domain that it is measured by all tools, but all of them would process device
-    readings differently, so it will provide us with alternative estimations of
-    the consumption. 
-  \item {\sf likwid-powermeter}\footnote{\url{https://github.com/RRZE-HPC/likwid}}
-  measures the \texttt{CORE} as well as the \texttt{PKG} domain, which includes
-  the former together with the so-called ``uncore'' components.
-\end{itemize}
+Different measuring command line tools were tested in \cite{DBLP:conf/icsoft/GuervosGC23}, finally choosing {\sf pinpoint}~\cite{9307947} (available from
+  \url{https://github.com/osmhpi/pinpoint}), which is a tool that uses the RAPL
+  interface, as well as the NVIDIA registers, and reports the power consumed by
+  these devices.
 
 A Perl script was created to perform the experiments; it launched the scripts
 and collected results by analyzing the standard output and putting it in a CSV
