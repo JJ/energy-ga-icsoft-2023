@@ -49,6 +49,10 @@ concern.
 \section{\uppercase{Introduction}}
 \label{sec:introduction}
 
+Green computing
+\cite{kurp2008green} refers to the design of hardware and/or software systems that are first conscious, and then minimize the energy consumption for a given workload.
+
+
 From a language designed in the late nineties for simple browser widgets and
 client-side validations \cite{goodman2007javascript,flanagan1998javascript},
 JavaScript is nowadays the language most widely used by developers in their
@@ -87,20 +91,14 @@ early implementations in the browser
 \cite{EvoStar2014:jsEO}, through complete implementations geared towards
 volunteer computing \cite{2016arXiv160101607M}. After choosing the language \cite{DBLP:conf/iwann/MereloRACML11}, choosing an interpreter is the next decision that will impact whatever objective the researcher wants to reach, whether performance or energy efficiency; this will one of the main focuses of this paper.
 
-At the same time, with the advent of the concept of green computing
-\cite{kurp2008green}, it becomes increasingly important to measure not only the
-raw wall clock performance (which was the focus of papers such as
-\cite{DBLP:conf/evoW/GuervosBCRGRVHR17}), but also to achieve a certain level of
-performance with a certain amount of energy consumption, or else to minimize the
-consumption needed to run a certain workload. This will be the main focus of
-this paper; since the core of the different JS virtual machines is different,
+Since the architecture of the different JS virtual machines is different,
 and are created with languages with different focus (Rust is focused on memory
 safety \cite{noseda2022rust}, Zig based on simplicity and performance
-\cite{zig}), different energy consumption should be expected. Since all three
-languages can (roughly) run the same, unmodified source code, what we intend
-with this paper is to advise on which JS interpreter might give the lowest power
+\cite{zig}), different energy consumption profiles should be expected. All three
+interpreters can (roughly) run the same, unmodified source code, what we intend
+with this paper is to find rule of thumbs on which JS interpreter might give the lowest power
 consumption, the maximum performance, or both, so that EA practitioners can
-target it for their development.
+use it for deploying its applications to production.
 
 The rest of the paper follows this plan: next we will present the state of the
 art; then we will describe the experimental setup in Section \ref{sec:setup};
