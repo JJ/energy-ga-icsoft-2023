@@ -49,29 +49,29 @@ concern.
 \section{\uppercase{Introduction}}
 \label{sec:introduction}
 
-From a language designed in the nineties for simple browser widgets and
+From a language designed in the late nineties for simple browser widgets and
 client-side validations \cite{goodman2007javascript,flanagan1998javascript},
 JavaScript is nowadays the language most widely used by developers in their
-GitHub repositories \cite{ogrady22:ranking}, occupying this position since 2014
+GitHub repositories \cite{ogrady23:ranking}, occupying this position since 2014
 \cite{ogrady14:ranking}, mainly because it is almost exclusively the language
-needed for front-end programming (competing only with app development languages,
+needed for front-end programming (its only competition being mobile application development languages,
 such as Swift or Kotlin, or languages transpiled to JavaScript, such as Dart),
 while at the same time being strong for full-stack development, with solid
 support for the back end, including application servers, middleware, and
 database programming. Other popularity indices, such as
 TIOBE\footnote{\url{https://www.tiobe.com/tiobe-index/}}, that take into account
-other factors besides lines of code production, currently (2023) rank it as the
-seventh, although it was also the most popular language in 2014. It can be
+other factors besides lines of code production, currently (October 2023) rank it as the
+sixth, although it was also the most popular language in 2014. It can be
 claimed, then, that it is among the most popular, if not the most popular
 language in current development.
 
-Due to its popularity and the fact that it has a continuously evolving standard
-\cite{ecma1999262}, traditionally, there have been different virtual machines
-(or interpreters) to run its programs. During the first years, browsers were the
-only running platform available; however, the introduction of Node.js running on
-the V8 JavaScript Engine \cite{5617064} gave it the popularity it has today;
-this popularity, in turn, provoked new interpreters to spawn like {\sf deno}
-\cite{runtimeintroducing} (written in Rust) and {\sf bun} \cite{bun} programmed
+Due to its popularity and the fact that it has a continuously updated standard
+\cite{ecma1999262}, there have traditionally been different virtual machines
+(or interpreters) that are able to run JS. In its initial decade, browsers were the
+only mainstream platform available\footnote{Although there were interpreters such as SpiderMonkey or Rhino available; they were not, however, as popular and mostly unused in production environments}; however, the introduction of Node.js running on
+the V8 JavaScript Engine \cite{5617064} in 2009 gave it the mainstream support it has today.
+The wide adoption of {\sf node.js}, along with the ECMA standard, inspired the development new interpreters like {\sf deno}
+\cite{runtimeintroducing} (written in Rust) and, more recently, {\sf bun} \cite{bun}, programmed
 in the relatively unknown language Zig.
 
 No wonder, then, that JavaScript is also a popular language for implementing
