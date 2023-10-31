@@ -230,26 +230,6 @@ compiling their source code. \begin{itemize}
   the former together with the so-called ``uncore'' components.
 \end{itemize}
 
-On the JavaScript side, we used three different interpreters:\begin{itemize}
-\item \texttt{bun} version 0.5.8
-\item \texttt{deno} version 1.32.1, which includes the v8 library version
-  11.2.214.9 and typescript 5.0.2
-\item  \texttt{node.js} version 18.5.0
-\end{itemize}
-
-\texttt{bun} and \texttt{nodejs} are fully compatible, so they run exactly the
-same code. The code for \texttt{deno} needed a small modification: the path to
-the library had to be changed (since it does not use the \texttt{node\_modules}
-to host installed modules), and it uses a different library for processing 
-the command line arguments. Other than that, the business logic was exactly the same.
-
-These were running in an Ubuntu version 20.04.1 with kernel version
-5.15.0-69. The processor is an AMD Ryzen 9 3950X 16-Core. Since we will
-not be testing in a pure Intel architecture, the complete RAPL API is
-not going to be available; that is also why we will be experimenting
-with different tools so that we can have an adequate coverage
-of energy consumption for the commands we will be measuring.
-
 A Perl script was created to perform the experiments; it launched the scripts
 and collected results by analyzing the standard output and putting it in a CSV
 format that would allow examination of the experiments.
@@ -281,6 +261,26 @@ clipped at 0, since negative energy differentials would make no sense.
 
 \section{Experimental results}
 \label{sec:res}
+
+On the JavaScript side, we used three different interpreters:\begin{itemize}
+\item \texttt{bun} version 1.0.7
+\item \texttt{deno} version 1.37.2, which includes the v8 library version
+  11.8.172.13 and typescript 5.2.2
+\item  \texttt{node.js} version 20.9.0
+\end{itemize}
+
+\texttt{bun} and \texttt{nodejs} are fully compatible, so they run exactly the
+same code. The code for \texttt{deno} needed a small modification: the path to
+the library had to be changed (since it does not use the \texttt{node\_modules}
+to host installed modules), and it uses a different library for processing 
+the command line arguments. Other than that, the business logic was exactly the same.
+
+These were running in an Ubuntu version 20.04.1 with kernel version
+5.15.0-69. The processor is an AMD Ryzen 9 3950X 16-Core. Since we will
+not be testing in a pure Intel architecture, the complete RAPL API is
+not going to be available; that is also why we will be experimenting
+with different tools so that we can have an adequate coverage
+of energy consumption for the commands we will be measuring.
 
 <<r onemax, echo=F, fig.pos="h!tbp", fig.height=5, fig.cap="Boxplot of energy consumption vs. time taken for all three sizes and VMs.\\protect\\label{fig:onemax}">>=
 library(ggthemes)
