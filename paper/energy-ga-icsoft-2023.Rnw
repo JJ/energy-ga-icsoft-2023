@@ -470,7 +470,16 @@ function.
 
 \subsection{Comparison between different interpreter versions}
 
-Since \cite{DBLP:conf/icsoft/GuervosGC23} was written, the interpreters used in that and this paper have evolved; {\sf bun} has gone from beta to production with its 1.0 version, while {\sf node.js} has gone from its LTS (long term support) version 18 to 20. While new versions always try to improve performance, it is not a given that they do so while keeping a low energy profile or optimizing for energy consumption in any way. In this subsection, we will compare the energy consumption of the different versions of the interpreters used in the previous installment of this line of research, to see if there are any significant differences.
+Since \cite{DBLP:conf/icsoft/GuervosGC23} was written, the interpreters used in that and this paper have evolved; {\sf bun} has gone from beta to production with its 1.0 version, while {\sf node.js} has gone from its LTS (long term support) version 18 to 20. While new versions always try to improve performance, it is not a given that they do so while keeping a low energy profile or optimizing for energy consumption in any way. In this subsection, we will compare the energy consumption of the different versions of the interpreters used in the previous installment of this line of research, to see if there are any significant differences. In that paper, the versions for the three JS interpreters were:
+
+\begin{itemize}
+\item \texttt{bun} version 0.5.8
+\item \texttt{deno} version 1.32.1, which includes the v8 library version
+  11.2.214.9 and typescript 5.0.2
+\item  \texttt{node.js} version 18.5.0
+\end{itemize}
+
+Current versions, up-to-date by November 1st 2023, are shown above.
 
 <<r load.process.data, echo=F, message=F>>=
 
@@ -489,6 +498,11 @@ kable(improvements, caption="Ratio of PKG energy consumption, new version vs. ol
 
 
 @
+
+
+In Table \ref{tab:improvements}, we can see the ratio of energy consumption for these old versions vs. the new ones; it is obvious that there are changes, and mostly improvements, making new versions better for green computing; however, there are differences across interpreters, sizes and the workload involved. While in general {\sf bun} spends less energy, sometimes remarkably so, like in the case of the OneMax function and the smalles size, there are cases, like Crossover for the medium size, where it can be slightly worse. {\sf deno} is the interpreter that has the most irregular energy consumption changes; while it is remarkably worse for the smallest size, it shows very good improvements in the others. {\sf node.js} shows a more consistent improvement, improving energy consumption by roughly 50\% in the case of OneMax, and slight improvements of around 10\% in the case of Crossover.
+
+This tells us that, in general, we should always try to use the latest version of the interpreter, as it will most likely be more energy efficient. However, benchmarking these new versions is still necessary, as there are cases where the new version is not better than the old one. At the same time, these results confirms that {\sf bun}, even after the introduction of the 1.0 version, is still the most energy efficient interpreter, and it is probably a reasonable rule-of-thumb to make it our first choice when dealing with evolutionary algorithms workloads.
 
 \section{Conclusions}
 \label{sec:conc}
