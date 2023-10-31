@@ -271,7 +271,7 @@ different tools in order to pick only one, if possible, as well as validate the
 program and iron out all possible errors in the program itself or the
 processing scripts.
 
-<<r pinpoint.gpu, echo=F, fig.cap="Boxplot of measurements of energy expenditures by the GPU in the sets problem. GPU energy consumption is measured in Joules.\\protect\\label{fig:gpu}">>=
+<<r pinpoint.gpu, echo=F, fig.pos="h!tbp", fig.cap="Boxplot of measurements of energy expenditures by the GPU in the sets problem. GPU energy consumption is measured in Joules.\\protect\\label{fig:gpu}">>=
 test.pinpoint$size <- as.factor(test.pinpoint$size)
 ggplot(test.pinpoint, aes(x=size,y=GPU,group=size))+geom_boxplot()
 @
@@ -287,7 +287,7 @@ complement it with other measures, we need to validate or enhance its
 measurements with others; that is why next, we will make some test measurements
 with the next tool, \lik{}.
 
-<<r likwid, echo=F, fig.cap="Boxplot of (differential) measurements of energy consumption as measured by the CORE and PKG (package) registers, both measured in Joules.\\protect\\label{fig:likwid}">>=
+<<r likwid, echo=F, fig.pos="h!tbp", fig.cap="Boxplot of (differential) measurements of energy consumption as measured by the CORE and PKG (package) registers, both measured in Joules.\\protect\\label{fig:likwid}">>=
 test.likwid <- read.csv("../code/data/likwid-sets-10-Apr-12-54-28.csv")
 test.likwid$size <- as.factor(test.likwid$size)
 ggplot(test.likwid, aes(x=size,y=CORE,group=size))+geom_boxplot()
@@ -308,13 +308,13 @@ will directly estimate these runs as 0, and thus are skipped; however, this
 tool does measure a certain amount of consumption that cannot be so easily
 filtered.
 %
-<<r pkg.core, echo=F, fig.cap="Relationship between CORE and PACKAGE consumption (x and y axis, respectively.\\protect\\label{fig:corepkg}">>=
+<<r pkg.core, echo=F, fig.pos="h!tbp",  fig.cap="Relationship between CORE and PACKAGE consumption (x and y axis, respectively.\\protect\\label{fig:corepkg}">>=
 ggplot(test.likwid, aes(x=PKG,y=CORE,color=size))+geom_point()
 @
 %
 Plotting the relationship between these two registers (see Figure \ref{fig:corepkg}), however, shows a linear relationship, so we do not really need to plot both. One of them will be enough, and since PKG seems to have the greatest variation, we will stick to that one.
 
-<<r pinpoint.likwid, echo=F, fig.cap="Relationship between PKG measurements taken by pinpoint and likwid.\\protect\\label{fig:pinlik}">>=
+<<r pinpoint.likwid, echo=F, fig.pos="h!tbp", fig.cap="Relationship between PKG measurements taken by pinpoint and likwid.\\protect\\label{fig:pinlik}">>=
 pinlik <- data.frame(tool=c(rep("pinpoint",45),rep("likwid",48)),
                      size=c(c(rep("1024",15),rep("2048",15),rep("4096",15)),c(rep("1024",16),rep("2048",16),rep("4096",16))),
                      PKG=c(test.pinpoint$PKG,test.likwid$PKG))
@@ -331,7 +331,7 @@ consumption for all three sizes, \lik{} just registers zero, which is not
 reasonable in this case. This will lead us to discard the use of this tool in
 the upcoming experiments.
 
-<<r perf, echo=F, fig.cap="Relationship between PKG measurements taken by pinpoint and perf, with boxplots with values for the three set sizes.\\protect\\label{fig:pinperf}">>=
+<<r perf, echo=F,fig.pos="h!tbp",  fig.cap="Relationship between PKG measurements taken by pinpoint and perf, with boxplots with values for the three set sizes.\\protect\\label{fig:pinperf}">>=
 test.perf <- read.csv("../code/data/perfstat-deno-sets-30-Mar-14-51-25.csv")
 pinperf <- data.frame(tool=c(rep("pinpoint",45),rep("perf",47)),
                      size=c(c(rep("1024",15),rep("2048",15),rep("4096",15)),c(rep("1024",16),rep("2048",16),rep("4096",15))),
@@ -346,7 +346,7 @@ Wilcox test shows significant differences for all three sizes; however, this
 might be due to a different amount of overhead or other unknown
 environmental factors.
 
-<<r sets.vms, echo=F, fig.cap="PKG measurements for the set problem and the three different virtual machines.\\protect\\label{fig:testvms}">>=
+<<r sets.vms, echo=F, fig.pos="h!tbp", fig.cap="PKG measurements for the set problem and the three different virtual machines.\\protect\\label{fig:testvms}">>=
 sets.vms <- read.csv("../code/data/pinpoint-vms-sets-10-Apr-17-59-56.csv")
 sets.vms$size <- as.factor(sets.vms$size)
 ggplot(sets.vms, aes(x=size,y=PKG))+geom_boxplot(aes(fill=VM))
@@ -355,7 +355,7 @@ sets.vms$Joules.Second <- sets.vms$PKG / sets.vms$seconds
 
 Eventually, since \pinp{} is able to measure all size ranges accurately, we will use it exclusively, as well as the quantity it measures, for comparison of different virtual machines. The initial results for this test drive are shown in Figure \ref{fig:testvms}. This is due, in part, to the fact that they take a different amount of time, so it would be interesting to find out whether the energy density, or the consumption of energy per second, is similar. This is shown in Figure \ref{fig:jouls}.
 
-<<r sets.vms.jouls, echo=F, fig.cap="Boxplot of energy consumption per second, in Joules/s.\\protect\\label{fig:jouls}">>=
+<<r sets.vms.jouls, echo=F, fig.pos="h!tbp", fig.cap="Boxplot of energy consumption per second, in Joules/s.\\protect\\label{fig:jouls}">>=
 ggplot(sets.vms, aes(x=size,y=Joules.Second))+geom_boxplot(aes(fill=VM))
 @
 
@@ -372,7 +372,7 @@ These, however, are preliminary findings with a test problem; we will have to de
 \section{Experimental results}
 \label{sec:res}
 
-<<r onemax, echo=F, fig.cap="Boxplot of energy consumption vs. time taken for all three sizes and VMs.\\protect\\label{fig:onemax}">>=
+<<r onemax, echo=F, fig.pos="h!tbp", fig.cap="Boxplot of energy consumption vs. time taken for all three sizes and VMs.\\protect\\label{fig:onemax}">>=
 library(ggthemes)
 onemax <- read.csv("../code/data/pinpoint-v2-onemax-30-Oct-19-03-28.csv")
 onemax$size <- as.factor(onemax$size)
@@ -412,7 +412,7 @@ increases with chromosome size. But this paper focuses on energy consumption,
 which we summarize next in Figure \ref{fig:onemax:energy}.
 
 %
-<<r onemax.vms, echo=F, fig.cap="Boxplot of PKG measurements OneMax problem and the three different virtual machines.\\protect\\label{fig:onemax:energy}">>=
+<<r onemax.vms, echo=F, fig.pos="h!tbp", fig.height=4, fig.cap="Boxplot of PKG measurements for the OneMax problem and the three different virtual machines.\\protect\\label{fig:onemax:energy}">>=
 ggplot(onemax, aes(x=size,y=PKG))+geom_boxplot(aes(fill=VM))+ylim(0, NA)+theme_tufte()
 onemax$kwh <- onemax$PKG * 2.77778e-7
 onemax$cost.Spain <- onemax$kwh * 20
@@ -444,7 +444,7 @@ fragment from one to the other and back. The resulting pairs will be stored in
 an array, which is eventually printed. The result of every experiment
 is shown in an energy vs. wallclock time chart in Figure \ref{fig:xover}.
 
-<<r crossover, echo=F, fig.cap="PKG consumption, in Joules, vs. time in seconds, for the crossover and the three different virtual machines.\\protect\\label{fig:xover}">>=
+<<r crossover, echo=F, fig.pos="h!tbp", fig.height=4, fig.cap="PKG consumption, in Joules, vs. time in seconds, for the crossover and the three different virtual machines.\\protect\\label{fig:xover}">>=
 crossover <- read.csv("../code/data/pinpoint-v2-crossover-30-Oct-18-11-43.csv")
 crossover$size <- as.factor(crossover$size)
 ggplot(crossover, aes(x=seconds,y=PKG))+geom_point(size=3,aes(color=size,fill=size,shape=VM))+theme_tufte()
@@ -456,7 +456,7 @@ consumption, and {\sf node} is the worst. Average energy consumption is shown as
 boxplot in Figure \ref{fig:crossover:energy}.
 
 %
-<<r crossover.energy, echo=F, fig.cap="Boxplot of PKG measurements for the crossover operator and the three different virtual machines.\\protect\\label{fig:crossover:energy}">>=
+<<r crossover.energy, echo=F, fig.pos="h!tbp", fig.height=4, fig.cap="Boxplot of PKG measurements for the crossover operator and the three different virtual machines.\\protect\\label{fig:crossover:energy}">>=
 ggplot(crossover, aes(x=size,y=PKG))+geom_boxplot(aes(fill=VM))+ylim(0, NA)+theme_tufte()
 @
 %
