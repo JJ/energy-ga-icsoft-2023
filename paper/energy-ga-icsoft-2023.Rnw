@@ -382,7 +382,11 @@ ggplot(onemax, aes(x=seconds,y=PKG))+geom_point(size=3,aes(color=size,fill=size,
 As was done in \cite{DBLP:conf/evoW/MereloCBRGFRV16}, which was focused on
 wallclock performance, the experiments will be focused on the key operations
 performed by an EA: evaluation of fitness and "genetic"
-operators like mutation and crossover. 
+operators like mutation and crossover. We will first measure again the performance of the three interpreters involved, and then compare these new measurements to old versions of the same VMs.
+
+\subsection{Comparing performance of JS interpreters}
+\label{ss:perf}
+
 What we will do is, repeating the setup in the initial exploration, 
 check the energy consumption for the processing of
 40000 chromosomes, a number chosen to take a sizable amount of memory, but also
@@ -479,7 +483,7 @@ Since \cite{DBLP:conf/icsoft/GuervosGC23} was written, the interpreters used in 
 \item  \texttt{node.js} version 18.5.0
 \end{itemize}
 
-Current versions, up-to-date by November 1st 2023, are shown above.
+Current versions, up-to-date by November 1st 2023, are shown above in section \ref{sec:setup}.
 
 <<r load.process.data, echo=F, message=F>>=
 
@@ -495,7 +499,6 @@ crossover.avg.ratio <-data.frame( size = crossover.avg$size, vm = crossover.avg$
 
 improvements <- merge( onemax.avg.ratio, crossover.avg.ratio, by = c("size", "vm"))
 kable(improvements, caption="Ratio of PKG energy consumption, new version vs. old version. \\protect\\label{tab:improvements}",row.names=F,col.names=c("VM","Size","OneMax","Crossover"))
-
 
 @
 
