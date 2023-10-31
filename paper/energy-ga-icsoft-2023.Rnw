@@ -282,8 +282,9 @@ clipped at 0, since negative energy differentials would make no sense.
 \section{Experimental results}
 \label{sec:res}
 
-<<r onemax, echo=F, fig.pos="h!tbp", fig.cap="Boxplot of energy consumption vs. time taken for all three sizes and VMs.\\protect\\label{fig:onemax}">>=
+<<r onemax, echo=F, fig.pos="h!tbp", fig.height=5, fig.cap="Boxplot of energy consumption vs. time taken for all three sizes and VMs.\\protect\\label{fig:onemax}">>=
 library(ggthemes)
+library(ggplot2)
 onemax <- read.csv("../code/data/pinpoint-v2-onemax-30-Oct-19-03-28.csv")
 onemax$size <- as.factor(onemax$size)
 ggplot(onemax, aes(x=seconds,y=PKG))+geom_point(size=3,aes(color=size,fill=size,shape=VM))+theme_tufte()
