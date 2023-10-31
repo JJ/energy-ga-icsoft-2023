@@ -75,28 +75,17 @@ The wide adoption of {\sf node.js}, along with the ECMA standard, inspired the d
 in the relatively unknown language Zig.
 
 No wonder, then, that JavaScript is also a popular language for implementing
-metaheuristics, especially evolutionary algorithms (EA). EA
+metaheuristics, especially evolutionary algorithms (EA). EAs
 \cite{eiben2015evolutionary} are population-based stochastic optimization
-algorithms based on the representation of a problem as a (often binary)
-"chromosome", and {\em evolution} of population of these "chromosomes" by random
-change (via "genetic" operators, mutation and crossover) and survival of the
-fittest (evaluation of those chromosomes via a so-called "fitness" function, and
-selection and reproduction of those that achieve the best values).  From the
+algorithms based on the representation of a problem as a 
+"chromosome", and {\em evolution} of a population of these "chromosomes" by random
+change (via so called "genetic" operators such as mutation and crossover), evaluation of those chromosomes via a so-called "fitness" function, and
+selection for reproduction of those that achieve the best values, emulating the survival of the
+fittest of natural evolution. From the
 early implementations in the browser
 \cite{smith1996ga,jesusIWANN99,langdon2004global}, whole libraries
 \cite{EvoStar2014:jsEO}, through complete implementations geared towards
-volunteer computing \cite{2016arXiv160101607M}. However, one of the criticisms
-leveraged towards these implementations is the (possible) lack of speed when
-compared to other compiled languages (mainly Java, very popular in
-metaheuristics implementations, or C++).
-
-This is why, since implementation matters \cite{DBLP:conf/iwann/MereloRACML11},
-choosing the right interpreter is going to have a significant impact on the
-performance of any workload; if you decide to choose JavaScript for any reason
-(such as seamless client/server integration, or be able to run your algorithm
-either on the browser or from the command line if desired) knowing which VM
-delivers the best performance is essential, either from the scientific, or
-software engineering points of view.
+volunteer computing \cite{2016arXiv160101607M}. After choosing the language \cite{DBLP:conf/iwann/MereloRACML11}, choosing an interpreter is the next decision that will impact whatever objective the researcher wants to reach, whether performance or energy efficiency; this will one of the main focuses of this paper.
 
 At the same time, with the advent of the concept of green computing
 \cite{kurp2008green}, it becomes increasingly important to measure not only the
