@@ -51,7 +51,6 @@ Department of Graduate Studies, National Technological Institute of Mexico, Tiju
   almost since its inception. After previously settling the tools and essential
   methodology, in this paper, we will focus on the importance of
   measuring different versions of the same runtimes, as well as extending the
-  % Note: return to briefly explain what these extensions are - M
   EA operators that will be measured. We also like to remark on the
   importance of testing the operators in different architectures to
   have a more precise picture that tips the balance towards one runtime or
@@ -84,35 +83,59 @@ general methodology for measuring energy consumption: using the energy profiler
 command line, without any additional instrumentation, to measure power
 extracted by evolutionary algorithm operators from the source.
 
-We validated this approach, and applied it to a single fitness function (OneMax) and a common operator (crossover). However, this study left a few issues open. In this edition, we will widen the results, looking at different factors\begin{itemize}
-\item Test new versions of the virtual machines considering energy consumption, since in general these evolve towards more efficient operation; at any rate, the balance of results might change in these new versions in unexpected ways.
-\item Test also in different power consumption environments, including a native Intel machine, so that the interplay between the virtual machine and the power management can be observed with more precision, with a full implementation of the API used for reading energy consumption sensors.
-    % Virtual Machine? is this the V8 engine? It is confusing, I think it is not a VM like Java's. - M
-\item A more complete operation of an evolutionary algorithm will be tested: the ubiquitous mutation will also be tested, to see what kind of power consumption profile it adds.
+We validated this approach, and applied it to a single fitness function
+(OneMax) and a common operator (crossover). However, this study left a few
+issues open. In this edition, we will widen the results, looking at different
+factors
+
+\begin{itemize} 
+
+\item Test new versions of the virtual machines considering energy consumption,
+    since in general these evolve towards more efficient operation; at any
+    rate, the balance of results might change in these new versions in
+    unexpected ways.
+            
+\item Test also in different power consumption environments, including
+    a native Intel machine, so that the interplay between the
+    interpreter and the power management can be observed with more
+    precision, with a full implementation of the API used for reading
+    the energy consumption sensors.
+
+\item A more complete operation of an evolutionary algorithm will be tested:
+    adding the ubiquitous mutation operator to the testbed, to see what kind of power
+    consumption profile it adds. 
+
 \end{itemize}
 
 
 The rest of the paper follows this plan: next we will present the state of the
-art; then we will describe the results with its experimental setup will be presented next in Section \ref{sec:res}, and we will end with a
-discussion of results, conclusions and future lines of work.
+art; next the results together with the experimental setup will be
+presented in Section~\ref{sec:res}, and we will end with a discussion of
+results, conclusions and future lines of work in Section~\ref{sec:conc}.
 
 \section{State of the art}
 
 
-In the last few years, evaluating the energy efficiency of algorithms as well as changing algorithms or implementations in such a way that their energy consumption is decreased has increasingly become a research topic \cite{demaine2016energy}; in many cases
-algorithms are compared with respect their power efficiency. Machine learning/AI applications \cite{verdecchia2023systematic} have been studied from the green perspective more strongly since 2020, mainly using experimental studies, establishing it as the best practice, which we will also follow in this paper.
+In the last few years, evaluating the energy efficiency of algorithms as well
+as modifing these algorithms or their implementations so they consume less
+energy has increasingly become a research topic \cite{demaine2016energy}; in
+many cases algorithms are compared with respect to their power efficiency.
+Since 2020, Machine learning/AI applications \cite{verdecchia2023systematic}
+have been extensively studied from the green perspective, primarily through 
+experimental studies. Green computing principles have been establishied as a
+best practice, which we will also follow in this paper.
 
 In the area of evolutionary algorithms, initial energy efficiency
-estimations included their behaviour in different platforms
+estimations included their behavior in different platforms
 \cite{10.1007/978-3-319-45823-6_51}, its interaction with cloud
 services \cite{maryam2018evolutionary} and how it affected genetic
 programming (GP) \cite{diaz2018fuzzy}; but since then, and due to the
 fact that metaheuristics are so extensively used in machine learning
 applications, studies in this area have grown. Many papers focus on
-analysing how certain metaheuristics parameters have an impact on
+analyzing how certain metaheuristics parameters have an impact on
 energy consumption.  Díaz-Álvarez et al. \cite{diaz2022population}
-studies how the populations size of EAs influences power
-consumption. In an earlier work, centred on genetic algorithms (GAs)
+studies how the population size of EAs influences power
+consumption. In an earlier work, centered on genetic algorithms (GAs)
 \cite{10.1007/978-3-030-45715-0_8}, power-consumption of
 battery-powered devices was measured for various parameter
 configurations including chromosome and population sizes. The
@@ -129,7 +152,12 @@ parameters for a GP algorithm and concluded that hand-held devices and
 single-board computers (SBCs) required an order of magnitude less
 energy to run the same algorithm.
 
-These results point to several best practices in the area: first, evaluate separately different operators and fitness functions, and second, perform experiments on different devices. After the initial exploration and establishment of technology in \cite{DBLP:conf/icsoft/GuervosGC23}, this paper will also test the mutation operator, as well as carry out tests in different computers with different architecture.
+These results point to several best practices in the area: first, evaluate
+separately different operators and fitness functions, and second, perform
+experiments on different devices. After the initial exploration and
+establishment of technology in \cite{DBLP:conf/icsoft/GuervosGC23}, this paper
+will also test the mutation operator, as well as carry out tests in computers
+with different architectures.
 
 
 \section{Experimental results}
@@ -141,13 +169,13 @@ that uses the RAPL (Running Average Power Limit \cite{rapl})
 interface, to report the power consumed. This tool was on one side
 accurate enough to take the measurements we needed and on the other
 it was measuring what we needed, so it will be the one
-used in this paper. This tool sometimes returns 0 in energy
-measures; when this happened, the run were discarded and the run
-repeated until the desired number is reached. Depending on the actual
-processor and chipset architecture, it will report different
-quantities; however, it will at least report the {\em package} ({\tt
+used in this paper. This tool sometimes returned 0 in energy
+measures; when this happened, the run was discarded and 
+repeated until the desired number was reached. Depending on the actual
+processor and chipset architecture, the tool will report different
+quantities; however, it always reports the {\em package} ({\tt
 PKG}) energy consumption, which includes the CPU cores and the RAM. In
-architectures like Intel native where the RAM consumptions are
+architectures like Intel native where the RAM consumption is
 available, it will report {\tt PKG} as two separate quantities, {\tt
 cores} and {\tt ram}.
 
