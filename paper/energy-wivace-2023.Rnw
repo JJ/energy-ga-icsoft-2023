@@ -40,21 +40,23 @@ Department of Graduate Studies, National Technological Institute of Mexico, Tiju
 
 \begin{abstract}
 
-Green computing is a methodology for saving energy in the implementation of
+  Green computing is a methodology for saving energy when implementing
   algorithms, and it is a problem with many moving parts. In environments where
   the runtime is an integral part of the application, it is essential to
   measure their energy efficiency so that researchers and practitioners have
-  enough choice. In this paper, we will focus on JavaScript runtimes for
+  enough choice. In this paper, we will focus on JavaScript runtime environments for
   evolutionary algorithms; although not the most popular language for
   scientific computing, it is the most popular language for developers, and it
-  has been used repeatedly to implement all kind of evolutionary algorithms
-  almost since its inception. After settling the tools and essential
-  methodology previously, in this paper we will focus on the importance of
+  has been used repeatedly to implement all kinds of evolutionary algorithms
+  almost since its inception. After previously settling the tools and essential
+  methodology, in this paper, we will focus on the importance of
   measuring different versions of the same runtimes, as well as extending the
-  EA operators that will be measured. We would also like to remark the
-  importance of testing the operators in different architectures, in order to
+  % Note: return to briefly explain what these extensions are - M
+  EA operators that will be measured. We also like to remark on the
+  importance of testing the operators in different architectures to
   have a more precise picture that tips the balance towards one runtime or
   another.
+  % maybe:  a more precise picture of what tips the balance... - M
 
 \keywords{Green computing, metaheuristics, JavaScript, energy-aware computing, evolutionary algorithms}
 \end{abstract}
