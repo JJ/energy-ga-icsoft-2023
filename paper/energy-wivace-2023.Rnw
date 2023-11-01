@@ -64,13 +64,30 @@ Department of Graduate Studies, National Technological Institute of Mexico, Tiju
 \section{\uppercase{Introduction}}
 \label{sec:introduction}
 
-From the first papers that used it for implementing metaheuristics \cite{jesusIWANN99}, JavaScript is nowadays a great alternative for evolutionary algorithms and machine learning models, making it a target for energy efficiency studies in that area. However, unlike other languages, there are different interpreters with different objectives: besides the well known and established {\sf node}, already in its version 20, {\sf deno} \cite{runtimeintroducing} (written in
-Rust) and {\sf bun} \cite{bun} (programmed in the relatively unknown language
-Zig) have been produced lately. We already compared them in a previous paper \cite{DBLP:conf/icsoft/GuervosGC23}. However, in that paper we established a general methodology for measuring energy consumption: using the energy profiler {\sf pinpoint}  \cite{9307947}, that reads from the RAPL registers \cite{10.1145/2425248.2425252,khan2018rapl}, and using experiments run from the command line, without any additional instrumentation, to measure power extracted by evolutionary algorithm operators from the source.
+
+
+From the first papers using it for implementing metaheuristics
+\cite{jesusIWANN99}, JavaScript is nowadays a great alternative for
+evolutionary algorithms and machine learning, making it a target for energy
+efficiency studies in those areas. However, unlike other languages, there are
+different interpreters with different applications: besides the well-known and
+established {\sf node} designed for browser and server-side execution and
+already in its version 20, a pair of powerful runtime environments have been
+produced recently. There is {\sf deno} \cite{runtimeintroducing} (written in
+Rust) focused on security and ease of use, and {\sf bun} \cite{bun} (programmed
+in the relatively unknown language Zig) designed for speed and server-side
+applications. We already compared them in a previous paper
+\cite{DBLP:conf/icsoft/GuervosGC23}. However, in that paper we established a
+general methodology for measuring energy consumption: using the energy profiler
+{\sf pinpoint}  \cite{9307947}, that reads from the RAPL registers
+\cite{10.1145/2425248.2425252,khan2018rapl}, and using experiments run from the
+command line, without any additional instrumentation, to measure power
+extracted by evolutionary algorithm operators from the source.
 
 We validated this approach, and applied it to a single fitness function (OneMax) and a common operator (crossover). However, this study left a few issues open. In this edition, we will widen the results, looking at different factors\begin{itemize}
 \item Test new versions of the virtual machines considering energy consumption, since in general these evolve towards more efficient operation; at any rate, the balance of results might change in these new versions in unexpected ways.
 \item Test also in different power consumption environments, including a native Intel machine, so that the interplay between the virtual machine and the power management can be observed with more precision, with a full implementation of the API used for reading energy consumption sensors.
+    % Virtual Machine? is this the V8 engine? It is confusing, I think it is not a VM like Java's. - M
 \item A more complete operation of an evolutionary algorithm will be tested: the ubiquitous mutation will also be tested, to see what kind of power consumption profile it adds.
 \end{itemize}
 
