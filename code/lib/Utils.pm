@@ -5,11 +5,15 @@ use Time::Piece;
 
 use feature qw(say);
 
-our @EXPORT_OK = qw( %command_lines process_powermetrics_output);
+our @EXPORT_OK = qw( %command_lines %command_lines_mac process_powermetrics_output);
 
-our %command_lines = ( deno => "/home/jmerelo/.deno/bin/deno run scripts/",
+our %command_lines = ( deno => "/opt/homebrew/bin/deno run scripts/",
                      bun => "/home/jmerelo/.bun/bin/bun run scripts/",
                      node => "/home/jmerelo/.nvm/versions/v20.9.0/bin/node scripts/" );
+
+our %command_lines_mac = ( deno => "/home/jmerelo/.deno/bin/deno run scripts/",
+                     bun => "/Users/jjmerelo/.bun/bin/bun run scripts/",
+                     node => "/Users/jjmerelo/.nvm/versions/node/v20.9.0/bin/node scripts/" );
 
 sub process_powermetrics_output {
   my $output_file_name = shift;
