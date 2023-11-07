@@ -180,9 +180,12 @@ perform when running the same workload, as well as how they interact with the
 \section{Methodology and experimental setup}
 \label{sec:setup}
 
-In this section we will first present what can be measured and how it can be done in the two platforms targeted in this paper, Intel and Apple Silicon; then we will briefly describe how the experiments are run and the output is processed in subsection \ref{ss:perl}.
+In this section, we will first present what can be measured and how it can be
+done in the two platforms targeted in this paper, Intel and Apple Silicon; then
+we will briefly describe how the experiments are run and the output is
+processed in subsection \ref{ss:perl}.
 
-\subsection{Measurements in an Intel platform}
+\subsection{Measurements on an Intel-based platform}
 There are many ways to measure the consumption of applications running in a
 computer; besides measuring directly from the power intake, those running as
 applications and tapping the computer sensors fall roughly into two fields:
@@ -202,7 +205,7 @@ Power Limit \cite{10.1145/2425248.2425252}. Essentially, it consists of a series
 of machine-specific registers (MSRs) that contain information on the wattage
 drawn by different parts of the architecture; the content of these registers
 will be processed (through the corresponding library) and consumed by different
-command line utilities. We will use these command line utilities since they
+command line utilities. We will use these command-line utilities since they
 produce an output that can be automatically processed and evaluated, which is
 what we are looking for in this paper\footnote{Systems based on the AMD
 architecture have a similar power profiling system called AMP with its
