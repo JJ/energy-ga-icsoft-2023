@@ -23,24 +23,24 @@ Department of Graduate Studies, National Technological Institute of Mexico, Tiju
 \maketitle
 
 \begin{abstract} Energy-aware computing is the design and operation of hardware
-and software system to minimize their energy consumption. This requires
+and software systems to minimize their energy consumption. This requires
 consideration of many variables and parameters, making it necessary to focus on
-a single one or a few to obtain meaningful results; this why in this paper we
+a single one or a few to obtain meaningful results; this is why, in this paper, we
 will investigate the energy consumption of three JavaScript interpreters ({\sf
 bun}, {\sf node.js}, and {\sf deno}) for evolutionary algorithms (EAs), a type
 of population-based stochastic optimization algorithm. We expect different
-energy budgets for running the same EA workload on these interpreters, due to
+energy budgets for running the same EA workload on these interpreters due to
 their different conceptual designs. We will also compare the energy consumption
 of the different operators and functions of the EA, to see if there are
 differences in the energy consumption of the different
 interpreters. Additionally, we will perform these measurements across different
 architectures, homogeneous (Intel) and heterogeneous (ARM), to profile their
-energy consumption.  In order to obtain these results, we will test different
+energy consumption.  To obtain these results, we will test different
 tools to measure per-process energy consumption accurately. After choosing a
-tool, we will perform experiments on a workload similar to EAs to measure the
+tool, we will perform experiments on a workload similar to an EA to measure the
 energy consumption of EA-specific functions and operators for different problem
 sizes. Finally, we will draw a conclusion on which JavaScript interpreter and
-architecture is most energy-efficient for EA workloads, if energy is a limited
+architecture are the most energy-efficient for EA workloads if energy is a limited
 concern.
 \end{abstract}
 
