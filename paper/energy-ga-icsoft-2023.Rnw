@@ -265,15 +265,15 @@ A Perl script was created to perform the experiments; it launched the scripts
 and collected results by analyzing the standard output and putting it in a CSV
 format that would allow examination of the experiments.
 
-The initial experiment consisted in a script that used the \texttt{saco-js}
+The initial experiment consisted of a script that used the \texttt{saco-js}
 library to perform the union of ``bags'', sets that can hold several copies of
 the same item. 1024 sets were generated; these sets had 1024, 2048, 4096
 elements. Then, a union of bags was performed on pairs of sets until
 there was only one left. This is similar to some operations performed by
 EAs, mainly related to merging populations. They do not
-involve floating point operations in any way.
+involve floating-point operations in any way.
 
-The scripts to launch every kind of tool were slightly different, mainly because
+The scripts that launched every kind of tool were slightly different, mainly because
 the output needed to be processed in different ways (and different kinds of
 information extracted). Additionally, \texttt{pinpoint}, which is the only tool
 that does not need superuser privileges, sometimes returned 0 in energy
@@ -285,7 +285,7 @@ processes running at the same time, what we did was to run every program 15
 times, compute the average time, and then use the same tool to measure the
 energy consumption for the \texttt{sleep} program during the average amount of
 time. The energy readings shown are the result of subtracting this measurement
-from every one of the 15 other measurements taken, so that we can analyze the
+from every one of the 15 other measurements taken so that we can analyze the
 differential of energy that has been consumed by our programs; the result is
 clipped at 0, since negative energy differentials would make no sense.
 
@@ -322,7 +322,7 @@ ggplot(onemax, aes(x=seconds,y=PKG))+geom_point(size=3,aes(color=size,fill=size,
 @
 
 As was done in \cite{DBLP:conf/evoW/MereloCBRGFRV16}, which was focused on
-wallclock performance, the experiments will be focused on the key operations
+wall clock performance, the experiments will be focused on the key operations
 performed by an EA: evaluation of fitness and "genetic" operators like mutation
 and crossover. We will first measure again the performance of the three
 interpreters involved, and then compare these new measurements to old versions
@@ -331,15 +331,15 @@ of the same VMs.
 \subsection{Comparing performance of JS interpreters}
 \label{ss:perf}
 
-What we will do is, repeating the setup in the initial exploration, to check the
+We will repeat the setup in the initial exploration, to check the
 energy consumption for the processing of 40000 chromosomes, a number chosen to
 take a sizable amount of memory, but also on the ballpark of the usual number of
-operations in an EA benchmark, it is also small enough to not create garbage
-collection problems with the memory, something that was detected after the
+operations in an EA benchmark, it is also compact enough to avoid issues with garbage collection in memory,
+something that was detected after the
 initial exploration.  Experiments were repeated for the same chromosome size as
 before, 1024, 2048, and 4096, and for the three JS virtual machines
 used. Although the business logic is exactly the same for the experiments, the
-script run comes in two versions, one for {\sf deno} and the other for {\sf
+script has two versions, one for {\sf deno} and the other for {\sf
 bun/node}, due to the different way they have of reading command-line
 arguments. This does not affect the overhead in any way. Code, as well as the
 data resulted from the experiments and analyzed in this paper, are released with
@@ -347,9 +347,9 @@ a free license (along with this paper) from the repository
 \url{https://github.com/JJ/energy-ga-icsoft-2023}.
 
 First, we will evaluate a typical fitness function, OneMax, which counts the
-number of ones in a binary (1s and 0s) string. This type of functions, which
-check the values of bits in a string and assign an integer value to it are
-typical of many papers focused on evaluating EAs,
+number of ones in a binary (1s and 0s) string. This type of function, which
+check the values of bits in a string and assign an integer value to it,
+is found in many papers focused on evaluating EAs,
 including parallel versions \cite{DBLP:conf/gecco/GuervosV18}.
 
 The results are shown in Figure \ref{fig:onemax}. This already shows that time,
@@ -385,12 +385,12 @@ library(kableExtra)
 kable(onemax.cost, caption="Estimated cost of the OneMax runs for every VM and size, in €-cents. \\protect\\label{tab:onemax:cost}")
 @
 
-The crossover operation involves copy operations between strings, as well as
+The crossover operation involves copy operations between strings, as well as the
 creation of new strings. We will again generate 40K chromosomes and group them
 in pairs; these strings will be crossed by interchanging a random
 fragment from one to the other and back. The resulting pairs will be stored in
 an array, which is eventually printed. The result of every experiment
-is shown in an energy vs. wallclock time chart in Figure \ref{fig:xover}.
+is shown in an energy vs. wall clock time chart in Figure \ref{fig:xover}.
 
 <<r crossover, echo=F, fig.pos="h!tbp", fig.height=4, fig.cap="PKG consumption, in Joules, vs. time in seconds, for the crossover and the three different virtual machines.\\protect\\label{fig:xover}">>=
 crossover <- read.csv("../code/data/pinpoint-v2-crossover-30-Oct-18-11-43.csv")
@@ -420,12 +420,12 @@ function.
 
 Since \cite{DBLP:conf/icsoft/GuervosGC23} was written, the interpreters used in
 that and this paper have evolved; {\sf bun} has gone from beta to production
-with its 1.0 version, while {\sf node.js} has gone from its LTS (long term
+with its 1.0 version, while {\sf node.js} has gone from its LTS (long-term
 support) version 18 to 20. While new versions always try to improve performance,
-it is not a given that they do so while keeping a low energy profile or
+it is not a given that they do so while keeping a low-energy profile or
 optimizing for energy consumption in any way. In this subsection, we will
 compare the energy consumption of the different versions of the interpreters
-used in the previous installment of this line of research, to see if there are
+used in the previous installment of this line of research to see if there are
 any significant differences. In that paper, the versions for the three JS
 interpreters were:
 
@@ -459,7 +459,7 @@ kable(improvements, caption="Ratio of PKG energy consumption, new version vs. ol
 In Table \ref{tab:improvements}, we can see the ratio of energy consumption for
 these old versions vs. the new ones; it is obvious that there are changes, and
 mostly improvements, making new versions better for green computing; however,
-there are differences across interpreters, sizes and the workload
+there are differences across interpreters, sizes, and the workload
 involved. While in general {\sf bun} spends less energy, sometimes remarkably
 so, like in the case of the OneMax function and the smallest size, there are
 cases, like Crossover for the medium size, where it can be slightly worse. {\sf
@@ -473,12 +473,16 @@ This tells us that, in general, we should always try to use the latest version
 of the interpreter, as it will most likely be more energy efficient. However,
 benchmarking these new versions is still necessary, as there are cases where the
 new version is not better than the old one. At the same time, these results
-confirms that {\sf bun}, even after the introduction of the 1.0 version, is
-still the most energy efficient interpreter, and it is probably a reasonable
+confirm that {\sf bun}, even after the introduction of the 1.0 version, is
+still the most energy-efficient interpreter, and it is probably a reasonable
 rule-of-thumb to make it our first choice when dealing with evolutionary
 algorithms workloads.
 
-As has been indicated earlier, Apple Macs have a different architecture, called Apple Silicon, using heterogeneous cores, the "P" and "E" cores. The chosen tool, {\sf pinpoint}, yields measurements for every code subset, as well as DRAM; we have performed a series of measurements with these interpreter versions:
+As has been indicated earlier, Apple Macs have a different architecture, called
+Apple Silicon, using heterogeneous cores, the "P" and "E" cores. The chosen
+tool, {\sf pinpoint}, yields measurements for every code subset, as well as
+DRAM; we have performed a series of measurements with these interpreter
+versions:
 
 \begin{itemize}
 \item \texttt{bun} version 1.0.9
@@ -521,9 +525,9 @@ that estimation was not adequate; this tool has been calibrated by comparing its
 readings with other tools, which were also evaluated for the same purpose and
 eventually discarded. We have also adopted a benchmark-based approach, similar
 to the one used to measure performance, so that consumption for specific
-operations can be pinpointed, discarding noise produced by an implementation of
-a complete algorithm; that is, a whole program includes different operations,
-applied in different proportion, that might cancel each other. Testing short
+operations can be pinpointed, discarding noise produced by the implementation of
+a complete algorithm; that is, a whole program that includes different operations,
+applied in different proportions, that might cancel each other. Testing short
 code paths, as proposed by \cite{10.1145/2425248.2425252} makes easier to
 understand their individual contribution to the overall consumption of the
 algorithm, and eventually optimize their specific code, or the number of times
@@ -539,12 +543,12 @@ different aspects of energy consumption.
 
 The main point of this paper, however, was to check which JavaScript
 interpreter should be used if our objective is to consume the minimum amount of
-energy; the experiments have reliably confirmed {\sf bun} to be that tool. Not
-only it consumes less for all the range of chromosome sizes used; it also takes
+energy; the experiments have reliably confirmed {\sf bun} to be that tool. It not
+only consumes less for all the range of chromosome sizes used; it also takes
 less time and can run applications written for Node (mostly) unmodified; its
 consumption also scales better with problem size. This might be due to design
 considerations, but also to the fact that the language used to write it, Zig,
-emphasizes compile-time safety and manual memory allocation by default, and avoids hidden control flow.
+emphasizes compile-time safety and manual memory allocation by default and avoids hidden control flow.
 The only inconvenience of this interpreter is that it has not
 reached version 1.0 yet, being currently in version 0.5.9; this might prevent
 any company or organization from using it in production environments.
@@ -555,13 +559,13 @@ node}, even more so when memory requirements are high. According to our initial
 exploration, it will also consume less energy {\em per second}, thus for
 workloads that take roughly the same time, it will be a better candidate than
 {\sf node}. As an inconvenience, it needs minor modifications to run, at least
-if you need core or other kind of external libraries; its core library modules
+if you need core or other kinds of external libraries; its core library modules
 are different to those used in {\sf node/bun}, although that need not be a
 disadvantage per se.
 
 The previous two points imply that, energy-wise, there are no good reasons to
 use {\sf node.js} for running EAs. Except if the business logic
-uses specific, early-adoption, or some features that, for some reason, does not
+uses specific, early-adoption, or some features that, for some reason, do not
 work with {\sf bun} yet, we would advise anyone to keep using {\sf bun} for this
 kind of workloads.
 
@@ -578,7 +582,13 @@ GPU-free, there are some fitness functions that operate on floating point
 numbers and thus would need to use the GPU; how interpreters work in this area
 could be an interesting future line of work.
 
-Another interesting venue of research is the way different architectures affect energy consumption, not only at the processor design level, but also at the machine design level. Different computers with different cooling strategies, passive or active, will spend energy in a different way and interact in non-trivial ways with workloads and interpreters. This will also open interesting and new lines of research seeking the best software/hardware combination to run EAs in a green way.
+Another interesting avenue of research is the way different architectures
+affect energy consumption, not only at the processor design level, but also at
+the machine design level. Different computers with different cooling
+strategies, passive or active, will spend energy differently and
+interact in non-trivial ways with workloads and interpreters. This will also
+open interesting and new lines of research seeking the best software/hardware
+combination to run EAs in a green way.
 
 Finally, we have seen that the energy consumption of the interpreters is
 
@@ -591,7 +601,7 @@ future research.
 
 This work is supported by the Ministerio espa\~{n}ol de Econom\'{\i}a y
 Competitividad (Spanish Ministry of Competitivity and Economy) under project
-PID2020-115570GB-C22 (DemocratAI::UGR).
+PID2020-115570GB-C22 (DemocratAI::UGR) and Project 18186.23-P of 2023 TecNM research grants.
 
 
 \bibliographystyle{apalike}
