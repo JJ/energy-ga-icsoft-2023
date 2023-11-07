@@ -449,6 +449,26 @@ still the most energy efficient interpreter, and it is probably a reasonable
 rule-of-thumb to make it our first choice when dealing with evolutionary
 algorithms workloads.
 
+As has been indicated earlier, Apple Macs have a different architecture, called Apple Silicon, using heterogeneous cores, the "P" and "E" cores. The chosen tool, {\sf pinpoint}, yields measurements for every code subset, as well as DRAM; we have performed a series of measurements with these interpreter versions:
+
+\begin{itemize}
+\item \texttt{bun} version 1.0.9
+\item \texttt{deno} version 1.36.4
+\item  \texttt{node.js} version 20.9.0
+\end{itemize}
+
+As in the in the previous cases, we have performed measurements for the OneMax fitness function and the Crossover operator.
+
+<<r onemax.mac, echo=F, fig.pos="h!tbp", fig.show="hold", out.width="33%", fig.cap="Boxplot of energy consumption vs. time taken for all three sizes and VMs.\\protect\\label{fig:onemax}">>=
+
+onemax.mac <- read.csv("../code/data/pinpoint-mac-onemax-7-Nov-10-35-09.csv")
+onemax.mac$size <- as.factor(onemax.mac$size)
+ggplot(onemax.mac, aes(x=seconds,y=RAM))+geom_point(size=3,aes(color=size,fill=size,shape=VM))+theme_tufte()
+ggplot(onemax.mac, aes(x=seconds,y=ECPU))+geom_point(size=3,aes(color=size,fill=size,shape=VM))+theme_tufte()
+ggplot(onemax.mac, aes(x=seconds,y=PCPU))+geom_point(size=3,aes(color=size,fill=size,shape=VM))+theme_tufte()
+onemax.mac$CPU <- onemax.mac$ECPU + onemax.mac$PCPU
+@
+
 \section{Conclusions}
 \label{sec:conc}
 
