@@ -457,9 +457,9 @@ As has been indicated earlier, Apple Macs have a different architecture, called 
 \item  \texttt{node.js} version 20.9.0
 \end{itemize}
 
-As in the in the previous cases, we have performed measurements for the OneMax fitness function and the Crossover operator.
+As in the in the previous cases, we have performed measurements for the OneMax fitness function and the Crossover operator; the platform was a MacBook Air M1 with 16GB of RAM and macOS Ventura 13.2.1. The results are shown in Figure \ref{fig:onemax:mac} and Figure \ref{fig:onemax:mac}.
 
-<<r onemax.mac, echo=F, fig.pos="h!tbp", fig.show="hold", out.width="33%", fig.cap="Boxplot of energy consumption vs. time taken for all three sizes and VMs.\\protect\\label{fig:onemax}">>=
+<<onemax.mac, echo=F, fig.pos="h!tbp", fig.show="hold", out.width="32%", fig.cap="Boxplot of energy consumption for the OneMax fitness function: RAM (left), \"efficiency\" CPUs (middle), \"performance CPUs\" (right) vs. time taken for all three sizes and VMs, in a Mac.\\protect\\label{fig:onemax:mac}">>=
 
 onemax.mac <- read.csv("../code/data/pinpoint-mac-onemax-7-Nov-10-35-09.csv")
 onemax.mac$size <- as.factor(onemax.mac$size)
@@ -467,6 +467,16 @@ ggplot(onemax.mac, aes(x=seconds,y=RAM))+geom_point(size=3,aes(color=size,fill=s
 ggplot(onemax.mac, aes(x=seconds,y=ECPU))+geom_point(size=3,aes(color=size,fill=size,shape=VM))+theme_tufte()
 ggplot(onemax.mac, aes(x=seconds,y=PCPU))+geom_point(size=3,aes(color=size,fill=size,shape=VM))+theme_tufte()
 onemax.mac$CPU <- onemax.mac$ECPU + onemax.mac$PCPU
+@
+
+<<r crossover.mac, echo=F, fig.pos="h!tbp", fig.show="hold", out.width="32%", fig.cap="Boxplot of energy consumption for the crossover operator in RAM (left), \"efficiency\" CPUs (middle), \"performance CPUs\" (right) vs. time taken for all three sizes and VMs, in a Mac.\\protect\\label{fig:crossover:mac}">>=
+
+crossover.mac <- read.csv("../code/data/pinpoint-mac-crossover-7-Nov-11-09-36.csv")
+crossover.mac$size <- as.factor(crossover.mac$size)
+ggplot(crossover.mac, aes(x=seconds,y=RAM))+geom_point(size=3,aes(color=size,fill=size,shape=VM))+theme_tufte()
+ggplot(crossover.mac, aes(x=seconds,y=ECPU))+geom_point(size=3,aes(color=size,fill=size,shape=VM))+theme_tufte()
+ggplot(crossover.mac, aes(x=seconds,y=PCPU))+geom_point(size=3,aes(color=size,fill=size,shape=VM))+theme_tufte()
+crossover.mac$CPU <- crossover.mac$ECPU + crossover.mac$PCPU
 @
 
 \section{Conclusions}
