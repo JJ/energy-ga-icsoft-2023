@@ -422,7 +422,7 @@ crossover.old %>% group_by( size, VM) %>% summarise( average = mean( PKG ) ) -> 
 crossover.avg.ratio <-data.frame( size = crossover.avg$size, vm = crossover.avg$VM, ratio.crossover = crossover.avg$average / crossover.old.avg$average)
 
 improvements <- merge( onemax.avg.ratio, crossover.avg.ratio, by = c("size", "vm"))
-kable(improvements, caption="Ratio of PKG energy consumption, new version vs. old version. \\protect\\label{tab:improvements}",row.names=F,col.names=c("VM","Size","OneMax","Crossover"))
+kable(improvements, caption="Ratio of PKG energy consumption, new version vs. old version for OneMax and crossover. \\protect\\label{tab:improvements}",row.names=F,col.names=c("VM","Size","OneMax","Crossover"))
 
 @
 
@@ -469,6 +469,8 @@ ggplot(onemax.mac, aes(x=seconds,y=PCPU))+geom_point(size=3,aes(color=size,fill=
 onemax.mac$CPU <- onemax.mac$ECPU + onemax.mac$PCPU
 @
 
+The situation shown in that figure is remarkably similar, in the sense that node.js consumes more energy than the other two, and {\sf bun} is at the same time faster and consumes less energy. There are, however, some specifics in how Apple Silicon measures and spends the energy; from left to right, we can see that the {\em scale} of  the three charts is quite different: the bulk of the energy is spent by the "P" cores, that is, the performance cores. The same happens in the case of Crossover, shown in Figure \ref{fig:crossover:mac}. This implies that, for this workload, the "E" cores are used at a very low level, if at all. The total energy spent by the cores is also much higher than the one spent by the RAM.
+
 <<r crossover.mac, echo=F, fig.pos="h!tbp", fig.show="hold", out.width="32%", fig.cap="Boxplot of energy consumption for the crossover operator in RAM (left), \"efficiency\" CPUs (middle), \"performance CPUs\" (right) vs. time taken for all three sizes and VMs, in a Mac.\\protect\\label{fig:crossover:mac}">>=
 
 crossover.mac <- read.csv("../code/data/pinpoint-mac-crossover-7-Nov-11-09-36.csv")
@@ -477,6 +479,18 @@ ggplot(crossover.mac, aes(x=seconds,y=RAM))+geom_point(size=3,aes(color=size,fil
 ggplot(crossover.mac, aes(x=seconds,y=ECPU))+geom_point(size=3,aes(color=size,fill=size,shape=VM))+theme_tufte()
 ggplot(crossover.mac, aes(x=seconds,y=PCPU))+geom_point(size=3,aes(color=size,fill=size,shape=VM))+theme_tufte()
 crossover.mac$CPU <- crossover.mac$ECPU + crossover.mac$PCPU
+@
+
+We will try to compare this energy profile with the one obtained previously in an Unix machine with an AMD processor. Although they are not entirely comparable, PKG is equivalent to the sum of P and E cores.
+
+<<mac.rations, echo=F,message=F,warning=F>>=
+onemax.mac %>% group_by( size, VM) %>% summarise( average = mean( CPU ) ) -> onemax.mac.avg
+crossover.mac %>% group_by( size, VM) %>% summarise( average = mean( CPU ) ) -> crossover.mac.avg
+
+onemax.mac.ratio <-data.frame( size = onemax.avg$size, vm = onemax.avg$VM, ratio.onemax = onemax.avg$average / onemax.mac.avg$average)
+crossover.mac.ratio <-data.frame( size = crossover.avg$size, vm = crossover.avg$VM, ratio.onemax = crossover.avg$average / onemax.mac.avg$average)
+improvements.mac <- merge( onemax.mac.ratio, crossover.mac.ratio, by = c("size", "vm"))
+kable(improvements.mac, caption="Ratio of CPU energy consumed by the desktop machine over the MacAir with Apple Silicon M1. \\protect\\label{tab:improvements:mac}",row.names=F,col.names=c("VM","Size","OneMax","Crossover"))
 @
 
 \section{Conclusions}
