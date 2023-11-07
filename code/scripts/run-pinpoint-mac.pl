@@ -53,7 +53,8 @@ for my $c ( qw(node bun deno) ) {
       say $fh "pinpoint, $c, $l, ",
         $dram_diff > 0 ?$dram_diff:0,  ", " ,
         $ecpu_diff > 0 ?$ecpu_diff:0,  ", " ,
-        $pcpu_diff > 0 ?$pcpu_diff:0,  ", " 
+        $pcpu_diff > 0 ?$pcpu_diff:0,  ", " ,
+        $measures[3];
     }
   }
 }
