@@ -23,24 +23,24 @@ Department of Graduate Studies, National Technological Institute of Mexico, Tiju
 \maketitle
 
 \begin{abstract} Energy-aware computing is the design and operation of hardware
-and software system to minimize their energy consumption. This requires
+and software systems to minimize their energy consumption. This requires
 consideration of many variables and parameters, making it necessary to focus on
-a single one or a few to obtain meaningful results; this why in this paper we
+a single one or a few to obtain meaningful results; this is why, in this paper, we
 will investigate the energy consumption of three JavaScript interpreters ({\sf
 bun}, {\sf node.js}, and {\sf deno}) for evolutionary algorithms (EAs), a type
 of population-based stochastic optimization algorithm. We expect different
-energy budgets for running the same EA workload on these interpreters, due to
+energy budgets for running the same EA workload on these interpreters due to
 their different conceptual designs. We will also compare the energy consumption
 of the different operators and functions of the EA, to see if there are
 differences in the energy consumption of the different
 interpreters. Additionally, we will perform these measurements across different
 architectures, homogeneous (Intel) and heterogeneous (ARM), to profile their
-energy consumption.  In order to obtain these results, we will test different
+energy consumption.  To obtain these results, we will test different
 tools to measure per-process energy consumption accurately. After choosing a
-tool, we will perform experiments on a workload similar to EAs to measure the
+tool, we will perform experiments on a workload similar to an EA to measure the
 energy consumption of EA-specific functions and operators for different problem
 sizes. Finally, we will draw a conclusion on which JavaScript interpreter and
-architecture is most energy-efficient for EA workloads, if energy is a limited
+architecture are the most energy-efficient for EA workloads if energy is a limited
 concern.
 \end{abstract}
 
@@ -50,17 +50,17 @@ concern.
 \label{sec:introduction}
 
 Green computing
-\cite{kurp2008green} refers to the design of hardware and/or software systems that are first conscious, and then minimize the energy consumption for a given workload. There are no fixed rules that apply to any field, that is why researchers usually settle on a specific field, with a well-known sets of algorithms and specific operators, such as evolutionary algorithms or metaheuristics \cite{novoa2021measuring}. Even within a narrow field, there are many possible choices. The language used to implement the algorithms is one of them, because implementation matters \cite{DBLP:conf/iwann/MereloRACML11}. Even within a language, there are many possible implementations, including simply the different versions that are periodically published; in some cases, different interpreters or compilers created by different teams with different intents or assumptions will also be available.
+\cite{kurp2008green} refers to the design of hardware and/or software systems that are first conscious, and then minimize the environmental impact for a given workload. There are no fixed rules that apply to any field, which is why researchers usually settle on a specific field with well-known sets of algorithms and specific operators, such as evolutionary algorithms or metaheuristics \cite{novoa2021measuring}. Even within a narrow field, there are many possible choices. The language used to implement the algorithms is one of them, because implementation matters \cite{DBLP:conf/iwann/MereloRACML11}. Even within a language, there are many possible implementations, including simply the different versions that are periodically published; in some cases, different interpreters or compilers created by different teams with different intents or assumptions will also be available.
 
-Our group has a 25-year long history of working with JavaScript \cite{jj-ppsn98,jesus02,nodeo2014,DBLP:conf/gecco/GuervosCMES14,agajaj,DBLP:conf/evoW/ValdezTVGO13}. Despite its overall performance not being as good as other languages, given the availability of libraries such as NodEO \cite{nodeo2014} and the expressiveness and abundance of support for the JavaScript language, the time from idea inception to solution in production can actually be faster than with other languages. Also, given the fact that it can readily run on the browser, it is a good (and probably the only) choice for volunteer computing \cite{DBLP:journals/gpem/LaredoBGVAGF14,gecco07:workshop:dcor}.
+Our group has a 25-year-long history of working with JavaScript \cite{jj-ppsn98,jesus02,nodeo2014,DBLP:conf/gecco/GuervosCMES14,agajaj,DBLP:conf/evoW/ValdezTVGO13}. Despite its overall performance not being as good as other languages, given the availability of libraries such as NodEO \cite{nodeo2014} and the expressiveness and abundance of support for the JavaScript language, the time from idea inception to solution in production can actually be faster than with other languages. Also, given the fact that it can readily run on the browser, it is a good (and probably the only) choice for volunteer computing \cite{DBLP:journals/gpem/LaredoBGVAGF14,gecco07:workshop:dcor}.
 
-Its evolution from single-browsers implementation to the many different ones existing today makes it an attractive language to experiment with green computing. This evolution has taken it from a language designed in the late nineties for simple browser widgets and
+Its evolution from a single-browser implementation to the many existing today makes it an attractive language to experiment with green computing. This evolution has taken it from a language designed in the late nineties for simple browser widgets and
 client-side validations \cite{goodman2007javascript,flanagan1998javascript},
-to being the one most widely used by developers in their
+to being the one most widely used by developers, measured by their
 GitHub repositories \cite{ogrady23:ranking}, occupying this position since 2014
-\cite{ogrady14:ranking}, mainly because it is almost exclusively the language
+\cite{ogrady14:ranking}, this popularity is because JavaScript its almost the exclusive language
 needed for front-end programming (its only competition being mobile application development languages,
-such as Swift or Kotlin, or languages transpiled to JavaScript, such as Dart),
+such as Swift or Kotlin, or languages transpiled to JavaScript, such as Dart or TypeScript),
 while at the same time being strong for full-stack development, with solid
 support for the back end, including application servers, middleware, and
 database programming. Other popularity indices, such as
@@ -68,7 +68,7 @@ TIOBE\footnote{\url{https://www.tiobe.com/tiobe-index/}}, that take into account
 other factors besides lines of code production, currently (October 2023) rank it as the
 sixth, although it was also the most popular language in 2014. It can be
 claimed, then, that it is among the most popular, if not the most popular
-language in current development.
+language among developers.
 
 Due to its popularity and the fact that it has a continuously updated standard
 \cite{ecma1999262}, there have traditionally been different virtual machines
@@ -77,15 +77,16 @@ only mainstream platform available\footnote{Although there were interpreters suc
 the V8 JavaScript Engine \cite{5617064} in 2009 gave it the mainstream support it has today.
 The wide adoption of {\sf node.js}, along with the ECMA standard, inspired the development new interpreters like {\sf deno}
 \cite{runtimeintroducing} (written in Rust) and, more recently, {\sf bun} \cite{bun}, programmed
-in the relatively unknown language Zig.
+in the Zig, a relatively new language for systems programming.
 
 No wonder, then, that JavaScript is also a popular language for implementing
 metaheuristics, especially evolutionary algorithms (EA). EAs
 \cite{eiben2015evolutionary} are population-based stochastic optimization
 algorithms based on the representation of a problem as a 
-"chromosome", and {\em evolution} of a population of these "chromosomes" by random
-change (via so called "genetic" operators such as mutation and crossover), evaluation of those chromosomes via a so-called "fitness" function, and
-selection for reproduction of those that achieve the best values, emulating the survival of the
+"chromosome", and the {\em evolution} of a population of these "chromosomes" by random
+change (via so-called "genetic" operators such as mutation and crossover), 
+evaluation of those chromosomes by what is often called the "fitness" function, and
+selection for reproduction of those that achieve the best fitness values, emulating the survival of the
 fittest of natural evolution. From the
 early implementations in the browser
 \cite{smith1996ga,jesusIWANN99,langdon2004global}, whole libraries
@@ -94,16 +95,23 @@ volunteer computing \cite{2016arXiv160101607M}. After choosing the language \cit
 
 Since the architecture of the different JS virtual machines is different,
 and are created with languages with different focus (Rust is focused on memory
-safety \cite{noseda2022rust}, Zig based on simplicity and performance
+safety \cite{noseda2022rust}, while Zig is centered on simplicity and performance
 \cite{zig}), different energy consumption profiles should be expected. All three
-interpreters can (roughly) run the same, unmodified source code, what we intend
-with this paper is to find rule of thumbs on which JS interpreter might give the lowest power
+interpreters can (roughly) run the same, unmodified source code. What we intend
+with this paper is to find a rule of thumb on which JS interpreter might give the lowest power
 consumption, the maximum performance, or both, so that EA practitioners can
-use it for deploying its applications to production.
+use it for deploying their applications to production.
 
-In the first version published of this line of research \cite{DBLP:conf/icsoft/GuervosGC23} we established a methodology for choosing an energy profile and performer measures in the version of the interpreters that were current back then. In this paper we will update the methodology and the results, using the latest versions of the interpreters, and extend the methodology to other architectures, namely Apple Silicon, whicn allows us to gather some insight also on how energy results are achieved for the different virtual machines.
+In the first version published of this line of research
+\cite{DBLP:conf/icsoft/GuervosGC23}, we established a methodology for choosing
+an energy profile and performance measures in the versions of the interpreters
+that were current at that time. In this paper we will update the methodology
+and the results, using the current versions of the interpreters, and extend the
+methodology to other architectures, namely Apple Silicon, whicn allows us to
+gather some insight also on how energy results are achieved for the different
+virtual machines.
 
-The rest of the paper follows this plan: next we will present the state of the
+The rest of the paper follows this plan: next, we will present the state of the
 art; then we will describe the experimental setup in Section \ref{sec:setup};
 results will be presented next in Section \ref{sec:res}, and we will end with a
 discussion of results, conclusions and future lines of work.
@@ -123,15 +131,16 @@ creating the challenge of building more power-efficient systems
 
 This challenge can be addressed at the hardware and software levels. At the
 hardware level, it is leading towards the development of heterogeneous CPU
-architectures that include both ¨performance" and "efficiency" cores; while the
-former vie for executing workloads as fast as possible, the latter are geared
-towards running them without incurring in high energy costs \cite{9988933}. Most
-modern processors, such as the Apple Silicon line, as well as other ARM-based
-architectures, adopt this kind of architecture. We also find increasingly
-processors that are designed with machine learning workloads in mind, specially
-for trained models, such as the Google TPU or the Apple Neural Engine
-\cite{9950755}. As the cited paper points out, integrating them in algorithm
-implementations to make them faster and also more efficient is a challenge.
+topologies that typically include two types of cores: "performance" and
+"efficiency"; while the former vie for executing workloads as fast as possible,
+the latter are geared towards running them without incurring in high energy
+costs \cite{9988933}. Most modern processors, such as the Apple Silicon family,
+as well as other ARM-based architectures, adopt this kind of architecture. We
+also find increasingly processors that are designed with machine learning
+workloads in mind, especially for trained models, such as the Google TPU or the
+Apple Neural Engine \cite{9950755}. As the cited paper points out, integrating
+these elements into algorithm implementations to increase speed and efficiency
+presents a challenge.
 
 These new challenges are tackled at the software level, with developers
 proposing increasingly more energy-efficient algorithm implementations.
@@ -144,7 +153,7 @@ metaheuristics are so extensively used in machine learning applications, its
 interest in research has grown in parallel to its number of applications. Many
 papers focus on analyzing how certain metaheuristics parameters have an impact
 on energy consumption.  Díaz-Álvarez et al. \cite{diaz2022population} study how
-the populations size in genetic programming influences power consumption. In an
+the population's size in genetic programming influences power consumption. In an
 earlier work, centered on genetic algorithms (GAs)
 \cite{10.1007/978-3-030-45715-0_8}, power-consumption of battery-powered devices
 was measured for various parameter configurations including chromosome and
@@ -153,11 +162,11 @@ problems, and they concluded that execution time and energy consumption do not
 linearly correlate and there is a connection between the GA parameters and power
 consumption.  In GAs, the mutation operator appears to be a power-hungry
 component according to Abdelhafez et al. \cite{abdelhafez2019component}, in
-their paper they also report that in a distributed evaluation setting, the
+their paper, they also report that in a distributed evaluation setting, the
 communication scheme has a greater impact. Fernández de Vega et
 al. \cite{10.1007/978-3-319-45823-6_51} experimented with different parameters
 for a GP algorithm and concluded that hand-held devices and single-board
-computers (SBCs) required an order of magnitude less energy to run the same
+computers (SBCs) require an order of magnitude less energy to run the same
 algorithm.
 
 Of course, it is also a challenge to check how the software and hardware
@@ -171,9 +180,12 @@ perform when running the same workload, as well as how they interact with the
 \section{Methodology and experimental setup}
 \label{sec:setup}
 
-In this section we will first present what can be measured and how it can be done in the two platforms targeted in this paper, Intel and Apple Silicon; then we will briefly describe how the experiments are run and the output is processed in subsection \ref{ss:perl}.
+In this section, we will first present what can be measured and how it can be
+done in the two platforms targeted in this paper, Intel and Apple Silicon; then
+we will briefly describe how the experiments are run and the output is
+processed in subsection \ref{ss:perl}.
 
-\subsection{Measurements in an Intel platform}
+\subsection{Measurements on an Intel-based platform}
 There are many ways to measure the consumption of applications running in a
 computer; besides measuring directly from the power intake, those running as
 applications and tapping the computer sensors fall roughly into two fields:
@@ -193,7 +205,7 @@ Power Limit \cite{10.1145/2425248.2425252}. Essentially, it consists of a series
 of machine-specific registers (MSRs) that contain information on the wattage
 drawn by different parts of the architecture; the content of these registers
 will be processed (through the corresponding library) and consumed by different
-command line utilities. We will use these command line utilities since they
+command line utilities. We will use these command-line utilities since they
 produce an output that can be automatically processed and evaluated, which is
 what we are looking for in this paper\footnote{Systems based on the AMD
 architecture have a similar power profiling system called AMP with its
@@ -218,16 +230,33 @@ these devices.
 \subsection{Measurements on the Apple Silicon platform}
 \label{ss:apple}
 
-The Apple Silicon processor line is a series of ARM-based processors designed by Apple for their laptops and desktop computers. The architecture is fundamentally different from the x86 one that we have mentioned above, and has been designed with energy efficiency in mind. The processor has two kinds of cores: performance cores (or P-Cores) which include hyperthreading and are designed mainly for high-performance workloads, and efficiency cores (or E-Cores) which user less power. Which ones runs the actual process is up to the operating system; besides the GPU, Apple Silicon also includes something called the Apple Neural Engine, which is a kind of tensor processing units that works under some very specific conditions. These last two subsystems are not relevant for the purposes of this paper, but we are anyway interested in the kind of sensors that are available to measure  power consumption for our workload.
+The Apple Silicon processor line is a series of ARM-based processors designed by Apple for their laptops and desktop computers. The architecture is fundamentally different from the x86 one that we have mentioned above, and has been designed with energy efficiency in mind. The processor has two kinds of cores: performance cores (or P-Cores) which include hyperthreading and are designed mainly for high-performance workloads, and efficiency cores (or E-Cores) which use less power. Which processors run the actual process is up to the operating system; besides the GPU, Apple Silicon also includes something called the Apple Neural Engine, which is a kind of tensor processing unit that works under some very specific conditions. These last two subsystems are not relevant for the purposes of this paper, but we are anyway interested in the kind of sensors that are available to measure power consumption for our workload.
 
-The operating systems has a set of parameters that fall under the management of the so-called IOReport subsystem. This includes access to many different metrics, but also to the ones we are interested in general power consumption, as well as the activity of P- and E- cores. As in the case of the RAPL metrics, there are several command line tools that can be used to record them during the execution of our workload:\begin{itemize}
-\item {\sf powermetrics} is a command line tool that can be used to record the power consumption of the whole system, as well as the activity of the P- and E-cores. It's not designed to record specific commands, but it can be run on the background while we run other processes, showing measures with the sampling rate that is desired.
-\item {\sf pinpoint}, in its most recent versions \footnote{As a matter of fact, the code was incorporated in October 2023}, is able also to capture these metrics, with an output that has the same format as it does for other platforms and uses the same metrics.
+The operating system has a set of parameters that fall under the management of
+the so-called IOReport subsystem. This includes access to many different
+metrics, but also to the ones we are interested in general power consumption,
+as well as the actvivity of P- and E- cores. As in the case of the RAPL
+metrics, there are several command-line tools that can be used to record them
+during the execution of our workload:
+
+\begin{itemize} 
+\item {\sf powermetrics} is a command line tool that can be used to record the
+    power consumption of the whole system, as well as the activity of the P-
+    and E-cores. It's not designed to record specific commands, but it can
+    be run in the background while we run other processes, showing measures
+    with the sampling rate that is desired. 
+\item {\sf pinpoint}, in its most recent versions \footnote{As a matter of
+            fact, the code was incorporated in October 2023}, is also able
+            to capture these metrics, with an output that has the same
+            format as it does for other platforms and uses the same
+            metrics. 
 \end{itemize}
 
-Of these two, we will use {\sf pinpoint} for the same reasons as in the case of the Intel platform: it is easier to process the output, with no need to start and stop the process before and after the command we are measuring finish, incurring thus in a certain amount of overhead. We can also leverage all the scripts that we had created for processing the other platform's output.
-
-
+Of these two, we will use {\sf pinpoint} for the same reasons as in the case of
+the Intel platform: it is easier to process the output, with no need to start
+and stop the process before and after the command we are measuring finishes,
+incurring thus in a certain amount of overhead. We can also leverage all the
+scripts that we had created for processing the other platform's output.
 
 \subsection{Running the experiments and processing the results}
 \label{ss:perl}
@@ -236,15 +265,15 @@ A Perl script was created to perform the experiments; it launched the scripts
 and collected results by analyzing the standard output and putting it in a CSV
 format that would allow examination of the experiments.
 
-The initial experiment consisted in a script that used the \texttt{saco-js}
+The initial experiment consisted of a script that used the \texttt{saco-js}
 library to perform the union of ``bags'', sets that can hold several copies of
 the same item. 1024 sets were generated; these sets had 1024, 2048, 4096
 elements. Then, a union of bags was performed on pairs of sets until
 there was only one left. This is similar to some operations performed by
 EAs, mainly related to merging populations. They do not
-involve floating point operations in any way.
+involve floating-point operations in any way.
 
-The scripts to launch every kind of tool were slightly different, mainly because
+The scripts that launched every kind of tool were slightly different, mainly because
 the output needed to be processed in different ways (and different kinds of
 information extracted). Additionally, \texttt{pinpoint}, which is the only tool
 that does not need superuser privileges, sometimes returned 0 in energy
@@ -256,7 +285,7 @@ processes running at the same time, what we did was to run every program 15
 times, compute the average time, and then use the same tool to measure the
 energy consumption for the \texttt{sleep} program during the average amount of
 time. The energy readings shown are the result of subtracting this measurement
-from every one of the 15 other measurements taken, so that we can analyze the
+from every one of the 15 other measurements taken so that we can analyze the
 differential of energy that has been consumed by our programs; the result is
 clipped at 0, since negative energy differentials would make no sense.
 
@@ -293,7 +322,7 @@ ggplot(onemax, aes(x=seconds,y=PKG))+geom_point(size=3,aes(color=size,fill=size,
 @
 
 As was done in \cite{DBLP:conf/evoW/MereloCBRGFRV16}, which was focused on
-wallclock performance, the experiments will be focused on the key operations
+wall clock performance, the experiments will be focused on the key operations
 performed by an EA: evaluation of fitness and "genetic" operators like mutation
 and crossover. We will first measure again the performance of the three
 interpreters involved, and then compare these new measurements to old versions
@@ -302,15 +331,15 @@ of the same VMs.
 \subsection{Comparing performance of JS interpreters}
 \label{ss:perf}
 
-What we will do is, repeating the setup in the initial exploration, to check the
+We will repeat the setup in the initial exploration, to check the
 energy consumption for the processing of 40000 chromosomes, a number chosen to
 take a sizable amount of memory, but also on the ballpark of the usual number of
-operations in an EA benchmark, it is also small enough to not create garbage
-collection problems with the memory, something that was detected after the
+operations in an EA benchmark, it is also compact enough to avoid issues with garbage collection in memory,
+something that was detected after the
 initial exploration.  Experiments were repeated for the same chromosome size as
 before, 1024, 2048, and 4096, and for the three JS virtual machines
 used. Although the business logic is exactly the same for the experiments, the
-script run comes in two versions, one for {\sf deno} and the other for {\sf
+script has two versions, one for {\sf deno} and the other for {\sf
 bun/node}, due to the different way they have of reading command-line
 arguments. This does not affect the overhead in any way. Code, as well as the
 data resulted from the experiments and analyzed in this paper, are released with
@@ -318,9 +347,9 @@ a free license (along with this paper) from the repository
 \url{https://github.com/JJ/energy-ga-icsoft-2023}.
 
 First, we will evaluate a typical fitness function, OneMax, which counts the
-number of ones in a binary (1s and 0s) string. This type of functions, which
-check the values of bits in a string and assign an integer value to it are
-typical of many papers focused on evaluating EAs,
+number of ones in a binary (1s and 0s) string. This type of function, which
+check the values of bits in a string and assign an integer value to it,
+is found in many papers focused on evaluating EAs,
 including parallel versions \cite{DBLP:conf/gecco/GuervosV18}.
 
 The results are shown in Figure \ref{fig:onemax}. This already shows that time,
@@ -356,12 +385,12 @@ library(kableExtra)
 kable(onemax.cost, caption="Estimated cost of the OneMax runs for every VM and size, in €-cents. \\protect\\label{tab:onemax:cost}")
 @
 
-The crossover operation involves copy operations between strings, as well as
+The crossover operation involves copy operations between strings, as well as the
 creation of new strings. We will again generate 40K chromosomes and group them
 in pairs; these strings will be crossed by interchanging a random
 fragment from one to the other and back. The resulting pairs will be stored in
 an array, which is eventually printed. The result of every experiment
-is shown in an energy vs. wallclock time chart in Figure \ref{fig:xover}.
+is shown in an energy vs. wall clock time chart in Figure \ref{fig:xover}.
 
 <<r crossover, echo=F, fig.pos="h!tbp", fig.height=4, fig.cap="PKG consumption, in Joules, vs. time in seconds, for the crossover and the three different virtual machines.\\protect\\label{fig:xover}">>=
 crossover <- read.csv("../code/data/pinpoint-v2-crossover-30-Oct-18-11-43.csv")
@@ -391,12 +420,12 @@ function.
 
 Since \cite{DBLP:conf/icsoft/GuervosGC23} was written, the interpreters used in
 that and this paper have evolved; {\sf bun} has gone from beta to production
-with its 1.0 version, while {\sf node.js} has gone from its LTS (long term
+with its 1.0 version, while {\sf node.js} has gone from its LTS (long-term
 support) version 18 to 20. While new versions always try to improve performance,
-it is not a given that they do so while keeping a low energy profile or
+it is not a given that they do so while keeping a low-energy profile or
 optimizing for energy consumption in any way. In this subsection, we will
 compare the energy consumption of the different versions of the interpreters
-used in the previous installment of this line of research, to see if there are
+used in the previous installment of this line of research to see if there are
 any significant differences. In that paper, the versions for the three JS
 interpreters were:
 
@@ -430,7 +459,7 @@ kable(improvements, caption="Ratio of PKG energy consumption, new version vs. ol
 In Table \ref{tab:improvements}, we can see the ratio of energy consumption for
 these old versions vs. the new ones; it is obvious that there are changes, and
 mostly improvements, making new versions better for green computing; however,
-there are differences across interpreters, sizes and the workload
+there are differences across interpreters, sizes, and the workload
 involved. While in general {\sf bun} spends less energy, sometimes remarkably
 so, like in the case of the OneMax function and the smallest size, there are
 cases, like Crossover for the medium size, where it can be slightly worse. {\sf
@@ -444,12 +473,16 @@ This tells us that, in general, we should always try to use the latest version
 of the interpreter, as it will most likely be more energy efficient. However,
 benchmarking these new versions is still necessary, as there are cases where the
 new version is not better than the old one. At the same time, these results
-confirms that {\sf bun}, even after the introduction of the 1.0 version, is
-still the most energy efficient interpreter, and it is probably a reasonable
+confirm that {\sf bun}, even after the introduction of the 1.0 version, is
+still the most energy-efficient interpreter, and it is probably a reasonable
 rule-of-thumb to make it our first choice when dealing with evolutionary
 algorithms workloads.
 
-As has been indicated earlier, Apple Macs have a different architecture, called Apple Silicon, using heterogeneous cores, the "P" and "E" cores. The chosen tool, {\sf pinpoint}, yields measurements for every code subset, as well as DRAM; we have performed a series of measurements with these interpreter versions:
+As has been indicated earlier, Apple Macs have a different architecture, called
+Apple Silicon, using heterogeneous cores, the "P" and "E" cores. The chosen
+tool, {\sf pinpoint}, yields measurements for every code subset, as well as
+DRAM; we have performed a series of measurements with these interpreter
+versions:
 
 \begin{itemize}
 \item \texttt{bun} version 1.0.9
@@ -506,9 +539,9 @@ that estimation was not adequate; this tool has been calibrated by comparing its
 readings with other tools, which were also evaluated for the same purpose and
 eventually discarded. We have also adopted a benchmark-based approach, similar
 to the one used to measure performance, so that consumption for specific
-operations can be pinpointed, discarding noise produced by an implementation of
-a complete algorithm; that is, a whole program includes different operations,
-applied in different proportion, that might cancel each other. Testing short
+operations can be pinpointed, discarding noise produced by the implementation of
+a complete algorithm; that is, a whole program that includes different operations,
+applied in different proportions, that might cancel each other. Testing short
 code paths, as proposed by \cite{10.1145/2425248.2425252} makes easier to
 understand their individual contribution to the overall consumption of the
 algorithm, and eventually optimize their specific code, or the number of times
@@ -524,12 +557,12 @@ different aspects of energy consumption.
 
 The main point of this paper, however, was to check which JavaScript
 interpreter should be used if our objective is to consume the minimum amount of
-energy; the experiments have reliably confirmed {\sf bun} to be that tool. Not
-only it consumes less for all the range of chromosome sizes used; it also takes
+energy; the experiments have reliably confirmed {\sf bun} to be that tool. It not
+only consumes less for all the range of chromosome sizes used; it also takes
 less time and can run applications written for Node (mostly) unmodified; its
 consumption also scales better with problem size. This might be due to design
 considerations, but also to the fact that the language used to write it, Zig,
-emphasizes compile-time safety and manual memory allocation by default, and avoids hidden control flow.
+emphasizes compile-time safety and manual memory allocation by default and avoids hidden control flow.
 The only inconvenience of this interpreter is that it has not
 reached version 1.0 yet, being currently in version 0.5.9; this might prevent
 any company or organization from using it in production environments.
@@ -540,13 +573,13 @@ node}, even more so when memory requirements are high. According to our initial
 exploration, it will also consume less energy {\em per second}, thus for
 workloads that take roughly the same time, it will be a better candidate than
 {\sf node}. As an inconvenience, it needs minor modifications to run, at least
-if you need core or other kind of external libraries; its core library modules
+if you need core or other kinds of external libraries; its core library modules
 are different to those used in {\sf node/bun}, although that need not be a
 disadvantage per se.
 
 The previous two points imply that, energy-wise, there are no good reasons to
 use {\sf node.js} for running EAs. Except if the business logic
-uses specific, early-adoption, or some features that, for some reason, does not
+uses specific, early-adoption, or some features that, for some reason, do not
 work with {\sf bun} yet, we would advise anyone to keep using {\sf bun} for this
 kind of workloads.
 
@@ -563,7 +596,13 @@ GPU-free, there are some fitness functions that operate on floating point
 numbers and thus would need to use the GPU; how interpreters work in this area
 could be an interesting future line of work.
 
-Another interesting venue of research is the way different architectures affect energy consumption, not only at the processor design level, but also at the machine design level. Different computers with different cooling strategies, passive or active, will spend energy in a different way and interact in non-trivial ways with workloads and interpreters. This will also open interesting and new lines of research seeking the best software/hardware combination to run EAs in a green way.
+Another interesting avenue of research is the way different architectures
+affect energy consumption, not only at the processor design level, but also at
+the machine design level. Different computers with different cooling
+strategies, passive or active, will spend energy differently and
+interact in non-trivial ways with workloads and interpreters. This will also
+open interesting and new lines of research seeking the best software/hardware
+combination to run EAs in a green way.
 
 Finally, we have seen that the energy consumption of the interpreters is
 
@@ -576,7 +615,7 @@ future research.
 
 This work is supported by the Ministerio espa\~{n}ol de Econom\'{\i}a y
 Competitividad (Spanish Ministry of Competitivity and Economy) under project
-PID2020-115570GB-C22 (DemocratAI::UGR).
+PID2020-115570GB-C22 (DemocratAI::UGR) and Project 18186.23-P of 2023 TecNM research grants.
 
 
 \bibliographystyle{apalike}
