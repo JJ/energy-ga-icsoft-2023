@@ -131,15 +131,16 @@ creating the challenge of building more power-efficient systems
 
 This challenge can be addressed at the hardware and software levels. At the
 hardware level, it is leading towards the development of heterogeneous CPU
-architectures that include both ¨performance" and "efficiency" cores; while the
-former vie for executing workloads as fast as possible, the latter are geared
-towards running them without incurring in high energy costs \cite{9988933}. Most
-modern processors, such as the Apple Silicon line, as well as other ARM-based
-architectures, adopt this kind of architecture. We also find increasingly
-processors that are designed with machine learning workloads in mind, specially
-for trained models, such as the Google TPU or the Apple Neural Engine
-\cite{9950755}. As the cited paper points out, integrating them in algorithm
-implementations to make them faster and also more efficient is a challenge.
+topologies that typically include two types of cores: "performance" and
+"efficiency"; while the former vie for executing workloads as fast as possible,
+the latter are geared towards running them without incurring in high energy
+costs \cite{9988933}. Most modern processors, such as the Apple Silicon family,
+as well as other ARM-based architectures, adopt this kind of architecture. We
+also find increasingly processors that are designed with machine learning
+workloads in mind, especially for trained models, such as the Google TPU or the
+Apple Neural Engine \cite{9950755}. As the cited paper points out, integrating
+these elements into algorithm implementations to increase speed and efficiency
+presents a challenge.
 
 These new challenges are tackled at the software level, with developers
 proposing increasingly more energy-efficient algorithm implementations.
@@ -152,7 +153,7 @@ metaheuristics are so extensively used in machine learning applications, its
 interest in research has grown in parallel to its number of applications. Many
 papers focus on analyzing how certain metaheuristics parameters have an impact
 on energy consumption.  Díaz-Álvarez et al. \cite{diaz2022population} study how
-the populations size in genetic programming influences power consumption. In an
+the population's size in genetic programming influences power consumption. In an
 earlier work, centered on genetic algorithms (GAs)
 \cite{10.1007/978-3-030-45715-0_8}, power-consumption of battery-powered devices
 was measured for various parameter configurations including chromosome and
@@ -161,11 +162,11 @@ problems, and they concluded that execution time and energy consumption do not
 linearly correlate and there is a connection between the GA parameters and power
 consumption.  In GAs, the mutation operator appears to be a power-hungry
 component according to Abdelhafez et al. \cite{abdelhafez2019component}, in
-their paper they also report that in a distributed evaluation setting, the
+their paper, they also report that in a distributed evaluation setting, the
 communication scheme has a greater impact. Fernández de Vega et
 al. \cite{10.1007/978-3-319-45823-6_51} experimented with different parameters
 for a GP algorithm and concluded that hand-held devices and single-board
-computers (SBCs) required an order of magnitude less energy to run the same
+computers (SBCs) require an order of magnitude less energy to run the same
 algorithm.
 
 Of course, it is also a challenge to check how the software and hardware
