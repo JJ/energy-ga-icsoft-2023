@@ -107,12 +107,12 @@ results, conclusions and future lines of work in Section~\ref{sec:conc}.
 
 
 In the last few years, evaluating the energy efficiency of algorithms as well
-as modifing these algorithms or their implementations so they consume less
+as modifying these algorithms or their implementations so they consume less
 energy has increasingly become a research topic \cite{demaine2016energy}; in
 many cases algorithms are compared with respect to their power efficiency.
 Since 2020, Machine learning/AI applications \cite{verdecchia2023systematic}
 have been extensively studied from the green perspective, primarily through 
-experimental studies. Green computing principles have been establishied as a
+experimental studies. Green computing principles have been established as a
 best practice, which we will also follow in this paper.
 
 In the area of evolutionary algorithms, initial energy efficiency
@@ -279,7 +279,7 @@ ggplot(mutation, aes(x=size,y=PKG))+geom_boxplot(aes(fill=VM))+ylim(0, NA)+theme
 @
 
 What these measurements show is that, since they behave essentially as a set of
-copy operations, its behaviour is quite similar to that shown in Figure \ref{fig:xover:vms}. {\sf deno} decreases with size, {\sf bun} increases very slowly, {\sf node} faster to the point that it spends three times more energy than {\sf bun} for the biggest size.
+copy operations, its behavior is quite similar to that shown in Figure \ref{fig:xover:vms}. {\sf deno} decreases with size, {\sf bun} increases very slowly, {\sf node} faster to the point that it spends three times more energy than {\sf bun} for the biggest size.
 
 It is interesting, however, to test the algorithms in different architectures, even more using a native Intel architecture with all its registers. This is why we have repeated the experiments in another computer, a Lenovo Carbon X1 with Ubuntu 22.04.1, kernel version {\tt 5.19.0-43-generic} and an Intel processor and an Intel Core i7-10610U CPU @ 1.80GHz, with 8 cores.
 
@@ -293,7 +293,7 @@ ggplot(onemax.intel, aes(x=size,y=cores))+geom_boxplot(aes(fill=VM),notch=T)+yli
 ggplot(onemax.intel, aes(x=size,y=RAM))+geom_boxplot(aes(fill=VM),notch=T)+ylim(0, NA)+theme_tufte()
 @
 
-Results of these experiments for tne OneMax fitness function, shown in Figure
+Results of these experiments for the OneMax fitness function, shown in Figure
 \ref{fig:onemax:intel}, first allow us to check the influence on the overall
 energy expenses of the memory operations, which are shown in the right-hand side panel. They are first barely above the baseline, with averages rarely exceeding 20 joules; but the most important thing is that there are no significant differences among the  interpreters. The consumption by {\sf node} seems to increase slightly with size, but it is not enough to outspend the other two interpreters.
 The left-hand side panel in Figure \ref{fig:onemax:intel} does show significant
@@ -337,7 +337,7 @@ supremacy can change when current versions of the interpreters are compared with
 each other; subsequent release might increase or decrease the energy
 consumption, and do so differentially across different problem sizes, so this
 leads again to experimentation as the only possible way to really ascertain
-which interpreter is best. The counter-intuitive behaviour of {\sf deno}, which consumes less as the size increases, also leads to this conclusion. We cannot even discard {\sf node} as the most energy-consuming interpreter, since it beats {\sf deno} in the mutation operator, which is the one that consumes the most, at the smallest sizes, as well as the OneMax operator, also quite energy-consuming.
+which interpreter is best. The counter-intuitive behavior of {\sf deno}, which consumes less as the size increases, also leads to this conclusion. We cannot even discard {\sf node} as the most energy-consuming interpreter, since it beats {\sf deno} in the mutation operator, which is the one that consumes the most, at the smallest sizes, as well as the OneMax operator, also quite energy-consuming.
 
 These new experiments with the mutation operator, which basically involves
 copying of large strings, do not actually show big differences between the three
@@ -358,7 +358,7 @@ savings that can go from 50\% to over 80\%, depending on the size; these savings
 do not imply a decrease in performance in the same scale; even in some cases, it
 can be faster, in the case of {\sf deno}. This leads us to encourage performing
 evolutionary algorithms, wherever possible, in laptops, even more so if they
-have an Intel processor and chipset. % or Apple Silicon :) - M
+have an Intel processor and chipset, Apple Silicon, or any computer or processor architecture designed for energy saving.
 
 Even if energy saving is not the main concern of the evolutionary algorithm practitioner, we encourage researchers to always follow a strategy of energy and performance profiling to be able to extract the most from the existing hardware architecture; this is always a software engineering best practice that we really need to encourage in our area.
 
