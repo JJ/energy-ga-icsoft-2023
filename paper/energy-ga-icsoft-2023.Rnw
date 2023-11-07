@@ -230,16 +230,33 @@ these devices.
 \subsection{Measurements on the Apple Silicon platform}
 \label{ss:apple}
 
-The Apple Silicon processor line is a series of ARM-based processors designed by Apple for their laptops and desktop computers. The architecture is fundamentally different from the x86 one that we have mentioned above, and has been designed with energy efficiency in mind. The processor has two kinds of cores: performance cores (or P-Cores) which include hyperthreading and are designed mainly for high-performance workloads, and efficiency cores (or E-Cores) which user less power. Which ones runs the actual process is up to the operating system; besides the GPU, Apple Silicon also includes something called the Apple Neural Engine, which is a kind of tensor processing units that works under some very specific conditions. These last two subsystems are not relevant for the purposes of this paper, but we are anyway interested in the kind of sensors that are available to measure  power consumption for our workload.
+The Apple Silicon processor line is a series of ARM-based processors designed by Apple for their laptops and desktop computers. The architecture is fundamentally different from the x86 one that we have mentioned above, and has been designed with energy efficiency in mind. The processor has two kinds of cores: performance cores (or P-Cores) which include hyperthreading and are designed mainly for high-performance workloads, and efficiency cores (or E-Cores) which use less power. Which processors run the actual process is up to the operating system; besides the GPU, Apple Silicon also includes something called the Apple Neural Engine, which is a kind of tensor processing unit that works under some very specific conditions. These last two subsystems are not relevant for the purposes of this paper, but we are anyway interested in the kind of sensors that are available to measure power consumption for our workload.
 
-The operating systems has a set of parameters that fall under the management of the so-called IOReport subsystem. This includes access to many different metrics, but also to the ones we are interested in general power consumption, as well as the activity of P- and E- cores. As in the case of the RAPL metrics, there are several command line tools that can be used to record them during the execution of our workload:\begin{itemize}
-\item {\sf powermetrics} is a command line tool that can be used to record the power consumption of the whole system, as well as the activity of the P- and E-cores. It's not designed to record specific commands, but it can be run on the background while we run other processes, showing measures with the sampling rate that is desired.
-\item {\sf pinpoint}, in its most recent versions \footnote{As a matter of fact, the code was incorporated in October 2023}, is able also to capture these metrics, with an output that has the same format as it does for other platforms and uses the same metrics.
+The operating system has a set of parameters that fall under the management of
+the so-called IOReport subsystem. This includes access to many different
+metrics, but also to the ones we are interested in general power consumption,
+as well as the actvivity of P- and E- cores. As in the case of the RAPL
+metrics, there are several command-line tools that can be used to record them
+during the execution of our workload:
+
+\begin{itemize} 
+\item {\sf powermetrics} is a command line tool that can be used to record the
+    power consumption of the whole system, as well as the activity of the P-
+    and E-cores. It's not designed to record specific commands, but it can
+    be run in the background while we run other processes, showing measures
+    with the sampling rate that is desired. 
+\item {\sf pinpoint}, in its most recent versions \footnote{As a matter of
+            fact, the code was incorporated in October 2023}, is also able
+            to capture these metrics, with an output that has the same
+            format as it does for other platforms and uses the same
+            metrics. 
 \end{itemize}
 
-Of these two, we will use {\sf pinpoint} for the same reasons as in the case of the Intel platform: it is easier to process the output, with no need to start and stop the process before and after the command we are measuring finish, incurring thus in a certain amount of overhead. We can also leverage all the scripts that we had created for processing the other platform's output.
-
-
+Of these two, we will use {\sf pinpoint} for the same reasons as in the case of
+the Intel platform: it is easier to process the output, with no need to start
+and stop the process before and after the command we are measuring finishes,
+incurring thus in a certain amount of overhead. We can also leverage all the
+scripts that we had created for processing the other platform's output.
 
 \subsection{Running the experiments and processing the results}
 \label{ss:perl}
