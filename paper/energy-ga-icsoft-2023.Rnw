@@ -50,17 +50,17 @@ concern.
 \label{sec:introduction}
 
 Green computing
-\cite{kurp2008green} refers to the design of hardware and/or software systems that are first conscious, and then minimize the energy consumption for a given workload. There are no fixed rules that apply to any field, that is why researchers usually settle on a specific field, with a well-known sets of algorithms and specific operators, such as evolutionary algorithms or metaheuristics \cite{novoa2021measuring}. Even within a narrow field, there are many possible choices. The language used to implement the algorithms is one of them, because implementation matters \cite{DBLP:conf/iwann/MereloRACML11}. Even within a language, there are many possible implementations, including simply the different versions that are periodically published; in some cases, different interpreters or compilers created by different teams with different intents or assumptions will also be available.
+\cite{kurp2008green} refers to the design of hardware and/or software systems that are first conscious, and then minimize the environmental impact for a given workload. There are no fixed rules that apply to any field, which is why researchers usually settle on a specific field with well-known sets of algorithms and specific operators, such as evolutionary algorithms or metaheuristics \cite{novoa2021measuring}. Even within a narrow field, there are many possible choices. The language used to implement the algorithms is one of them, because implementation matters \cite{DBLP:conf/iwann/MereloRACML11}. Even within a language, there are many possible implementations, including simply the different versions that are periodically published; in some cases, different interpreters or compilers created by different teams with different intents or assumptions will also be available.
 
-Our group has a 25-year long history of working with JavaScript \cite{jj-ppsn98,jesus02,nodeo2014,DBLP:conf/gecco/GuervosCMES14,agajaj,DBLP:conf/evoW/ValdezTVGO13}. Despite its overall performance not being as good as other languages, given the availability of libraries such as NodEO \cite{nodeo2014} and the expressiveness and abundance of support for the JavaScript language, the time from idea inception to solution in production can actually be faster than with other languages. Also, given the fact that it can readily run on the browser, it is a good (and probably the only) choice for volunteer computing \cite{DBLP:journals/gpem/LaredoBGVAGF14,gecco07:workshop:dcor}.
+Our group has a 25-year-long history of working with JavaScript \cite{jj-ppsn98,jesus02,nodeo2014,DBLP:conf/gecco/GuervosCMES14,agajaj,DBLP:conf/evoW/ValdezTVGO13}. Despite its overall performance not being as good as other languages, given the availability of libraries such as NodEO \cite{nodeo2014} and the expressiveness and abundance of support for the JavaScript language, the time from idea inception to solution in production can actually be faster than with other languages. Also, given the fact that it can readily run on the browser, it is a good (and probably the only) choice for volunteer computing \cite{DBLP:journals/gpem/LaredoBGVAGF14,gecco07:workshop:dcor}.
 
-Its evolution from single-browsers implementation to the many different ones existing today makes it an attractive language to experiment with green computing. This evolution has taken it from a language designed in the late nineties for simple browser widgets and
+Its evolution from a single-browser implementation to the many existing today makes it an attractive language to experiment with green computing. This evolution has taken it from a language designed in the late nineties for simple browser widgets and
 client-side validations \cite{goodman2007javascript,flanagan1998javascript},
-to being the one most widely used by developers in their
+to being the one most widely used by developers, measured by their
 GitHub repositories \cite{ogrady23:ranking}, occupying this position since 2014
-\cite{ogrady14:ranking}, mainly because it is almost exclusively the language
+\cite{ogrady14:ranking}, this popularity is because JavaScript its almost the exclusive language
 needed for front-end programming (its only competition being mobile application development languages,
-such as Swift or Kotlin, or languages transpiled to JavaScript, such as Dart),
+such as Swift or Kotlin, or languages transpiled to JavaScript, such as Dart or TypeScript),
 while at the same time being strong for full-stack development, with solid
 support for the back end, including application servers, middleware, and
 database programming. Other popularity indices, such as
@@ -68,7 +68,7 @@ TIOBE\footnote{\url{https://www.tiobe.com/tiobe-index/}}, that take into account
 other factors besides lines of code production, currently (October 2023) rank it as the
 sixth, although it was also the most popular language in 2014. It can be
 claimed, then, that it is among the most popular, if not the most popular
-language in current development.
+language among developers.
 
 Due to its popularity and the fact that it has a continuously updated standard
 \cite{ecma1999262}, there have traditionally been different virtual machines
@@ -77,15 +77,16 @@ only mainstream platform available\footnote{Although there were interpreters suc
 the V8 JavaScript Engine \cite{5617064} in 2009 gave it the mainstream support it has today.
 The wide adoption of {\sf node.js}, along with the ECMA standard, inspired the development new interpreters like {\sf deno}
 \cite{runtimeintroducing} (written in Rust) and, more recently, {\sf bun} \cite{bun}, programmed
-in the relatively unknown language Zig.
+in the Zig, a relatively new language for systems programming.
 
 No wonder, then, that JavaScript is also a popular language for implementing
 metaheuristics, especially evolutionary algorithms (EA). EAs
 \cite{eiben2015evolutionary} are population-based stochastic optimization
 algorithms based on the representation of a problem as a 
-"chromosome", and {\em evolution} of a population of these "chromosomes" by random
-change (via so called "genetic" operators such as mutation and crossover), evaluation of those chromosomes via a so-called "fitness" function, and
-selection for reproduction of those that achieve the best values, emulating the survival of the
+"chromosome", and the {\em evolution} of a population of these "chromosomes" by random
+change (via so-called "genetic" operators such as mutation and crossover), 
+evaluation of those chromosomes by what is often called the "fitness" function, and
+selection for reproduction of those that achieve the best fitness values, emulating the survival of the
 fittest of natural evolution. From the
 early implementations in the browser
 \cite{smith1996ga,jesusIWANN99,langdon2004global}, whole libraries
