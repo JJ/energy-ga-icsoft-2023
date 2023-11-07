@@ -95,16 +95,23 @@ volunteer computing \cite{2016arXiv160101607M}. After choosing the language \cit
 
 Since the architecture of the different JS virtual machines is different,
 and are created with languages with different focus (Rust is focused on memory
-safety \cite{noseda2022rust}, Zig based on simplicity and performance
+safety \cite{noseda2022rust}, while Zig is centered on simplicity and performance
 \cite{zig}), different energy consumption profiles should be expected. All three
-interpreters can (roughly) run the same, unmodified source code, what we intend
-with this paper is to find rule of thumbs on which JS interpreter might give the lowest power
+interpreters can (roughly) run the same, unmodified source code. What we intend
+with this paper is to find a rule of thumb on which JS interpreter might give the lowest power
 consumption, the maximum performance, or both, so that EA practitioners can
-use it for deploying its applications to production.
+use it for deploying their applications to production.
 
-In the first version published of this line of research \cite{DBLP:conf/icsoft/GuervosGC23} we established a methodology for choosing an energy profile and performer measures in the version of the interpreters that were current back then. In this paper we will update the methodology and the results, using the latest versions of the interpreters, and extend the methodology to other architectures, namely Apple Silicon, whicn allows us to gather some insight also on how energy results are achieved for the different virtual machines.
+In the first version published of this line of research
+\cite{DBLP:conf/icsoft/GuervosGC23}, we established a methodology for choosing
+an energy profile and performance measures in the versions of the interpreters
+that were current at that time. In this paper we will update the methodology
+and the results, using the current versions of the interpreters, and extend the
+methodology to other architectures, namely Apple Silicon, whicn allows us to
+gather some insight also on how energy results are achieved for the different
+virtual machines.
 
-The rest of the paper follows this plan: next we will present the state of the
+The rest of the paper follows this plan: next, we will present the state of the
 art; then we will describe the experimental setup in Section \ref{sec:setup};
 results will be presented next in Section \ref{sec:res}, and we will end with a
 discussion of results, conclusions and future lines of work.
