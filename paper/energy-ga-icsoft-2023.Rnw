@@ -17,7 +17,7 @@ Pedro A. Castillo\inst{1}}
 
 \authorrunning{Merelo-Guervós et al.}
 
-\institute{Department of Computer Engineering, Automatics and Robotics, University of Granada, Granada, Spain \and
+\institute{Department of Computer Engineering, Automatics and Robotics and CITIC, University of Granada, Granada, Spain \and
 Department of Graduate Studies, National Technological Institute of Mexico, Tijuana, Mexico}
 
 \maketitle
