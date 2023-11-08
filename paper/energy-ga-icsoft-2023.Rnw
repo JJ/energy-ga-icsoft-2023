@@ -526,6 +526,15 @@ improvements.mac <- merge( onemax.mac.ratio, crossover.mac.ratio, by = c("size",
 kable(improvements.mac, caption="Ratio of CPU energy consumed by the desktop machine over the MacAir with Apple Silicon M1. \\protect\\label{tab:improvements:mac}",row.names=F,col.names=c("VM","Size","OneMax","Crossover"))
 @
 
+What we see in Table \ref{tab:improvements:mac} is that, in all cases, the workload under study consumes less energy in the Apple Silicon architecture than in the desktop machine. A priori, this should be expected, since energy management is one of the features of portable machines, and is probably not exclusive of Apple Silicon. What is surprising, however, is that in some cases the improvement is quite significant: the crossover operation performed by {\sf node.js} can spend 9 times less energy in the Apple Silicon device; OneMax more or less the same in {\sf deno}. Even {\sf bun}, characterized by the lowest energy profile, can spend even less energy in this case; for instance, on average {\sf bun} will spend \Sexpr{onemax.mac.avg$average[1]} Joules in the MacAir for OneMax with 1024 bits, while the desktop machine will spend \Sexpr{onemax.avg$average[1]} Joules.
+
+<<avg.times, echo=F, message=F>>=
+onemax %>% group_by( size, VM) %>% summarise( average = mean( seconds ) ) -> onemax.avg.time
+onemax.mac %>% group_by( size, VM) %>% summarise( average = mean( seconds ) ) -> onemax.avg.time.mac
+@
+
+What is remarkable, in this case, is also that the laptop is {\em faster}, with the workload taking on average \Sexpr{onemax.avg.time.mac$average[1]} seconds on the MacAir for OneMax with 1024 bits, and  \Sexpr{onemax.avg.time$average[1]} in the other case; all across the board, the MacAir is faster.
+
 \section{Conclusions}
 \label{sec:conc}
 
