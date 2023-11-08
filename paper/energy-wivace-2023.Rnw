@@ -323,7 +323,7 @@ ggplot(onemax.intel, aes(x=size,y=RAM))+geom_boxplot(aes(fill=VM),notch=T)+ylim(
 @
 
 Results of these experiments for the OneMax fitness function, shown in Figure
-\ref{fig:onemax:intel}, first allow us to check the influence on the overall
+\ref{fig:onemax:intel}, allow us to check the influence on the overall
 energy expenses of the memory operations, which are shown in the right-hand side panel. They are first barely above the baseline, with averages rarely exceeding 20 joules; but the most important thing is that there are no significant differences among the  interpreters. The consumption by {\sf node} seems to increase slightly with size, but it is not enough to outspend the other two interpreters.
 The left-hand side panel in Figure \ref{fig:onemax:intel} does show significant
 differences in every size. We can affirm that {\sf bun} is, in general, better
