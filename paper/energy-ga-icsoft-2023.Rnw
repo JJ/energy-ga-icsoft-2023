@@ -9,7 +9,7 @@
 
 \begin{document}
 
-\title{Green evolutionary algorithms and JavaScript: a study on different architectures}
+\title{Green evolutionary algorithms and JavaScript: a study on different software and hardware architectures}
 
 \author{Juan J. Merelo-Guervós\inst{1}\and
 Mario García-Valdez\inst{2} \and
