@@ -590,6 +590,8 @@ uses specific, early-adoption, or some features that, for some reason, do not
 work with {\sf bun} yet, we would advise anyone to keep using {\sf bun} for this
 kind of workloads.
 
+By testing different versions of the interpreters, we can affirm also that the advantage of {\sf bun} over the other interpreter is consistent in time; in some cases there are dramatic reductions in consumption, 
+
 As we have indicated in the experimental section, the wide advantage that {\sf
 bun} has over the other interpreters does not leave much room for adopting
 different benchmarks that could make that ranking vary; at any rate, these
