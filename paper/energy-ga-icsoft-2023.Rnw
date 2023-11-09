@@ -634,9 +634,7 @@ this platform is a challenge due to its specialized focus. Nonetheless,
 exploring its application in this context and assessing the impact on energy
 consumption would be a valuable contribution to the field. 
 
-% Although mutation is not examined as a micro-operation, it will probably not have much influence; however, other operations like selection, with more complexity, might require energy expenses that scale in a wholly different way. In general, building up a more general instance of a single generation in an evolutionary algorithm will give us a wider perspective on energy profiles, without losing sight of what are the individual operations that make it up and the specific energy costs of each of them. At the same time, in this paper we have experimented with a single data structure for representation of the chromosomes; current EAs use any kind of data structures, and they will have different energy profiles. Fixing other parameters (like interpreters and architecture) and working on them will also give us a path for making evolutionary algorithms greener.
-
-Although mutation is not examined as a micro-operation, it will likely not have
+In this paper, mutation is not examined as a micro-operation, it will likely not have
 much influence; however, other operations like selection, with more complexity,
 require energy expenses that scale in a wholly different way. In general,
 building up a more general instance of a single generation in an evolutionary
