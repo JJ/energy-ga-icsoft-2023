@@ -107,7 +107,7 @@ In the first version published of this line of research
 an energy profile and performance measures in the versions of the interpreters
 that were current at that time. In this paper we will update the methodology
 and the results, using the current versions of the interpreters, and extend the
-methodology to other architectures, namely Apple Silicon, whicn allows us to
+methodology to other architectures, namely Apple Silicon, which allows us to
 gather some insight also on how energy results are achieved for the different
 virtual machines.
 
@@ -235,7 +235,7 @@ The Apple Silicon processor line is a series of ARM-based processors designed by
 The operating system has a set of parameters that fall under the management of
 the so-called IOReport subsystem. This includes access to many different
 metrics, but also to the ones we are interested in general power consumption,
-as well as the actvivity of P- and E- cores. As in the case of the RAPL
+as well as the activity of P- and E- cores. As in the case of the RAPL
 metrics, there are several command-line tools that can be used to record them
 during the execution of our workload:
 
@@ -526,14 +526,14 @@ improvements.mac <- merge( onemax.mac.ratio, crossover.mac.ratio, by = c("size",
 kable(improvements.mac, caption="Ratio of CPU energy consumed by the desktop machine over the MacAir with Apple Silicon M1. \\protect\\label{tab:improvements:mac}",row.names=F,col.names=c("VM","Size","OneMax","Crossover"))
 @
 
-What we see in Table \ref{tab:improvements:mac} is that, in all cases, the workload under study consumes less energy in the Apple Silicon architecture than in the desktop machine. A priori, this should be expected, since energy management is one of the features of portable machines, and is probably not exclusive of Apple Silicon. What is surprising, however, is that in some cases the improvement is quite significant: the crossover operation performed by {\sf node.js} can spend 9 times less energy in the Apple Silicon device; OneMax more or less the same in {\sf deno}. Even {\sf bun}, characterized by the lowest energy profile, can spend even less energy in this case; for instance, on average {\sf bun} will spend \Sexpr{onemax.mac.avg$average[1]} Joules in the MacAir for OneMax with 1024 bits, while the desktop machine will spend \Sexpr{onemax.avg$average[1]} Joules.
+What we see in Table \ref{tab:improvements:mac} is that, in all cases, the workload under study consumes less energy in the Apple Silicon architecture than in the desktop machine. A priori, this should be expected, since energy management is one of the features of portable machines, and is probably not exclusive of Apple Silicon. What is surprising, however, is that in some cases the improvement is quite significant: the crossover operation performed by {\sf node.js} can spend 9 times less energy in the Apple Silicon device; OneMax more or less the same in {\sf deno}. Even {\sf bun}, characterized by the lowest energy profile, can spend even less energy in this case; for instance, on average {\sf bun} will spend \Sexpr{onemax.mac.avg$average[1]} Joules in the MacBook Air for OneMax with 1024 bits, while the desktop machine will spend \Sexpr{onemax.avg$average[1]} Joules.
 
 <<avg.times, echo=F, message=F>>=
 onemax %>% group_by( size, VM) %>% summarise( average = mean( seconds ) ) -> onemax.avg.time
 onemax.mac %>% group_by( size, VM) %>% summarise( average = mean( seconds ) ) -> onemax.avg.time.mac
 @
 
-What is remarkable, in this case, is also that the laptop is {\em faster}, with the workload taking on average \Sexpr{onemax.avg.time.mac$average[1]} seconds on the MacAir for OneMax with 1024 bits, and  \Sexpr{onemax.avg.time$average[1]} in the other case; all across the board, the MacAir is faster.
+What is remarkable, in this case, is also that the laptop is {\em faster}, with the workload taking on average \Sexpr{onemax.avg.time.mac$average[1]} seconds on the MacBook Air for OneMax with 1024 bits, and  \Sexpr{onemax.avg.time$average[1]} in the other case; all across the board, the MacBook Air is faster.
 
 \section{Conclusions}
 \label{sec:conc}
@@ -600,8 +600,7 @@ reason, do not work with {\sf bun} yet, we advise anyone to keep using {\sf
 bun} for these kinds of workloads.
 
 
-% The fragment below is inclomplete, I put it as comment for now - M
-% By testing different versions of the interpreters, we can affirm also that the advantage of {\sf bun} over the other interpreter is consistent in time; in some cases there are dramatic reductions in consumption, 
+By testing different versions of the interpreters, we can affirm also that the advantage of {\sf bun} over the other interpreter is consistent in time; in some cases there are dramatic reductions in consumption in new versions. However, it is also true that {\sf bun} has gone from beta to production, so the same kind of reductions might not be expected in the near future. Since it is impossible to preview whether energy consumption optimization will proceed at the same rate for every other interpreter, we will still need to test new versions, maybe under a reduced benchmark. The interpreter architecture, which is based in three different languages, might still give some edge for {\sf bun} over {\sf deno} and for this one over {\sf node.js}. But in absence of any principled certainty on this, we can only advice to keep benchmarking new versions of the interpreters for the workloads we are interested with, maybe in small samples so that decisions can be made quickly.
 
 
 As we have indicated in the experimental section, the extensive advantage that
