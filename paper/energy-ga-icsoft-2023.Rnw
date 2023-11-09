@@ -647,14 +647,14 @@ them will also give us a path for making evolutionary algorithms greener.
 
 \section*{Acknowledgements}
 
-This work is supported by the Ministerio Español de Econom\'{\i}a y
+This work is supported by the Ministerio Español de Economía y
 Competitividad (Spanish Ministry of Competitivity and Economy) under project
 PID2020-115570GB-C22 (DemocratAI::UGR) and Project 18186.23-P of 2023 TecNM research grants.
 
 
 \bibliographystyle{apalike}
-{\small
-\bibliography{energy,javascript,geneura}}
+
+\bibliography{energy,javascript,geneura}
 
 
 \end{document}
