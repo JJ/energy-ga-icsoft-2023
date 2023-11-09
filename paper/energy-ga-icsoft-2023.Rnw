@@ -538,41 +538,49 @@ What is remarkable, in this case, is also that the laptop is {\em faster}, with 
 \section{Conclusions}
 \label{sec:conc}
 
-In this paper, we set out to study the energy efficiency of different JavaScript
-interpreters and architectures in EA workloads, by studying how short scripts, that are extensively
-used in implementations of these algorithms, work and how these energy expenses
-scale with the chromosome size. We have developed a methodology to accurately
-measure per-process consumption; we have also adopted a multi-platform tool, \pinp, that is
-able to give good estimations of sensor readings, discarding experiments where
-that estimation was not adequate; this tool has been calibrated by comparing its
-readings with other tools, which were also evaluated for the same purpose and
-eventually discarded. We have also adopted a benchmark-based approach, similar
-to the one used to measure performance, so that consumption for specific
-operations can be assessed, discarding noise produced by the implementation of
-a complete algorithm; that is, a whole program that includes different operations,
-applied in different proportions, that might cancel each other. Testing short
-code paths, as proposed by \cite{10.1145/2425248.2425252} makes easier to
-understand their individual contribution to the overall consumption of the
-algorithm, and eventually optimize their specific code, or the number of times
-they are applied in the algorithm.
+This paper investigates the energy efficiency of various JavaScript
+interpreters and architectures under Evolutionary Algorithm (EA) workloads. We
+analyze the energy consumption of brief scripts extensively used within these
+algorithms and how these energy expenses scale as the chromosome size
+increases. 
+We have developed a methodology that enables the precise measurement of energy
+consumption for individual processes; we also adopted a multi-platform tool,
+\pinp, that can give accurate estimations of sensor readings, discarding
+experiments where that estimation was not adequate; we calibrated this tool by
+comparing its readings with other tools, which were also evaluated for the same
+purpose and eventually discarded.
+Further, we adopted a benchmarking strategy akin to the one used to measure
+performance, enabling us to pinpoint energy expenditure for specific operations
+while discarding the noise produced by executing a complete algorithm. Such an
+approach excludes the interference of different operations, applied in
+different proportions, that could obfuscate actual energy costs when blended
+within the whole algorithm.
+Testing short code paths, consistent with the suggestions of
+\cite{10.1145/2425248.2425252}, makes it easier to understand their individual
+contribution to the overall consumption of the algorithm, thus paving the way
+for more targeted optimization—either by refining the code itself or by
+adjusting its frequency within the algorithm.
 
-
-During the exploratory data analysis, we have established that, in Linux and MacOS
-machines, \pinp{} can be profitably used to measure per-process energy
+During the exploratory data analysis, we have established that, in Linux and
+MacOS machines, \pinp{} can be profitably used to measure per-process energy
 consumption, as long as these measurements are repeated and the process
+% Is not clear what 'repeated' means, as long as the measurements are the average of 
+% several (representative sample) measurements? - M  
 themselves include short snippets of business logic; this tool should be
 preferred over others that are either less accurate or simply take into account
 different aspects of energy consumption.
 
-The main point of this paper, however, was to check which JavaScript
-interpreter and computer architecture should be used if our objective is to consume the minimum amount of
-energy; the experiments have reliably confirmed {\sf bun} to be that tool across all architectures. It not
-only consumes less for all the range of chromosome sizes used; it also takes
-less time and can run applications written for Node (mostly) unmodified; its
-consumption also scales better with problem size. This might be due to design
-considerations, but also to the fact that the language used to write it, Zig,
-emphasizes compile-time safety and manual memory allocation by default and avoids hidden control flow.
-It has recently turned to version 1.0, so it is definitely our pick for this kind of workloads.
+The core objective of this paper, however, was to check which JavaScript
+interpreter and computing architecture are optimal for minimizing energy
+consumption; the experiments have reliably confirmed {\sf bun} to be the
+superior interpreter across all tested architectures. It not only consumes less
+energy for all the range of chromosome sizes; it also exhibits enhanced time
+efficiency and can run applications written for Node (mostly) unmodified; its
+consumption also scales better with problem size. These advantages may stem
+from its design philosophy and the use of Zig. This language prioritizes
+compile-time safety and manual memory allocation by default and avoids hidden
+control flow. With {\sf bun} recently achieving its 1.0 milestone, it is our
+pick for workloads of this kind.
 
 If that is an issue, {\sf deno} might be a good alternative. Except in very 
 specific cases, it is going to be faster and consume less energy than {\sf
