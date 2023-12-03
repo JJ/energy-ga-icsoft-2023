@@ -2,20 +2,20 @@
 
 The same as [Pythoneo](https://github.com/iblancasa/PythonEO), [Luneo](https://github.com/JJ/LunEO) and others.
 
-
 ### What do you need to run this?
 
 You have to install Kotlin language (usually is a package called
 kotlinc in Linux systems), but most probably you will need to install
 SDKMAN!
 
-    curl -s get.sdkman.io | bash
+    curl -s https://get.sdkman.io | bash
 
 and then run this to install the kotlin compiler
 
-	sdk install kotlin
+    sdk install kotlin
 
 #### Compiling and run
+
 ```bash
 #Compliling onemax
 kotlinc onemax.kt kotlineo.kt -include-runtime -d onemax.jar

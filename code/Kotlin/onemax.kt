@@ -18,7 +18,7 @@ fun calculeTime(length:Int, iterations:Int):Float{
 
 
 
-fun main(args : Array<String>) {
+fun main() {
   var length = 16;
   var iterations = 100000;
   var top_length = 32768;
