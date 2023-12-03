@@ -1,0 +1,54 @@
+\documentclass[runningheads]{llncs}
+
+\usepackage[T1]{fontenc}
+\usepackage{graphicx}
+\usepackage{hyperref}
+\usepackage{color}
+\renewcommand\UrlFont{\color{blue}\rmfamily}
+
+\newcommand{\pinp}{\texttt{pinpoint}}
+\newcommand{\lik}{\texttt{likwid}}
+
+\begin{document}
+
+\title{Energy consumption of evolutionary algorithms in JavaScript}
+
+\author{
+  Juan J. Merelo-Guervós\inst{1}\orcidID{0000-0002-1385-9741}
+and
+  Mario García-Valdez\inst{2}\orcidID{0000-0002-2593-1114}
+
+}
+\institute{Department of Computer Engineering, Automatics and Robotics, University of Granada, Granada, Spain \and
+Department of Graduate Studies, National Technological Institute of Mexico, Tijuana, Mexico\\
+\email{jmerelo@ugr.es, mario@tectijuana.edu.mx}
+}
+
+
+\maketitle
+
+\begin{abstract}
+
+
+\keywords{Green computing, metaheuristics, JavaScript, energy-aware computing, evolutionary algorithms}
+\end{abstract}
+
+\section{\uppercase{Introduction}}
+\label{sec:introduction}
+
+
+
+\section*{Acknowledgements}
+
+This work is supported by the Ministerio espa\~{n}ol de Econom\'{\i}a y
+Competitividad (Spanish Ministry of Competitivity and Economy) under project
+PID2020-115570GB-C22 (DemocratAI::UGR).
+
+
+\bibliographystyle{splncs04}
+
+\bibliography{energy,javascript,geneura}
+
+
+\end{document}
+
