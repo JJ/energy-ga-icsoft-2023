@@ -1,0 +1,411 @@
+\documentclass[runningheads]{llncs}
+
+\usepackage[T1]{fontenc}
+\usepackage{graphicx}
+\usepackage{hyperref}
+\usepackage{color}
+\renewcommand\UrlFont{\color{blue}\rmfamily}
+
+\newcommand{\pinp}{\texttt{pinpoint}}
+\newcommand{\lik}{\texttt{likwid}}
+
+\begin{document}
+
+\title{Energy consumption of evolutionary algorithms in JavaScript}
+
+\author{
+  Juan J. Merelo-Guervós\inst{1}\orcidID{0000-0002-1385-9741}
+and
+  Mario García-Valdez\inst{2}\orcidID{0000-0002-2593-1114}
+and
+  Pedro A. Castillo\inst{1}\orcidID{0000-0002-5258-0620}
+}
+\institute{Department of Computer Engineering, Automatics and Robotics, University of Granada, Granada, Spain \and
+Department of Graduate Studies, National Technological Institute of Mexico, Tijuana, Mexico\\
+\email{jmerelo@ugr.es, mario@tectijuana.edu.mx, pacv@ugr.es}
+}
+
+
+\maketitle
+
+\begin{abstract}
+
+  Green computing is a methodology for saving energy when implementing
+  algorithms, and it is a problem with many moving parts. In environments where
+  the runtime is an integral part of the application, it is essential to
+  measure their energy efficiency so that researchers and practitioners have
+  enough choice. In this paper, we will focus on JavaScript runtime environments for
+  evolutionary algorithms; although not the most popular language for
+  scientific computing, it is the most popular language for developers, and it
+  has been used repeatedly to implement all kinds of evolutionary algorithms
+  almost since its inception. After previously settling the tools and essential
+  methodology, in this paper, we will focus on the importance of
+  measuring different versions of the same runtimes, as well as extending the
+  EA operators that will be measured. We also like to remark on the
+  importance of testing the operators in different architectures to
+  have a more precise picture that tips the balance towards one runtime or
+  another.
+  % maybe:  a more precise picture of what tips the balance... - M
+
+\keywords{Green computing, metaheuristics, JavaScript, energy-aware computing, evolutionary algorithms}
+\end{abstract}
+
+\section{\uppercase{Introduction}}
+\label{sec:introduction}
+
+
+
+From the first papers using it for implementing metaheuristics
+\cite{jesusIWANN99}, JavaScript is nowadays a great alternative for
+evolutionary algorithms and machine learning, making it a target for energy
+efficiency studies in those areas. However, unlike other languages, there are
+different interpreters with different applications: besides the well-known and
+established {\sf node} designed for browser and server-side execution and
+already in its version 20, a pair of powerful runtime environments have been
+produced recently. There is {\sf deno} \cite{runtimeintroducing} (written in
+Rust) focused on security and ease of use, and {\sf bun} \cite{bun} (programmed
+in the relatively unknown language Zig) designed for speed and server-side
+applications. We already compared them in a previous paper
+\cite{DBLP:conf/icsoft/GuervosGC23}. However, in that paper we established a
+general methodology for measuring energy consumption: using the energy profiler
+{\sf pinpoint}  \cite{9307947}, that reads from the RAPL registers
+\cite{10.1145/2425248.2425252,khan2018rapl}, and using experiments run from the
+command line, without any additional instrumentation, to measure power
+extracted by evolutionary algorithm operators from the source.
+
+We validated this approach, and applied it to a single fitness function
+(OneMax) and a common operator (crossover). However, this study left a few
+issues open. In this edition, we will widen the results, looking at different
+factors
+
+\begin{itemize} 
+
+\item Test new versions of the virtual machines considering energy consumption,
+    since in general these evolve towards more efficient operation; at any
+    rate, the balance of results might change in these new versions in
+    unexpected ways.
+            
+\item Test also in different power consumption environments, including
+    a native Intel machine, so that the interplay between the
+    interpreter and the power management can be observed with more
+    precision, with a full implementation of the API used for reading
+    the energy consumption sensors.
+
+\item A more complete operation of an evolutionary algorithm will be tested:
+    adding the ubiquitous mutation operator to the testbed, to see what kind of power
+    consumption profile it adds. 
+
+\end{itemize}
+
+
+The rest of the paper follows this plan: next we will present the state of the
+art; next the results together with the experimental setup will be
+presented in Section~\ref{sec:res}, and we will end with a discussion of
+results, conclusions and future lines of work in Section~\ref{sec:conc}.
+
+\section{State of the art}
+
+
+In the last few years, evaluating the energy efficiency of algorithms as well
+as modifying these algorithms or their implementations so they consume less
+energy has increasingly become a research topic \cite{demaine2016energy}; in
+many cases algorithms are compared with respect to their power efficiency.
+Since 2020, Machine learning/AI applications \cite{verdecchia2023systematic}
+have been extensively studied from the green perspective, primarily through 
+experimental studies. Green computing principles have been established as a
+best practice, which we will also follow in this paper.
+
+In the area of evolutionary algorithms, initial energy efficiency
+estimations included their behavior in different platforms
+\cite{10.1007/978-3-319-45823-6_51}, its interaction with cloud
+services \cite{maryam2018evolutionary} and how it affected genetic
+programming (GP) \cite{diaz2018fuzzy}; but since then, and due to the
+fact that metaheuristics are so extensively used in machine learning
+applications, studies in this area have grown. Many papers focus on
+analyzing how certain metaheuristics parameters have an impact on
+energy consumption.  Díaz-Álvarez et al. \cite{diaz2022population}
+studies how the population size of EAs influences power
+consumption. In an earlier work, centered on genetic algorithms (GAs)
+\cite{10.1007/978-3-030-45715-0_8}, power-consumption of
+battery-powered devices was measured for various parameter
+configurations including chromosome and population sizes. The
+experiments used the OneMax and Trap function benchmark problems, and
+they concluded that execution time and energy consumption do not
+linearly correlate and there is a connection between the GA parameters
+and power consumption.  In GAs, the mutation operator appears to be a
+power-hungry component according to Abdelhafez et
+al. \cite{abdelhafez2019component}, in their paper they also report
+that in a distributed evaluation setting, the communication scheme has
+a grater impact. Fernández de Vega et
+al. \cite{10.1007/978-3-319-45823-6_51} experimented with different
+parameters for a GP algorithm and concluded that hand-held devices and
+single-board computers (SBCs) required an order of magnitude less
+energy to run the same algorithm.
+
+These results point to several best practices in the area: first, evaluate
+separately different operators and fitness functions, and second, perform
+experiments on different devices. After the initial exploration and
+establishment of technology in \cite{DBLP:conf/icsoft/GuervosGC23}, this paper
+will also test the mutation operator, as well as carry out tests in computers
+with different architectures.
+
+
+\section{Experimental results}
+\label{sec:res}
+
+From the different ways to measure energy consumption \cite{cruz21},
+in \cite{DBLP:conf/icsoft/GuervosGC23} we chose {\sf pinpoint}~\cite{9307947}, a tool
+that uses the RAPL (Running Average Power Limit \cite{rapl})
+interface, to report the power consumed. This tool was on one side
+accurate enough to take the measurements we needed and on the other
+it was measuring what we needed, so it will be the one
+used in this paper. This tool sometimes returned 0 in energy
+measures; when this happened, the run was discarded and 
+repeated until the desired number was reached. Depending on the actual
+processor and chipset architecture, the tool will report different
+quantities; however, it always reports the {\em package} ({\tt
+PKG}) energy consumption, which includes the CPU cores and the RAM. In
+architectures like Intel native where the RAM consumption is
+available, it will report {\tt PKG} as two separate quantities, {\tt
+cores} and {\tt ram}.
+
+We are going to focus on command line JavaScript interpreters in these versions:
+
+\begin{itemize}
+\item \texttt{bun} version 0.6.4
+\item \texttt{deno} version 1.34, which includes the v8 library version
+  11.5.150.0 and typescript 5.0.4
+\item  \texttt{node.js} version 18.16.0
+\end{itemize}
+
+These were running in an Ubuntu version 20.04.1 with kernel version
+5.15.0-69. The processor is an AMD Ryzen 9 3950X 16-Core; only some registers
+are available in this case, since it is a processor with a different architecture.
+
+A Perl script was created to run the experiments; it executed the scripts and
+collected the results by parsing the standard output and putting it into a file with CSV format
+that would allow examination of the experiments.  According to
+\cite{DBLP:conf/icsoft/GuervosGC23}, consumption for a no-op task running in the same environment was
+taken out of the reading before computing the average.
+
+As was done in \cite{DBLP:conf/evoW/MereloCBRGFRV16}, which was
+focused on wallclock performance, the experiments will be focused on
+the key operations performed by an EA: evaluation of fitness and
+"genetic" operators like mutation and crossover. What we will do in this paper is:
+repeat the setup in the initial exploration, check the energy
+consumption for the processing of 40000 chromosomes, a number chosen
+to take a sizable amount of memory, but also on the ballpark of the 
+usual number of operations in an EA benchmark; it is also small enough
+to not create garbage collection problems with the memory, something
+that was detected after the initial exploration.  Experiments were
+repeated for the same chromosome size as before, 1024, 2048, and 4096,
+and for the three JS runtimes used. Although the business
+logic is exactly the same for the experiments, the script comes in
+two versions, one for {\sf deno} and the other for {\sf bun/node}, due
+to the way they read command-line arguments. This
+does not affect the overhead in any way. Code, as well as the data
+resulted from the experiments and analyzed in this paper are released
+with a free license (along with this paper) from the repository
+\url{https://github.com/JJ/energy-ga-icsoft-2023}.
+
+<<r onemax, echo=F, fig.show="hold", out.width="30%", fig.cap="Comparison between different versions of the VMs on the OneMax problem; left: node.js, center: bun, right:deno\\protect\\label{fig:onemax}">>=
+library(ggplot2)
+library(ggthemes)
+library(stringr)
+onemax.icsoft <- read.csv("../code/data/pinpoint-vms-onemax-11-Apr-10-19-29.csv")
+onemax.icsoft$size <- as.factor(onemax.icsoft$size)
+onemax.icsoft$VM <- str_trim(onemax.icsoft$VM)
+onemax <- read.csv("../code/data/pinpoint-vms-onemax-29-May-17-45-44.csv")
+onemax$size <- as.factor(onemax$size)
+onemax$VM <- str_trim(onemax$VM)
+ggplot(onemax[onemax$VM == "node",], aes(x=seconds,y=PKG, color="May",fill=size))+geom_point(pch=22, stroke=2)+geom_point(data=onemax.icsoft[onemax.icsoft$VM == "node",],pch=21, stroke=2,aes(x=seconds,y=PKG,color="March",fill=size))+theme_tufte()
+ggplot(onemax[onemax$VM == "bun",], aes(x=seconds,y=PKG, color="May",fill=size))+geom_point(pch=22, stroke=2)+geom_point(data=onemax.icsoft[onemax.icsoft$VM == "bun",],pch=21, stroke=2,aes(x=seconds,y=PKG,color="March",fill=size))+theme_tufte()
+ggplot(onemax[onemax$VM == "deno",], aes(x=seconds,y=PKG, color="May",fill=size))+geom_point(pch=22,  stroke=2)+geom_point(data=onemax.icsoft[onemax.icsoft$VM == "deno",],pch=21, stroke=2,aes(x=seconds,y=PKG,color="March",fill=size))+theme_tufte()
+@
+%
+
+The charts presented in Figure \ref{fig:onemax} show that there is indeed a
+variation for all three runtimes and the way they vary is different. 
+In the case of {\sf node.js}, newer JavaScript runtimes take more or less the same
+time, but the consumption of energy is much less; since
+\cite{DBLP:conf/icsoft/GuervosGC23} showed that this is, indeed, one of the
+choke points of this runtime, it makes it more interesting in a low-consumption
+environment. The case of {\sf bun} is more complicated: performance is the
+same, but energy consumption seems to decrease only for smaller chromosome
+sizes, getting an increase in size 4096. The case of {\sf deno} is even more
+complicated: there is a change towards higher performance (experiments taking
+less time), which more or less corresponds to the decrease in consumption.
+However, the strange behavior of this JavaScript runtime regarding chromosome size (already
+observed in \cite{DBLP:conf/icsoft/GuervosGC23}) will have to be checked
+further.
+
+
+<<r crossoverx, echo=F, fig.show="hold", out.width="30%", fig.cap="Consumption and time for the crossover operator in the three different VMs; node left, bun center, deno right.\\protect\\label{fig:crossover}">>=
+crossover.icsoft <- read.csv("../code/data/pinpoint-vms-crossover-11-Apr-17-06-52.csv")
+crossover.icsoft$size <- as.factor(crossover.icsoft$size)
+crossover.icsoft$VM <- str_trim(crossover.icsoft$VM)
+crossover <- read.csv("../code/data/pinpoint-vms-crossover-29-May-18-49-13.csv")
+crossover$size <- as.factor(crossover$size)
+crossover$VM <- str_trim(crossover$VM)
+ggplot(crossover[crossover$VM == "node",], aes(x=seconds,y=PKG, color="May",fill=size))+geom_point(pch=22, stroke=2)+geom_point(data=crossover.icsoft[crossover.icsoft$VM == "node",],pch=21, stroke=2,aes(x=seconds,y=PKG,color="March",fill=size))+theme_tufte()
+ggplot(crossover[crossover$VM == "bun",], aes(x=seconds,y=PKG, color="May",fill=size))+geom_point(pch=22, stroke=2)+geom_point(data=crossover.icsoft[crossover.icsoft$VM == "bun",],pch=21, stroke=2,aes(x=seconds,y=PKG,color="March",fill=size))+theme_tufte()
+ggplot(crossover[crossover$VM == "deno",], aes(x=seconds,y=PKG, color="May",fill=size))+geom_point(pch=22, size=4, stroke=2)+geom_point(data=crossover.icsoft[crossover.icsoft$VM == "deno",],pch=21, size=4, stroke=2,aes(x=seconds,y=PKG,color="March",fill=size))+theme_tufte()
+@
+
+The scenario that is shown in Figure \ref{fig:crossover}, represents the
+performance for crossover, it has some similarities with the one shown in Figure
+\ref{fig:onemax}, showing again the strange performance correlations for the
+{\sf deno} JS runtime. In the other two cases, there is no great difference, it can
+even be slightly worse, although the difference does not seem to be
+significant.
+
+Since what we are seeking is the JavaScript VM that has the best energy
+profile, we will first compare the energy consumption of the ones available in
+March 2023, and published in \cite{DBLP:conf/icsoft/GuervosGC23}, and the ones
+available in May 2023, when this paper is being written. It does not seem like
+the slight disadvantage in energy consumption for this new version, in this
+specific operator, is enough to offset the savings obtained with the fitness
+function; let us not forget that fitness evaluation usually takes the bulk of
+the energy consumption and time. At any rate, the fact that unexpected
+variations in energy consumption may occur when versions change, and sometimes
+dramatic ones, is probably enough to warrant re-profiling of all workloads
+(evolutionary algorithms or otherwise) and another round of comparison of the
+performance and energy consumption for all three. This is what we will do next,
+using the newest published versions.
+
+%
+<<r onemax.vms, echo=F, fig.height=4, fig.cap="Boxplot of PKG measurements for the OneMax fitness function and the three different virtual machines.\\protect\\label{fig:onemax:energy}">>=
+ggplot(onemax, aes(x=size,y=PKG))+geom_boxplot(aes(fill=VM))+ylim(0, NA)+theme_tufte()
+@
+%
+
+%Rewrite
+The figure shows how energy consumption grows less than linearly for {\sf bun}; this is a change with respect to \cite{DBLP:conf/icsoft/GuervosGC23}, when it was flat.
+How consumption changes for {\sf deno} is weird, since it decreases as the size of the chromosome grows; this is a slight change with respect to \cite{DBLP:conf/icsoft/GuervosGC23}, when it decreased only for the biggest size. {\sf node} is, however, the bigger energy
+guzzler, consuming up to 3 times more than {\sf deno} on average, and more than
+5 times as much as {\sf bun} for the biggest size; however, this new version of the interpreter {\tt 18.15.0} has a consumption similar to {\sf bun} for the smallest size. Taking into account that, in most cases, we are going to deal with chromosomes with sizes that are around this order of magnitude, {\sf node} might be a good alternative if considerations other than raw speed, such as maturity of the product, enter into consideration.
+
+Another function we have tested, crossover, involves copy operations between strings that create new strings, since strings in JavaScript are immutable. We will again generate 40K chromosomes and group them
+in pairs; the strings in the pair will be crossed by interchanging a random
+fragment from one to the other and back in what is usually called two-point crossover. The resulting pairs will be stored in
+an array, which is eventually printed. The result of every experiment
+has been already shown in an energy vs. wallclock time chart in Figure \ref{fig:crossover}, comparing how it goes for different virtual machines. In Figure \ref{fig:xover:vms} we render a boxplot for different sizes and the different virtual machines, in order to compare their energy consumption and how it grows with chromosome size.
+
+<<r crossover, echo=F, fig.height=4, fig.cap="PKG consumption for the crossover and the three different virtual machines, shown as a boxplot.\\protect\\label{fig:xover:vms}">>=
+ggplot(crossover, aes(x=size,y=PKG))+geom_boxplot(aes(fill=VM))+ylim(0, NA)+theme_tufte()
+@
+
+The scenario is remarkably similar to the one shown in Figure \ref{fig:onemax}, and also similar to what we found with the previous versions of all command-line interpreters in \cite{DBLP:conf/icsoft/GuervosGC23}. {\sf bun} grows less than linearly with chromosome size, and {\sf node} grows more or less linearly; it is always better for {\sf bun}, and the difference increases with size. But, again, the surprising energy profile for {\sf deno}, which decreases with size, makes it the most energy-thrifty of the three for the biggest size. In any case, {\sf bun} continues to consistently yield very low-energy consumption values across all sizes.
+
+In this paper, we will also be testing a third operator, mutation. Mutation takes many different forms, but in its simplest form it changes a single bit in a bit string. Again, due to the fact that strings in this language are immutable, the mutated string must be built from pieces of the original string, which will have an impact on the performance.
+
+
+<<r mutation, echo=F, fig.height=4, fig.cap="PKG consumption for the mutation operator and the three different virtual machines, shown as a boxplot.\\protect\\label{fig:mutation:vms}">>=
+mutation <- read.csv("../code/data/pinpoint-vms-mutation-30-May-09-29-50.csv")
+mutation$size <- as.factor(mutation$size)
+mutation$VM <- str_trim(mutation$VM)
+ggplot(mutation, aes(x=size,y=PKG))+geom_boxplot(aes(fill=VM))+ylim(0, NA)+theme_tufte()
+@
+
+What these measurements show is that, since they behave essentially as a set of
+copy operations, its behavior is quite similar to that shown in Figure \ref{fig:xover:vms}. {\sf deno} decreases with size, {\sf bun} increases very slowly, {\sf node} faster to the point that it spends three times more energy than {\sf bun} for the biggest size.
+
+It is interesting, however, to test the algorithms in different architectures, even more using a native Intel architecture with all its registers. This is why we have repeated the experiments in another computer, a Lenovo Carbon X1 with Ubuntu 22.04.1, kernel version {\tt 5.19.0-43-generic} and an Intel processor and an Intel Core i7-10610U CPU @ 1.80GHz, with 8 cores.
+
+One of the advantages of using the native Intel architecture is that it gives you more accurate estimations of consumption for specific parts of the system; namely, it breaks the {\tt PKG} reading into two, {\tt cores} and {\tt ram}. In this case, we will be changing slightly the script so that we get separate readings for these two sensors.
+
+<<r intel.onemax, echo=F, message=FALSE,fig.show="hold", out.width="50%", fig.height=5, fig.cap="Consumption for the OneMax fitness function in the Intel architecture and the three different virtual machines, shown as a notched boxplot; cores component (left) and RAM component (right). Please observe that the scales in the y axes are different.\\protect\\label{fig:onemax:intel}">>=
+onemax.intel <- read.csv("../code/data/pinpoint-intel-vms-onemax-2-Jun-12-07-14.csv")
+onemax.intel$size <- as.factor(onemax.intel$size)
+onemax.intel$VM <- str_trim(onemax.intel$VM)
+ggplot(onemax.intel, aes(x=size,y=cores))+geom_boxplot(aes(fill=VM),notch=T)+ylim(0, NA)+theme_tufte()
+ggplot(onemax.intel, aes(x=size,y=RAM))+geom_boxplot(aes(fill=VM),notch=T)+ylim(0, NA)+theme_tufte()
+@
+
+Results of these experiments for the OneMax fitness function, shown in Figure
+\ref{fig:onemax:intel}, allow us to check the influence on the overall
+energy expenses of the memory operations, which are shown in the right-hand side panel. They are first barely above the baseline, with averages rarely exceeding 20 joules; but the most important thing is that there are no significant differences among the  interpreters. The consumption by {\sf node} seems to increase slightly with size, but it is not enough to outspend the other two interpreters.
+The left-hand side panel in Figure \ref{fig:onemax:intel} does show significant
+differences in every size. We can affirm that {\sf bun} is, in general, better
+than {\sf node}, although the difference is not significant at the bigger size.
+But the main issue here is that {\sf deno} seems to be the best for any size above 1024 bits.
+
+At any rate, comparing this graph with Figure \ref{fig:onemax}, we can see that
+the average consumption for the smaller size, around 100 Joules, is less than
+half what is consumed in the desktop system we have initially tested here and in
+\cite{DBLP:conf/icsoft/GuervosGC23}. The average time needed to find the solution, however, is higher, although not by an order of magnitude.
+
+<<r times.energy, message=F, echo=F>>=
+library(dplyr)
+library(kableExtra)
+
+onemax.intel$PKG <- onemax.intel$RAM+ onemax.intel$cores
+onemax.intel.means <- onemax.intel %>% group_by(VM,size) %>% summarise( across(c(seconds,PKG),mean))
+onemax.means <- onemax %>% group_by(VM,size) %>% summarise( across(c(seconds,PKG),mean))
+onemax.all.means <- onemax.means
+onemax.all.means$Intel.seconds <- onemax.intel.means$seconds
+onemax.all.means$Intel.PKG <- onemax.intel.means$PKG
+kable(onemax.all.means,col.names = c("VM","Size","AMD - s","AMD - J", "Intel - s", "Intel - J"), caption="Comparing times (in seconds, s) and cost (in Joules, J) for an AMD desktop and Intel-based laptop (see text for specs). These are average times and energy consumption, in seconds and Joules, respectively.\\protect\\label{tab:onemax}")
+@
+
+A comparison of consumption and performance (running time) is shown in Table \ref{tab:onemax}. In most cases, the AMD-based desktop will beat the Intel-based laptop; they are machines of (roughly) the same generation, however laptops are not, as usual, designed for speed, but for a good performance/consumption ratio. It is remarkable, however, that {\sf node} is, on average, faster in the laptop than in the desktop, and that, in any case, evolutionary algorithms can be run with a reasonable expectation of performance in a laptop.
+Of course, this could also means that {\sf node} is faster on the Intel architecture, due either to a more efficient interpreter (created by a more efficient compiler of C/C++ in that architecture) or to the fact that the interpreter operations work better in that architecture. Ascertaining this, however, falls outside the scope of this paper.
+On the other hand, there is no single combination of interpreter and size that offers better power consumption, to the extent that, in the case mentioned above, {\sf node} at a chromosome length = 4096, consumption is almost 6 times smaller in the case of the laptop. In general, it will always be less than half.
+
+\section{Conclusions}
+\label{sec:conc}
+
+In this paper we set out to study the influence on energy consumption of evolutionary algorithms in three different directions: first, testing different versions of the interpreters; second, including the mutation operator, since it seems to be the one that consumes the most; and third, test different types of computers.
+
+While in our previous paper, \cite{DBLP:conf/icsoft/GuervosGC23}, the measurements showed clearly
+that {\sf bun} was the less energy-consuming interpreter across all evolutionary
+operators and fitness functions, the experiments performed in this paper show a
+more nuanced scenario. The first interesting conclusion is that there is nothing
+inherently energy-saving in the architecture of that interpreter, and that the
+supremacy can change when current versions of the interpreters are compared with
+each other; subsequent release might increase or decrease the energy
+consumption, and do so differentially across different problem sizes, so this
+leads again to experimentation as the only possible way to really ascertain
+which interpreter is best. The counter-intuitive behavior of {\sf deno}, which consumes less as the size increases, also leads to this conclusion. We cannot even discard {\sf node} as the most energy-consuming interpreter, since it beats {\sf deno} in the mutation operator, which is the one that consumes the most, at the smallest sizes, as well as the OneMax operator, also quite energy-consuming.
+
+These new experiments with the mutation operator, which basically involves
+copying of large strings, do not actually show big differences between the three
+interpreters for the smallest size, which is probably closer to the one actually
+used in most EA applications. Larger sizes imply a disadvantage for {\sf node},
+so your mileage may vary. At any rate, using {\sf bun} or {\sf node} is largely,
+in this case, a matter of choice; a choice that should, nonetheless, be informed
+by actual measurements, since experiments do not give you a general answer. This
+is also true independently of the machine we choose: there is a slight advantage
+of {\sf bun} over {\sf node} at the smallest size, {\sf deno} seems to be better
+when size is increased. Measuring in an Intel-powered laptop has several
+advantages, however: first, it gives you real register measurements, as opposed
+to other brands of CPUs that merely emulate them; second, it really allows you to {\em pinpoint}, as in the tool we use, where is the actual energy consumption, by allowing to make core consumption and memory apart; this has allowed us to find out that in the case of evolutionary algorithms, it is actually the cores that are consuming energy from the power source.
+
+Finally, our experiment with a (powered) laptop shows that, as should be
+expected, opting for an energy-saving computer architecture will give you energy
+savings that can go from 50\% to over 80\%, depending on the size; these savings
+do not imply a decrease in performance in the same scale; even in some cases, it
+can be faster, in the case of {\sf deno}. This leads us to encourage performing
+evolutionary algorithms, wherever possible, in laptops, even more so if they
+have an Intel processor and chipset, Apple Silicon, or any computer or processor architecture designed for energy saving.
+
+Even if energy saving is not the main concern of the evolutionary algorithm practitioner, we encourage researchers to always follow a strategy of energy and performance profiling to be able to extract the most from the existing hardware architecture; this is always a software engineering best practice that we really need to encourage in our area.
+
+The fact that mutation is so power-hungry leads us to designing algorithms that
+try and save energy in this area; this will probably imply changes in the data
+structures used in the evolutionary algorithm. Since in this case, we have used immutable strings, that might be the reason why it consumes so much energy. Implementation matters, \cite{DBLP:conf/iwann/MereloRACML11}, so exploring and measuring will always help you take the best decisions in the direction of making computing greener.
+
+\section*{Acknowledgements}
+
+This work is supported by the Ministerio espa\~{n}ol de Econom\'{\i}a y
+Competitividad (Spanish Ministry of Competitivity and Economy) under project
+PID2020-115570GB-C22 (DemocratAI::UGR).
+
+
+\bibliographystyle{splncs04}
+
+\bibliography{energy,javascript,geneura}
+
+
+\end{document}
+
