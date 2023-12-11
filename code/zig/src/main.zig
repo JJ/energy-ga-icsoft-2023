@@ -1,6 +1,6 @@
 const std = @import("std");
 
-fn countOnes(binaryString: [1024]u8) u32 {
+fn countOnes(binaryString: []u8) u32 {
     var count: u32 = 0;
     for (binaryString) |binaryChar| {
         if (binaryChar == '1') {
@@ -30,7 +30,7 @@ pub fn main() !void {
         }
 
         // Call the countOnes function
-        const count = countOnes(binaryString);
+        const count = countOnes(&binaryString);
         _ = count;
     }
 }
