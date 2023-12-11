@@ -16,8 +16,8 @@ pub fn main() !void {
 
     _ = argsIterator.next(); // First argument is the program name
 
-    // const stringLength = std.fmt.parseInt(u8, argsIterator.next(), 10);
-    const stringLength = 1000;
+    const stringLenArg = argsIterator.next().?;
+    const stringLength = try std.fmt.parseInt(u16, stringLenArg, 10);
 
     const numStrings = 40000;
 
@@ -27,14 +27,15 @@ pub fn main() !void {
 
     while (i < numStrings) {
         i = i + 1;
-        var binaryString = [_]u8{0} ** stringLength;
+        var binaryString = try allocator.alloc(u8, stringLength);
 
         var c: u32 = 0;
         while (c < stringLength) : (c += 1) {
             binaryString[c] = rnd.random().intRangeAtMost(u8, 0, 1);
         }
 
-        const count = countOnes(&binaryString);
+        const count = countOnes(binaryString);
         _ = count;
+        _ = allocator.free(binaryString);
     }
 }
