@@ -34,7 +34,9 @@ Making evolutionary algorithms greener imply working with attacking implementati
 \section{\uppercase{Introduction}}
 \label{sec:introduction}
 
-The interest in greener computing has grown in the last decades, in part fueled by the Objectives of the Millenium that advocate for a lower carbon footprint in human activity, and in part due to the fact that performance improvements brought by faster hardware are not coming with the same speed as they used to.
+The interest in greener computing has grown in the last decades, in part fueled by the Objectives of the Millenium that advocate for a lower carbon footprint in human activity, and in part due to the fact that performance improvements brought by faster hardware are not coming with the same speed as they used to. There are many different ways to approach this problem, however: as Hidalgo et al. affirm \cite{hidalgo2023sustainable}, there are four different levels for the evaluation and eventual improvement of energy consumption in AI (including, as in this paper, metaheuristics): just above the hardware level there is the programming language level, which includes not only the language itself, but also libraries and compilers or interpreters. This was the topic of \cite{DBLP:conf/icsoft/GuervosGC23}, where our focus was to work on different JavaScript interpreters in order to discover which one used system energy more efficiently.
+
+However, there are many user cases in which the language used by all or part of the metaheuristic can also be chosen. 
 
 
 %\section*{Acknowledgements}
@@ -42,7 +44,6 @@ The interest in greener computing has grown in the last decades, in part fueled 
 %This work is supported by the Ministerio espa\~{n}ol de Econom\'{\i}a y
 %Competitividad (Spanish Ministry of Competitivity and Economy) under project
 %PID2020-115570GB-C22 (DemocratAI::UGR).
-
 
 \bibliographystyle{splncs04}
 
