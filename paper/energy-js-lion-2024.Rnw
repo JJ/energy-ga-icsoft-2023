@@ -11,13 +11,12 @@
 
 \begin{document}
 
-\title{Energy consumption of evolutionary algorithms in JavaScript}
+\title{How evolutionary algorithms consume energy depending on the level language}
 
 \author{
   Juan J. Merelo-Guervós\inst{1}\orcidID{0000-0002-1385-9741}
 and
   Mario García-Valdez\inst{2}\orcidID{0000-0002-2593-1114}
-
 }
 \institute{Department of Computer Engineering, Automatics and Robotics, University of Granada, Granada, Spain \and
 Department of Graduate Studies, National Technological Institute of Mexico, Tijuana, Mexico\\
@@ -28,9 +27,8 @@ Department of Graduate Studies, National Technological Institute of Mexico, Tiju
 \maketitle
 
 \begin{abstract}
-
-
-\keywords{Green computing, metaheuristics, JavaScript, energy-aware computing, evolutionary algorithms}
+Making evolutionary algorithms greener imply working with attacking implementation from different angles. An interesting one is looking at how high level (interpreted), mid-level (based on multi-platform virtual machines) and low-level (native) will impact energy consumption. We will be looking at the implementation of key evolutionary algorithm functions, in three languages: JavaScript, Kotlin and Zig, to extract best practices regarding green implementation of evolutionary algorithms.
+\keywords{Green computing, metaheuristics, JavaScript, energy-aware computing, evolutionary algorithms, zig, Kotlin}
 \end{abstract}
 
 \section{\uppercase{Introduction}}
