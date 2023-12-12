@@ -1,4 +1,4 @@
-name: lint and test with node
+name: Test with node
 on:
   push:
     paths:
@@ -11,14 +11,15 @@ jobs:
   testingWithNode:
     strategy:
       matrix:
-        version: [18, latest]
+        version: [18, node, latest]
     runs-on: ubuntu-latest
     steps:
       - name: Working version
-        uses: actions/setup-node@v3
+        uses: actions/setup-node@v4
         with:
           node-version: ${{ matrix.version }}
       - name: Fuentes
-        uses: actions/checkout@v3
+        uses: actions/checkout@v4
       - name: test
-        run: cd code && npm ci && npm test
+        working-directory: code/JS
+        run: npm ci && npm test
