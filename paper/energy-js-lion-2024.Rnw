@@ -34,7 +34,7 @@ Making evolutionary algorithms greener imply working with attacking implementati
 \section{\uppercase{Introduction}}
 \label{sec:introduction}
 
-
+The interest in greener computing has grown in the last decades, in part fueled by the Objectives of the Millenium that advocate for a lower carbon footprint in human activity, and in part due to the fact that performance improvements brought by faster hardware are not coming with the same speed as they used to.
 
 
 %\section*{Acknowledgements}
