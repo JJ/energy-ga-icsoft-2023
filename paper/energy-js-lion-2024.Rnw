@@ -36,11 +36,12 @@ Making evolutionary algorithms greener imply working with attacking implementati
 
 
 
-\section*{Acknowledgements}
 
-This work is supported by the Ministerio espa\~{n}ol de Econom\'{\i}a y
-Competitividad (Spanish Ministry of Competitivity and Economy) under project
-PID2020-115570GB-C22 (DemocratAI::UGR).
+%\section*{Acknowledgements}
+
+%This work is supported by the Ministerio espa\~{n}ol de Econom\'{\i}a y
+%Competitividad (Spanish Ministry of Competitivity and Economy) under project
+%PID2020-115570GB-C22 (DemocratAI::UGR).
 
 
 \bibliographystyle{splncs04}
