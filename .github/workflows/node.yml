@@ -11,7 +11,7 @@ jobs:
   testingWithNode:
     strategy:
       matrix:
-        version: [18, node, latest]
+        version: [18, lts/*, latest]
     runs-on: ubuntu-latest
     steps:
       - name: Working version
