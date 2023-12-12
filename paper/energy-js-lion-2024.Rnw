@@ -40,6 +40,9 @@ However, there are many user cases in which the language used by all or part of 
 
 As in previous papers, we will focus on two critical evolutionary algorithm functions \cite{abdelhafez2019component}: the OneMax fitness function, as well as the crossover operator. In this paper we will try to factor out the time needed to generate the chromosomes; this is usually a one-shot in evolutionary algorithms and not very significant; however factoring it out will allow us to focus on the added energy consumption of the operations themselves.
 
+<<setup, echo=F>>=
+generate.chromosomes.bun <- read.csv("../data/pinpoint-v2-chromosome_generation-12-Dec-17-24-44.csv")
+@
 
 %\section*{Acknowledgements}
 
