@@ -32,13 +32,13 @@ for my $l ( qw(512 1024 2048 ) ) {
       my ( $seconds ) = $output =~ /(\d+\.\d+) seconds/;
       $total_seconds += $seconds;
       say "pinpoint, $l , $gpu ,$pkg";
-      push @results, [$gpu, $pkg,$seconds];
+      push @results, [$gpu, $pkg, $seconds];
     }
   } while ( $successful < $ITERATIONS );
 
   foreach  my $row (@results) {
-    my @gpu_pkg = @$row;
-    say $fh "pinpoint, bun, $l, ", join(@$row, ", ");
+    say join(", ", @$row);
+    say $fh "pinpoint, bun, $l, ", join(", ", @$row);
   }
 }
 close $fh;
