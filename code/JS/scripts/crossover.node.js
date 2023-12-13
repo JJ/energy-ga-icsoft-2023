@@ -1,4 +1,4 @@
-import { crossover, generateChromosomes } from "../lib/utils.js";
+import { crossover, generateChromosomes, mutation } from "../lib/utils.js";
 
 const size = process.argv[2];
 const NUMBER_OF_CHROMOSOMES = 40000;
@@ -17,7 +17,8 @@ for (let i = 0; i < HALF_POPULATION; i++) {
 console.log(pairs);
 const newPairs = [];
 pairs.forEach((pair) => {
-  newPairs.push(crossover(pair[0], pair[1]));
+  const newPair = crossover(pair[0], pair[1]);
+  newPairs.push( [ mutation(newPair[0]), mutation(newPair[1]) ] );
 });
 console.warn("Time so far ", Date.now() - endGeneration);
 
