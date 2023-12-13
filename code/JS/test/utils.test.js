@@ -7,6 +7,7 @@ import {
   generateChromosomes,
   generateSets,
   mutation,
+  HIFF,
 } from "../lib/utils.js";
 
 test("generate sets", () => {
@@ -56,4 +57,25 @@ test("Mutation ", () => {
   const hash = hashify(newChrom.split(""));
   equal(hash["0"], chrom.length - 1);
   equal(hash["1"], 1);
+});
+
+test("HIFF", function (t) {
+  let many_HIFF = "";
+  let subjects = {
+    10: 2,
+    1100: 8,
+    1011: 6,
+    10101101100100: 16,
+    1010110110010011: 22,
+    "010101101100100": 19,
+    "00000000100000": 42,
+    1111111110000110: 42,
+    "0010110100101101": 24,
+  };
+  for (let i in subjects) {
+    many_HIFF += i;
+    equal(HIFF(i), subjects[i], "HIFF " + i + " = " + subjects[i]);
+  }
+  equal(HIFF(many_HIFF), 163, "Many HIFF");
+
 });
