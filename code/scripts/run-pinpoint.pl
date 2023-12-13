@@ -5,7 +5,7 @@ use warnings;
 
 use v5.14;
 
-use lib qw(lib ../lib);
+use lib qw(lib ../lib ../../lib);
 use Utils qw(%command_lines);
 
 my $script = shift || "sets";
@@ -35,19 +35,10 @@ for my $c ( qw(node bun deno) ) {
         push @results, [$gpu, $pkg,$seconds];
       }
     } while ( $successful < $ITERATIONS );
-    my $average=$total_seconds/ $ITERATIONS;
-    my $baseline_output;
-    do {
-      $baseline_output = `pinpoint sleep $average 2>&1`;
-    } while ($baseline_output =~  /0.00\s+J/);
-    my ( $gpu, $pkg ) = $baseline_output =~ /(\d+\.\d+)\s+J/g;
+
     foreach  my $row (@results) {
-      my @gpu_pkg = @$row;
-      my $gpu_diff = $gpu_pkg[0] - $gpu;
-      say $fh "pinpoint, $c, $l, ",
-        $gpu_diff > 0 ?$gpu_diff:0,  ", " ,
-        $gpu_pkg[1]-$pkg,", ",
-        $gpu_pkg[2];
+      say join(", ", @$row);
+      say $fh "pinpoint, bun, $l, ", join(", ", @$row);
     }
   }
 }
