@@ -14,7 +14,6 @@ for (let i = 0; i < HALF_POPULATION; i++) {
   pairs.push([population[i], population[i + HALF_POPULATION]]);
 }
 
-console.log(pairs);
 const newPairs = [];
 pairs.forEach((pair) => {
   const newPair = crossover(pair[0], pair[1]);
@@ -22,4 +21,3 @@ pairs.forEach((pair) => {
 });
 console.warn("Time so far ", Date.now() - endGeneration);
 
-console.log(newPairs);
