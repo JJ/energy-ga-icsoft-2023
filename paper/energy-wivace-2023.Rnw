@@ -31,15 +31,14 @@ Department of Graduate Studies, National Technological Institute of Mexico, Tiju
 \begin{abstract}
 
   Green computing is a methodology for saving energy when implementing
-  algorithms, and it is a problem with many moving parts. In environments where
+  algorithms. In environments where
   the runtime is an integral part of the application, it is essential to
   measure their energy efficiency so that researchers and practitioners have
   enough choice. In this paper, we will focus on JavaScript runtime environments for
   evolutionary algorithms; although not the most popular language for
   scientific computing, it is the most popular language for developers, and it
   has been used repeatedly to implement all kinds of evolutionary algorithms
-  almost since its inception. After previously settling the tools and essential
-  methodology, in this paper, we will focus on the importance of
+  almost since its inception. In this paper, we will focus on the importance of
   measuring different versions of the same runtimes, as well as extending the
   EA operators that will be measured. We also like to remark on the
   importance of testing the operators in different architectures to
@@ -66,7 +65,7 @@ produced recently. There is {\sf deno} \cite{runtimeintroducing} (written in
 Rust) focused on security and ease of use, and {\sf bun} \cite{bun} (programmed
 in the relatively unknown language Zig) designed for speed and server-side
 applications. We already compared them in a previous paper
-\cite{DBLP:conf/icsoft/GuervosGC23}. However, in that paper we established a
+\cite{DBLP:conf/icsoft/GuervosGC23}. In that paper we established a
 general methodology for measuring energy consumption: using the energy profiler
 {\sf pinpoint}  \cite{9307947}, that reads from the RAPL registers
 \cite{10.1145/2425248.2425252,khan2018rapl}, and using experiments run from the
@@ -75,7 +74,7 @@ extracted by evolutionary algorithm operators from the source.
 
 We validated this approach, and applied it to a single fitness function
 (OneMax) and a common operator (crossover). However, this study left a few
-issues open. In this edition, we will widen the results, looking at different
+issues open. In this paper, we will widen the results, looking at different
 factors
 
 \begin{itemize} 
@@ -91,7 +90,7 @@ factors
     precision, with a full implementation of the API used for reading
     the energy consumption sensors.
 
-\item A more complete operation of an evolutionary algorithm will be tested:
+\item A more complete evolutionary algorithm will be tested:
     adding the ubiquitous mutation operator to the testbed, to see what kind of power
     consumption profile it adds. 
 
@@ -180,7 +179,7 @@ We are going to focus on command line JavaScript interpreters in these versions:
 
 These were running in an Ubuntu version 20.04.1 with kernel version
 5.15.0-69. The processor is an AMD Ryzen 9 3950X 16-Core; only some registers
-are available in this case, since it is a processor with a different architecture.
+are available in this case, as it is a processor with a different architecture than Intel's.
 
 A Perl script was created to run the experiments; it executed the scripts and
 collected the results by parsing the standard output and putting it into a file with CSV format
@@ -224,8 +223,11 @@ ggplot(onemax[onemax$VM == "deno",], aes(x=seconds,y=PKG, color="May",fill=size)
 @
 %
 
-The charts presented in Figure \ref{fig:onemax} show that there is indeed a
-variation for all three runtimes and the way they vary is different. 
+The charts presented in \ref{fig:onemax}, which concern the simple computation
+related to the One Max problem, show that for all three runtimes there is indeed
+a variation with respect to the measurements previously made: moreover, the way
+they vary is different.
+
 In the case of {\sf node.js}, newer JavaScript runtimes take more or less the same
 time, but the consumption of energy is much less; since
 \cite{DBLP:conf/icsoft/GuervosGC23} showed that this is, indeed, one of the
@@ -266,7 +268,7 @@ available in May 2023, when this paper is being written. It does not seem like
 the slight disadvantage in energy consumption for this new version, in this
 specific operator, is enough to offset the savings obtained with the fitness
 function; let us not forget that fitness evaluation usually takes the bulk of
-the energy consumption and time. At any rate, the fact that unexpected
+the energy consumption and time. The fact that unexpected
 variations in energy consumption may occur when versions change, and sometimes
 dramatic ones, is probably enough to warrant re-profiling of all workloads
 (evolutionary algorithms or otherwise) and another round of comparison of the
