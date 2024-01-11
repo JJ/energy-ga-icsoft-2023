@@ -11,7 +11,7 @@
 
 \begin{document}
 
-\title{How evolutionary algorithms consume energy depending on the level language}
+\title{How evolutionary algorithms consume energy depending on the language and its level}
 
 \author{
   Juan J. Merelo-Guervós\inst{1}\orcidID{0000-0002-1385-9741}
