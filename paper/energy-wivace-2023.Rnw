@@ -276,7 +276,7 @@ performance and energy consumption for all three. This is what we will do next,
 using the newest published versions.
 
 %
-<<wivace.onemax.vms, echo=F, fig.height=4, fig.cap="Boxplot of PKG measurements for the OneMax fitness function and the three different virtual machines.\\protect\\label{fig:onemax:energy}">>=
+<<wivace.onemax.vms, echo=F, fig.height=4, fig.cap="Boxplot of PKG measurements for the OneMax fitness function and the three different virtual machines. Please note this is the same data that was labelled May in Figure \\protect\\ref{fig:onemax}. \\protect\\label{fig:onemax:energy}">>=
 ggplot(onemax, aes(x=size,y=PKG))+geom_boxplot(aes(fill=VM))+ylim(0, NA)+theme_tufte()
 @
 %
@@ -293,11 +293,11 @@ fragment from one to the other and back in what is usually called two-point cros
 an array, which is eventually printed. The result of every experiment
 has been already shown in an energy vs. wallclock time chart in Figure \ref{fig:crossover}, comparing how it goes for different virtual machines. In Figure \ref{fig:xover:vms} we render a boxplot for different sizes and the different virtual machines, in order to compare their energy consumption and how it grows with chromosome size.
 
-<<wivace.crossover, echo=F, fig.height=4, fig.cap="PKG consumption for the crossover and the three different virtual machines, shown as a boxplot.\\protect\\label{fig:xover:vms}">>=
+<<wivace.crossover, echo=F, fig.height=4, fig.cap="PKG consumption for the crossover and the three different virtual machines, shown as a boxplotPlease note this is the same data that was labelled May in Figure \\protect\\ref{fig:crossover}.\\protect\\label{fig:xover:vms}">>=
 ggplot(crossover, aes(x=size,y=PKG))+geom_boxplot(aes(fill=VM))+ylim(0, NA)+theme_tufte()
 @
 
-The scenario is remarkably similar to the one shown in Figure \ref{fig:onemax}, and also similar to what we found with the previous versions of all command-line interpreters in \cite{DBLP:conf/icsoft/GuervosGC23}. {\sf bun} grows less than linearly with chromosome size, and {\sf node} grows more or less linearly; it is always better for {\sf bun}, and the difference increases with size. But, again, the surprising energy profile for {\sf deno}, which decreases with size, makes it the most energy-thrifty of the three for the biggest size. In any case, {\sf bun} continues to consistently yield very low-energy consumption values across all sizes.
+The scenario is remarkably similar to the one shown in Figure \ref{fig:onemax}, and also similar to what we found with the previous versions of all command-line interpreters in \cite{DBLP:conf/icsoft/GuervosGC23}. Energy consumption for {\sf bun} grows very slowly with chromosome size, less so than figures for {\sf node}, whose energy consumption duplicates from chromosome size 1024 to 2048, and more than duplicates again for the bigger size, 4096, thus growing approximately in a linear way with the chromosome size; consumption is always better for {\sf bun}, and the difference increases with size. But, again, the surprising energy profile for {\sf deno}, which decreases with size, makes it the most energy-thrifty of the three for the biggest size. In any case, {\sf bun} continues to consistently yield very low-energy consumption values across all sizes.
 
 In this paper, we will also be testing a third operator, mutation. Mutation takes many different forms, but in its simplest form it changes a single bit in a bit string. Again, due to the fact that strings in this language are immutable, the mutated string must be built from pieces of the original string, which will have an impact on the performance.
 
