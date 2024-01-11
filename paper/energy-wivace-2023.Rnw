@@ -293,7 +293,7 @@ fragment from one to the other and back in what is usually called two-point cros
 an array, which is eventually printed. The result of every experiment
 has been already shown in an energy vs. wallclock time chart in Figure \ref{fig:crossover}, comparing how it goes for different virtual machines. In Figure \ref{fig:xover:vms} we render a boxplot for different sizes and the different virtual machines, in order to compare their energy consumption and how it grows with chromosome size.
 
-<<wivace.crossover, echo=F, fig.height=4, fig.pos="h!tb", fig.cap="PKG consumption for the crossover and the three different virtual machines, shown as a boxplotPlease note this is the same data that was labelled May in Figure \\protect\\ref{fig:crossover}.\\protect\\label{fig:xover:vms}">>=
+<<wivace.crossover, echo=F, fig.height=4, fig.pos="h!tb", fig.cap="PKG consumption for the crossover and the three different virtual machines, shown as a boxplot. Please note this is the same data that was labelled May in Figure \\protect\\ref{fig:crossover}.\\protect\\label{fig:xover:vms}">>=
 ggplot(crossover, aes(x=size,y=PKG))+geom_boxplot(aes(fill=VM))+ylim(0, NA)+theme_tufte()
 @
 
