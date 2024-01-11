@@ -207,7 +207,7 @@ resulted from the experiments and analyzed in this paper are released
 with a free license (along with this paper) from the repository
 \url{https://github.com/JJ/energy-ga-icsoft-2023}.
 
-<<r onemax, echo=F, fig.show="hold", out.width="30%", fig.cap="Comparison between different versions of the VMs on the OneMax problem; left: node.js, center: bun, right:deno\\protect\\label{fig:onemax}">>=
+<<wivace.onemax, echo=F, fig.show="hold", out.width="30%", fig.cap="Comparison between different versions of the VMs on the OneMax problem; left: node.js, center: bun, right:deno\\protect\\label{fig:onemax}">>=
 library(ggplot2)
 library(ggthemes)
 library(stringr)
@@ -242,7 +242,7 @@ observed in \cite{DBLP:conf/icsoft/GuervosGC23}) will have to be checked
 further.
 
 
-<<r crossoverx, echo=F, fig.show="hold", out.width="30%", fig.cap="Consumption and time for the crossover operator in the three different VMs; node left, bun center, deno right.\\protect\\label{fig:crossover}">>=
+<<wivace.crossoverx, echo=F, fig.show="hold", out.width="30%", fig.cap="Consumption and time for the crossover operator in the three different VMs; node left, bun center, deno right.\\protect\\label{fig:crossover}">>=
 crossover.icsoft <- read.csv("../data/pinpoint-vms-crossover-11-Apr-17-06-52.csv")
 crossover.icsoft$size <- as.factor(crossover.icsoft$size)
 crossover.icsoft$VM <- str_trim(crossover.icsoft$VM)
@@ -276,7 +276,7 @@ performance and energy consumption for all three. This is what we will do next,
 using the newest published versions.
 
 %
-<<r onemax.vms, echo=F, fig.height=4, fig.cap="Boxplot of PKG measurements for the OneMax fitness function and the three different virtual machines.\\protect\\label{fig:onemax:energy}">>=
+<<wivace.onemax.vms, echo=F, fig.height=4, fig.cap="Boxplot of PKG measurements for the OneMax fitness function and the three different virtual machines.\\protect\\label{fig:onemax:energy}">>=
 ggplot(onemax, aes(x=size,y=PKG))+geom_boxplot(aes(fill=VM))+ylim(0, NA)+theme_tufte()
 @
 %
@@ -293,7 +293,7 @@ fragment from one to the other and back in what is usually called two-point cros
 an array, which is eventually printed. The result of every experiment
 has been already shown in an energy vs. wallclock time chart in Figure \ref{fig:crossover}, comparing how it goes for different virtual machines. In Figure \ref{fig:xover:vms} we render a boxplot for different sizes and the different virtual machines, in order to compare their energy consumption and how it grows with chromosome size.
 
-<<r crossover, echo=F, fig.height=4, fig.cap="PKG consumption for the crossover and the three different virtual machines, shown as a boxplot.\\protect\\label{fig:xover:vms}">>=
+<<wivace.crossover, echo=F, fig.height=4, fig.cap="PKG consumption for the crossover and the three different virtual machines, shown as a boxplot.\\protect\\label{fig:xover:vms}">>=
 ggplot(crossover, aes(x=size,y=PKG))+geom_boxplot(aes(fill=VM))+ylim(0, NA)+theme_tufte()
 @
 
@@ -302,7 +302,7 @@ The scenario is remarkably similar to the one shown in Figure \ref{fig:onemax}, 
 In this paper, we will also be testing a third operator, mutation. Mutation takes many different forms, but in its simplest form it changes a single bit in a bit string. Again, due to the fact that strings in this language are immutable, the mutated string must be built from pieces of the original string, which will have an impact on the performance.
 
 
-<<r mutation, echo=F, fig.height=4, fig.cap="PKG consumption for the mutation operator and the three different virtual machines, shown as a boxplot.\\protect\\label{fig:mutation:vms}">>=
+<<wivace.mutation, echo=F, fig.height=4, fig.cap="PKG consumption for the mutation operator and the three different virtual machines, shown as a boxplot.\\protect\\label{fig:mutation:vms}">>=
 mutation <- read.csv("../data/pinpoint-vms-mutation-30-May-09-29-50.csv")
 mutation$size <- as.factor(mutation$size)
 mutation$VM <- str_trim(mutation$VM)
@@ -316,7 +316,7 @@ It is interesting, however, to test the algorithms in different architectures, e
 
 One of the advantages of using the native Intel architecture is that it gives you more accurate estimations of consumption for specific parts of the system; namely, it breaks the {\tt PKG} reading into two, {\tt cores} and {\tt ram}. In this case, we will be changing slightly the script so that we get separate readings for these two sensors.
 
-<<r intel.onemax, echo=F, message=FALSE,fig.show="hold", out.width="50%", fig.height=5, fig.cap="Consumption for the OneMax fitness function in the Intel architecture and the three different virtual machines, shown as a notched boxplot; cores component (left) and RAM component (right). Please observe that the scales in the y axes are different.\\protect\\label{fig:onemax:intel}">>=
+<<wivace.intel.onemax, echo=F, message=FALSE,fig.show="hold", out.width="50%", fig.height=5, fig.cap="Consumption for the OneMax fitness function in the Intel architecture and the three different virtual machines, shown as a notched boxplot; cores component (left) and RAM component (right). Please observe that the scales in the y axes are different.\\protect\\label{fig:onemax:intel}">>=
 onemax.intel <- read.csv("../data/pinpoint-intel-vms-onemax-2-Jun-12-07-14.csv")
 onemax.intel$size <- as.factor(onemax.intel$size)
 onemax.intel$VM <- str_trim(onemax.intel$VM)
@@ -337,7 +337,7 @@ the average consumption for the smaller size, around 100 Joules, is less than
 half what is consumed in the desktop system we have initially tested here and in
 \cite{DBLP:conf/icsoft/GuervosGC23}. The average time needed to find the solution, however, is higher, although not by an order of magnitude.
 
-<<r times.energy, message=F, echo=F>>=
+<<wivace.times.energy, message=F, echo=F>>=
 library(dplyr)
 library(kableExtra)
 
@@ -347,7 +347,7 @@ onemax.means <- onemax %>% group_by(VM,size) %>% summarise( across(c(seconds,PKG
 onemax.all.means <- onemax.means
 onemax.all.means$Intel.seconds <- onemax.intel.means$seconds
 onemax.all.means$Intel.PKG <- onemax.intel.means$PKG
-kable(onemax.all.means,col.names = c("VM","Size","AMD - s","AMD - J", "Intel - s", "Intel - J"), caption="Comparing times (in seconds, s) and cost (in Joules, J) for an AMD desktop and Intel-based laptop (see text for specs). These are average times and energy consumption, in seconds and Joules, respectively.\\protect\\label{tab:onemax}")
+kable(onemax.all.means,digits=2, col.names = c("VM","Size","AMD - s","AMD - J", "Intel - s", "Intel - J"), caption="Comparing times (in seconds, s) and cost (in Joules, J) for an AMD desktop and Intel-based laptop (see text for specs). These are average times and energy consumption, in seconds and Joules, respectively.\\protect\\label{tab:onemax}")
 @
 
 A comparison of consumption and performance (running time) is shown in Table \ref{tab:onemax}. In most cases, the AMD-based desktop will beat the Intel-based laptop; they are machines of (roughly) the same generation, however laptops are not, as usual, designed for speed, but for a good performance/consumption ratio. It is remarkable, however, that {\sf node} is, on average, faster in the laptop than in the desktop, and that, in any case, evolutionary algorithms can be run with a reasonable expectation of performance in a laptop.

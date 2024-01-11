@@ -42,7 +42,7 @@ As in previous papers, we will focus on two critical evolutionary algorithm func
 
 In this paper we will factor out the time needed to generate the chromosomes; this is usually a one-shot in evolutionary algorithms and not very significant in evolutionary algorithm workloads, and it will allow us to focus on the added energy consumption of the operations themselves.
 
-<<setup, echo=F, message=F>>=
+<<lion.setup, echo=F, message=F>>=
 library(dplyr)
 generate.chromosomes.bun <- read.csv("../data/pinpoint-v2-chromosome_generation-12-Dec-17-24-44.csv")
 generate.chromosomes.bun  %>% group_by( size ) %>% summarise( mean.pkg = mean( PKG ), mean.seconds = mean( seconds ) ) -> generate.chromosomes.bun.avg
