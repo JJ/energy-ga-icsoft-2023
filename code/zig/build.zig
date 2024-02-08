@@ -1,16 +1,20 @@
 const std = @import("std");
 
 pub fn build(b: *std.build) void {
-    const tests = b.addTest("src/my_library.zig");
-    tests.setBuildMode(.Debug);
+    const target = b.standardTargetOptions(.{});
+    const optimize = b.standardOptimizeOption(.{});
+
+    const tests = b.addTest(.{
+        .root_source_file = .{ .path = "src/my_library.zig" },
+        .target = target,
+        .optimize = optimize,
+    });
 
     const test_step = b.step("test", "Run library tests");
-    test_step.dependOn(tests);
+    const run_tests = b.addRunArtifact(tests);
+    test_step.dependOn(&run_tests.step);
 
-    const target = b.Builder.standardTargetOptions(.{});
-    const optimize = b.Builder.standardOptimizeOption(.{});
-
-    const exe = b.Builder.addExecutable(.{
+    const exe = b.addExecutable(.{
         .name = "onemax",
         .root_source_file = .{ .path = "src/main.zig" },
         .target = target,
