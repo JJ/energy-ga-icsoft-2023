@@ -2,7 +2,7 @@ name: "Test zig"
 on:
     push:
         paths:
-        - code/zig
+        - "**/*.zig"
 jobs:
     test-zig:
         runs-on: ubuntu-latest
@@ -17,4 +17,4 @@ jobs:
           run: zig fmt --check --color on
         - name: Test zig
           working-directory: code/zig
-          run: zig build test
+          run: zig build test --summary all

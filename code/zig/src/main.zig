@@ -14,7 +14,7 @@ pub fn main() !void {
     var argsIterator = try std.process.argsWithAllocator(allocator);
     defer argsIterator.deinit();
 
-    _ = argsIterator.next(); // First argument is the program name
+    _ = argsIterator.next(); // Skip first argument, the program name
 
     const stringLenArg = argsIterator.next().?;
     const stringLength = try std.fmt.parseInt(u16, stringLenArg, 10);
