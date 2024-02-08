@@ -1,12 +1,5 @@
 const std = @import("std");
-
-fn countOnes(binaryString: []u8) u32 {
-    var count: u32 = 0;
-    for (binaryString) |binaryChar| {
-        count += binaryChar;
-    }
-    return count;
-}
+const generate = @import("generate.zig");
 
 pub fn main() !void {
     const allocator = std.heap.page_allocator;
@@ -33,9 +26,5 @@ pub fn main() !void {
         while (c < stringLength) : (c += 1) {
             binaryString[c] = rnd.random().intRangeAtMost(u8, 0, 1);
         }
-
-        const count = countOnes(binaryString);
-        _ = count;
-        _ = allocator.free(binaryString);
     }
 }
