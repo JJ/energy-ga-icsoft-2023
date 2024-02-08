@@ -1,5 +1,5 @@
 const std = @import("std");
-const generate = @import("generate.zig");
+const generate = @import("generate.zig").generate;
 
 pub fn main() !void {
     const allocator = std.heap.page_allocator;
