@@ -9,22 +9,12 @@ pub fn main() !void {
 
     _ = argsIterator.next(); // First argument is the program name
 
-    const stringLenArg = argsIterator.next().?;
+    const stringLenArg = argsIterator.next() orelse "1024";
     const stringLength = try std.fmt.parseInt(u16, stringLenArg, 10);
 
     const numStrings = 40000;
 
-    var i: u32 = 0;
-    const RndGen = std.rand.DefaultPrng;
-    var rnd = RndGen.init(0);
-
-    while (i < numStrings) {
-        i = i + 1;
-        var binaryString = try allocator.alloc(u8, stringLength);
-
-        var c: u32 = 0;
-        while (c < stringLength) : (c += 1) {
-            binaryString[c] = rnd.random().intRangeAtMost(u8, 0, 1);
-        }
-    }
+    const output = try generate(stringLength, numStrings);
+    const stdout = std.io.getStdOut().writer();
+    try stdout.print("{} {any}\n", .{ output.len, output[0].* });
 }
