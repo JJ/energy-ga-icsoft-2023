@@ -5,7 +5,7 @@ use Time::Piece;
 
 use feature qw(say);
 
-our @EXPORT_OK = qw( %command_lines %command_lines_mac process_powermetrics_output);
+our @EXPORT_OK = qw( %command_lines %command_lines_mac process_powermetrics_output process_pinpoint_output mini_slurp);
 
 our %command_lines = ( deno => "/home/jmerelo/.deno/bin/deno run scripts/",
                      bun => "/home/jmerelo/.bun/bin/bun run scripts/",
@@ -15,14 +15,23 @@ our %command_lines_mac = ( deno => "/opt/homebrew/bin/deno run scripts/",
                      bun => "/Users/jjmerelo/.bun/bin/bun run scripts/",
                            node => "/Users/jjmerelo/.nvm/versions/node/v20.9.0/bin/node scripts/" );
 
+sub mini_slurp {
+  my $input_file_name = shift;
+  return do {
+    local $/ = undef;
+    open my $fh, "<", $input_file_name;
+    <$fh>;
+  };
+}
+
 sub process_pinpoint_output {
   my $output = shift;
   if ($output !~ /0.00\s+J/) {
       my ( $gpu, $pkg ) = $output =~ /(\d+\.\d+)\s+J/g;
       my ( $seconds ) = $output =~ /(\d+\.\d+) seconds/;
-      return [$gpu, $pkg,$seconds];
+      return $gpu, $pkg,$seconds;
     } else {
-      return [0,0,0];
+      return 0,0,0;
     }
 }
 

@@ -1,0 +1,9 @@
+Size  512
+Generated  40000  chromosomes
+Energy counter stats for '/home/jmerelo/.bun/bin/bun scripts/chromosome_creation.node.js 512':
+[interval: 50ms, before: 0ms, after: 0ms, delay: 0ms, runs: 1]
+
+	0.00 J nvml:nvidia_geforce_rtx_2060_0
+	0.00 J rapl:pkg                      
+
+	3.18224340 seconds time elapsed 
