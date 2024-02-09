@@ -37,11 +37,7 @@ sub process_pinpoint_output {
 
 sub process_powermetrics_output {
   my $output_file_name = shift;
-  my $content = do {
-    local $/ = undef;
-    open my $fh, "<", $output_file_name;
-    <$fh>;
-  };
+  my $content = mini_slurp $output_file_name;
 
   my @samples = split /\s+\*\*\* Sampled system activity/, $content;
   my @results;
