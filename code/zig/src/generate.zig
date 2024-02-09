@@ -2,9 +2,7 @@ const std = @import("std");
 const expect = std.testing.expect;
 
 // function that generates a string array
-pub fn generate(stringLength: u16, numStrings: u32) ![]*[]u8 {
-    var allocator = std.heap.page_allocator;
-
+pub fn generate(allocator: std.mem.Allocator, stringLength: u16, numStrings: u32) ![]*[]u8 {
     var prng = std.rand.DefaultPrng.init(blk: {
         var seed: u64 = undefined;
         try std.os.getrandom(std.mem.asBytes(&seed));
