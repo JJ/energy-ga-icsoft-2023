@@ -9,12 +9,12 @@ pub fn main() !void {
 
     _ = argsIterator.next(); // First argument is the program name
 
-    const stringLenArg = argsIterator.next() orelse "1024";
+    const stringLenArg = argsIterator.next() orelse "512";
     const stringLength = try std.fmt.parseInt(u16, stringLenArg, 10);
 
     const numStrings = 40000;
 
     const output = try generate(stringLength, numStrings);
     const stdout = std.io.getStdOut().writer();
-    try stdout.print("{} {any}\n", .{ output.len, output[0].* });
+    try stdout.print("{} \n", .{output.len});
 }
