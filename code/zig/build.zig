@@ -15,8 +15,8 @@ pub fn build(b: *std.build) void {
     test_step.dependOn(&run_tests.step);
 
     const exe = b.addExecutable(.{
-        .name = "onemax",
-        .root_source_file = .{ .path = "src/main.zig" },
+        .name = "chromosome_generator",
+        .root_source_file = .{ .path = "src/chromosome_generator.zig" },
         .target = target,
         .optimize = optimize,
         .single_threaded = true,
