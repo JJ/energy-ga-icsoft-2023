@@ -3,8 +3,7 @@ const expect = std.testing.expect;
 
 // function that generates a string array
 pub fn generate(stringLength: u16, numStrings: u32) ![]*[]u8 {
-    var allocatorGenerator = std.heap.GeneralPurposeAllocator(.{}){};
-    const allocator = allocatorGenerator.allocator();
+    var allocator = std.heap.page_allocator;
 
     var prng = std.rand.DefaultPrng.init(blk: {
         var seed: u64 = undefined;
