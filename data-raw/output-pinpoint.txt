@@ -1,0 +1,8 @@
+40000 
+Energy counter stats for 'zig-out/bin/chromosome_generator 2048':
+[interval: 50ms, before: 0ms, after: 0ms, delay: 0ms, runs: 1]
+
+	123.13 J nvml:nvidia_geforce_rtx_2060_0
+	321.12 J rapl:pkg                      
+
+	5.94373917 seconds time elapsed 

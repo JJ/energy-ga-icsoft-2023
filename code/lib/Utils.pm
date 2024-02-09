@@ -13,7 +13,18 @@ our %command_lines = ( deno => "/home/jmerelo/.deno/bin/deno run scripts/",
 
 our %command_lines_mac = ( deno => "/opt/homebrew/bin/deno run scripts/",
                      bun => "/Users/jjmerelo/.bun/bin/bun run scripts/",
-                     node => "/Users/jjmerelo/.nvm/versions/node/v20.9.0/bin/node scripts/" );
+                           node => "/Users/jjmerelo/.nvm/versions/node/v20.9.0/bin/node scripts/" );
+
+sub process_pinpoint_output {
+  my $output = shift;
+  if ($output !~ /0.00\s+J/) {
+      my ( $gpu, $pkg ) = $output =~ /(\d+\.\d+)\s+J/g;
+      my ( $seconds ) = $output =~ /(\d+\.\d+) seconds/;
+      return [$gpu, $pkg,$seconds];
+    } else {
+      return [0,0,0];
+    }
+}
 
 sub process_powermetrics_output {
   my $output_file_name = shift;
