@@ -45,6 +45,8 @@ These languages can also be divided along two different axes:\begin{itemize}
 
 Making comparisons of energy spent by different implementations needs, first, a methodology to make choices that are comparable across all three platforms; then what exactly is going to be measured needs to be established, and how to make those measurements so that they make differences stand out. As in previous papers, we will focus on two critical evolutionary algorithm functions \cite{abdelhafez2019component}: the  fitness function, as well as {\em genetic} operators. However, we will use a heavier fitness function in this case: Hierarchical If and only IF (HIFF) \cite{watson1998modeling} for independent measurement, as well as combine mutation and crossover, the simpler OneMax function and 2-tournament selection together for a combined measurement of the effect of these operators together, along with the operations (such as comparison) they need.
 
+\section{State of the art}
+\label{sec:soa}
 
 \section{Methodology}
 \label{sec:meth}
