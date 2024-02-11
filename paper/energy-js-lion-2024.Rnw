@@ -38,11 +38,17 @@ The interest in greener computing has grown in the last decades, in part fueled 
 
 However, there are many user cases in which the language used by all or part of the metaheuristic can also be chosen. A simple choice of language will impact greatly energy consumption, as shown in \cite{PEREIRA2021102609}. In \cite{DBLP:conf/iwann/MereloRACML11} we looked at the performance of different languages when implementing an evolutionary algorithm; in this paper we will focus on the language level, before delving into specific language characteristics. We will work with a high level language, JavaScript, using the fastest implementation available, {\sf bun}, a mid-level language, Kotlin, that compiles to bytecode of the Java virtual machine (JVM) and a low-level language, Zig, a relatively new language that is still not reached production, but is however used for {\sf bun} itself. All these languages have toolchains that are free software, and thus can be used without any kind of limitation.
 
-As in previous papers, we will focus on two critical evolutionary algorithm functions \cite{abdelhafez2019component}: the  fitness function, as well as {\em genetic} operators. However, we will use a heavier fitness function in this case: Hierarchical If and only IF (HIFF) \cite{watson1998modeling} for independent measurement, as well as combine mutation and crossover, the simpler OneMax function and 2-tournament selection together for a combined measurement of the effect of these operators together, along with the operations (such as comparison) they need.
+These languages can also be divided along two different axes:\begin{itemize}
+\item Memory management: it is done automatically in high-level languages, like JavaScript and Kotlin, while it involves a series of choices in the case of Zig.
+\item Compilation: JavaScript is interpreted, Kotlin is compiled to bytecode and then interpreted by the JVM, and Zig is compiled to native code, but this implies also what happens with optimization: high-level languages take all decisions, while Zig will allow you to choose between different optimization levels; it also means that a different kind of overhead will be incurred when running a program: JavaScript will load the interpreter in memory, and then parse and run the program; Kotlin will actually use the Java virtual machine to run, and it will be loaded and then the bytecode parsed and run; finally, Zig creates executables, which will have some overhead due to standard linked libraries.
+\end{itemize}
+
+Making comparisons of energy spent by different implementations needs, first, a methodology to make choices that are comparable across all three platforms; then what exactly is going to be measured needs to be established, and how to make those measurements so that they make differences stand out. As in previous papers, we will focus on two critical evolutionary algorithm functions \cite{abdelhafez2019component}: the  fitness function, as well as {\em genetic} operators. However, we will use a heavier fitness function in this case: Hierarchical If and only IF (HIFF) \cite{watson1998modeling} for independent measurement, as well as combine mutation and crossover, the simpler OneMax function and 2-tournament selection together for a combined measurement of the effect of these operators together, along with the operations (such as comparison) they need.
 
 
 \section{Methodology}
 \label{sec:meth}
+
 In this paper we will factor out the time needed to generate the chromosomes; this is usually a one-shot in evolutionary algorithms and not very significant in evolutionary algorithm workloads, and it will allow us to focus on the added energy consumption of the operations themselves.
 
 <<lion.setup, echo=F, message=F>>=
