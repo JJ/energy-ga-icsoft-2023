@@ -53,7 +53,7 @@ generate.chromosomes.bun  %>% group_by( size ) %>% summarise( mean.pkg = mean( P
 generate.chromosomes.zig <- read.csv("../data/generate-chromosomes-zig-lion-24.csv")
 generate.chromosomes.zig %>% group_by( size ) %>% summarise( mean.pkg = mean( PKG ), mean.seconds = mean( seconds ) ) -> generate.chromosomes.zig.avg
 
-generate.chromosomes.kotlin <- read.csv("../data/generate-chromosomes-bun-kotlin-24.csv")
+generate.chromosomes.kotlin <- read.csv("../data/generate-chromosomes-kotlin-lion-24.csv")
 generate.chromosomes.kotlin %>% group_by( size ) %>% summarise( mean.pkg = mean( PKG ), mean.seconds = mean( seconds ) ) -> generate.chromosomes.kotlin.avg
 @
 
