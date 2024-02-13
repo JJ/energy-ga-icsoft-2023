@@ -45,8 +45,12 @@ These languages can also be divided along two different axes:\begin{itemize}
 
 Making comparisons of energy spent by different implementations needs, first, a methodology to make choices that are comparable across all three platforms; then what exactly is going to be measured needs to be established, and how to make those measurements so that they make differences stand out. As in previous papers, we will focus on two critical evolutionary algorithm functions \cite{abdelhafez2019component}: the  fitness function, as well as {\em genetic} operators. However, we will use a heavier fitness function in this case: Hierarchical If and only IF (HIFF) \cite{watson1998modeling} for independent measurement, as well as combine mutation and crossover, the simpler OneMax function and 2-tournament selection together for a combined measurement of the effect of these operators together, along with the operations (such as comparison) they need.
 
+The rest of the paper is organized as follows: next we present the state of the art in software engineering and its analysis of energy consumption of different software platforms, to be followed by the methodology we are going to apply in this paper, mainly concerned with evolutionary algorithms in \ref{sec:meth}. Then we will present the results of the experiments in \ref{sec:results}, and finally we will discuss the results and draw some conclusions in \ref{sec:conclusions}.
+
 \section{State of the art}
 \label{sec:soa}
+
+The shade of green of different languages has been repeatedly examined in the literature, at least since it actually became a concern in software engineering \cite{pinto2017energy}.
 
 \section{Methodology}
 \label{sec:meth}
@@ -76,11 +80,17 @@ generation.bun %>% mutate( delta.pkg = PKG - generate.chromosomes.bun.avg$mean.p
 
 @
 
-%\section*{Acknowledgements}
+\section{Results}
+\label{sec:results}
 
-%This work is supported by the Ministerio espa\~{n}ol de Econom\'{\i}a y
-%Competitividad (Spanish Ministry of Competitivity and Economy) under project
-%PID2020-115570GB-C22 (DemocratAI::UGR).
+\section{Discussion, conclusion and future work}
+\label{sec:conclusions}
+
+\section*{Acknowledgements}
+
+This work is supported by the Ministerio espa\~{n}ol de Econom\'{\i}a y
+Competitividad (Spanish Ministry of Competitivity and Economy) under project
+PID2020-115570GB-C22 (DemocratAI::UGR).
 
 \bibliographystyle{splncs04}
 
