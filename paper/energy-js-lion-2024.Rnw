@@ -50,7 +50,7 @@ The rest of the paper is organized as follows: next we present the state of the 
 \section{State of the art}
 \label{sec:soa}
 
-The shade of green of different languages has been repeatedly examined in the literature, at least since it actually became a concern in software engineering \cite{pinto2017energy}.
+The shade of green of different languages has been repeatedly examined in the literature, at least since it actually became a concern in software engineering \cite{pinto2017energy}, very recently, indeed, this concern has been systematized in what are called the GREENER principles \cite{lannelongue2023greener}.
 
 \section{Methodology}
 \label{sec:meth}
