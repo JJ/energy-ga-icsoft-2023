@@ -1,0 +1,26 @@
+population = [1, 1, 1, 0, 0, 1, 0]
+
+crossover_pop =
+  fn population ->
+    Enum.reduce(poulation, [], fn {p1, p2}, acc ->
+      cx_point = :rand.uniform(length(p1))
+      {{h1, t1}, {h2, t2}} = {Enum.split(p1, cx_point), Enum.split(p2, cx_point)}
+      [h1 ++ t2, h2 ++ t1 | acc]
+    end)
+  end
+
+crossover_ind =
+  fn {p1, p2} ->
+    cx_point = :rand.uniform(length(p1))
+    {{h1, t1}, {h2, t2}} = {Enum.split(p1, cx_point), Enum.split(p2, cx_point)}
+    {h1 ++ t2, h2 ++ t1}
+  end
+
+prev = System.monotonic_time()
+
+p1 = for _ <- 1..String.to_integer(size), do: Enum.random(0..1)
+
+next = System.monotonic_time()
+diff = next - prev
+
+IO.inspect(p1)
