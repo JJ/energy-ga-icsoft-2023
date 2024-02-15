@@ -1,4 +1,7 @@
 import kotlineo.*
+import org.junit.Test
+import org.junit.Assert.assertEquals
+import org.junit.Assert.assertTrue
 
 class KotlineoTests {
     @Test
