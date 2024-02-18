@@ -63,8 +63,9 @@ The shade of green of different languages has been repeatedly examined in the li
 
 In this paper we will factor out the time needed to generate the chromosomes; this is usually a one-shot in evolutionary algorithms and not very significant in evolutionary algorithm workloads, and it will allow us to focus on the added energy consumption of the operations themselves.
 
-<<lion.setup, echo=F, message=F>>=
+<<lion.setup, echo=F, message=F, fig.cap="Average running time and PKG energy consumption generating 40K chromosomes for the three languages (represented with different colors); dot size is proportional to the logarithm of the chromosome size">>=
 library(dplyr)
+library(ggplot2)
 generate.chromosomes.bun <- read.csv("../data/generate-chromosomes-bun-lion-24.csv")
 generate.chromosomes.bun  %>% group_by( size ) %>% summarise( mean.pkg = mean( PKG ), mean.seconds = mean( seconds ) ) -> generate.chromosomes.bun.avg
 
@@ -73,6 +74,8 @@ generate.chromosomes.zig %>% group_by( size ) %>% summarise( mean.pkg = mean( PK
 
 generate.chromosomes.kotlin <- read.csv("../data/generate-chromosomes-kotlin-lion-24.csv")
 generate.chromosomes.kotlin %>% group_by( size ) %>% summarise( mean.pkg = mean( PKG ), mean.seconds = mean( seconds ) ) -> generate.chromosomes.kotlin.avg
+
+ggplot(generate.chromosomes.bun.avg, aes(x=mean.seconds,y=mean.pkg,color="Bun",size=log(size)))+ geom_point()+geom_point(data=generate.chromosomes.zig.avg,aes(x=mean.seconds,y=mean.pkg,color="Zig", size=log(size)))+geom_point(data=generate.chromosomes.kotlin.avg,aes(x=mean.seconds,y=mean.pkg,color="Kotlin",size=log(size)))
 @
 
 
