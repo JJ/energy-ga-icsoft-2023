@@ -69,7 +69,7 @@ export function crossover(chrom1, chrom2) {
 
 /**
  *
- * @param {String} chrom the first
+ * @param {String} chrom a chromosome
  * @returns { String } Mutated chromosome
  */
 export function mutation(chrom) {
