@@ -123,3 +123,6 @@ auto/
 
 # Mac
 .DS_Store
+
+# Kotlin
+**/target/
