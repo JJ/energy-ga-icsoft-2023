@@ -56,7 +56,13 @@ The rest of the paper is organized as follows: next we present the state of the 
 \section{State of the art}
 \label{sec:soa}
 
-The shade of green of different languages has been repeatedly examined in the literature, at least since it actually became a concern in software engineering \cite{pinto2017energy}, very recently, indeed, this concern has been systematized in what are called the GREENER principles \cite{lannelongue2023greener}.
+The shade of green of different languages has been repeatedly examined in the literature, at least since it actually became a concern in software engineering \cite{pinto2017energy}, very recently, indeed, this concern has been systematized in what are called the GREENER principles \cite{lannelongue2023greener}. These principles try to provide a foundation for Environmentally Sustainable Computer Science (ESCS), and are placed at different levels, from governance to Education. In this paper we are mainly concerned with the two Es, Estimation and Energy and embodied impact, as well as the R, research. These principles seek to monitor and then minimize the energy needs of computations; the Research principle, in turn, encourages to investigate on those topics. The GREENER principles try to kick-start a feedback loop that allows researches, and then developers in turn, to keep making decisions so that the same wallclock performance can be obtained with a minimal amount of energy.
+
+We are interested on evolutionary algorithms, however, which have been studied from the point of view of energy consumption for some time \cite{10.1007/978-3-319-45823-6_51}; however it is interesting to note what these studies have focused in: population size \cite{diaz2022population}, hardware platform \cite{10.1007/978-3-319-45823-6_51}, the kind of algorithm \cite{garg2023analyzing} or the specific interpreter chosen to run the algorithm written in a specific language, JavaScript \cite{DBLP:conf/icsoft/GuervosGC23}. Although in this last case and in specific situation, energy savings of 90\% can be achieved, there are other possible choices that, in principle, might have a bigger impact without sacrificing performance (as would be the case when working with different hardware platforms).
+
+And one of them
+
+
 
 \section{Methodology}
 \label{sec:meth}
@@ -75,7 +81,7 @@ generate.chromosomes.zig %>% group_by( size ) %>% summarise( mean.pkg = mean( PK
 generate.chromosomes.kotlin <- read.csv("../data/generate-chromosomes-kotlin-lion-24.csv")
 generate.chromosomes.kotlin %>% group_by( size ) %>% summarise( mean.pkg = mean( PKG ), mean.seconds = mean( seconds ) ) -> generate.chromosomes.kotlin.avg
 
-ggplot(generate.chromosomes.bun.avg, aes(x=mean.seconds,y=mean.pkg,color="Bun",size=log(size)))+ geom_point()+geom_line(size=1)+geom_point(data=generate.chromosomes.zig.avg,aes(x=mean.seconds,y=mean.pkg,color="Zig", size=log(size)))+geom_line(data=generate.chromosomes.zig.avg,aes(x=mean.seconds,y=mean.pkg,color="Zig"),size=1)+geom_point(data=generate.chromosomes.kotlin.avg,aes(x=mean.seconds,y=mean.pkg,color="Kotlin",size=log(size)))+geom_line(data=generate.chromosomes.kotlin.avg,aes(x=mean.seconds,y=mean.pkg,color="Kotlin"), size=1)
+ggplot(generate.chromosomes.bun.avg, aes(x=mean.seconds,y=mean.pkg,color="Bun"))+ geom_point(data=generate.chromosomes.bun.avg, aes(x=mean.seconds,y=mean.pkg,color="Bun", size=log(size)))+geom_line(linewidth=1)+geom_point(data=generate.chromosomes.zig.avg,aes(x=mean.seconds,y=mean.pkg,color="Zig", size=log(size)))+geom_line(data=generate.chromosomes.zig.avg,aes(x=mean.seconds,y=mean.pkg,color="Zig"),linewidth=1)+geom_point(data=generate.chromosomes.kotlin.avg,aes(x=mean.seconds,y=mean.pkg,color="Kotlin",size=log(size)))+geom_line(data=generate.chromosomes.kotlin.avg,aes(x=mean.seconds,y=mean.pkg,color="Kotlin"), linewidth=1)
 @
 
 
