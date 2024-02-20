@@ -60,7 +60,9 @@ The shade of green of different languages has been repeatedly examined in the li
 
 We are interested on evolutionary algorithms, however, which have been studied from the point of view of energy consumption for some time \cite{10.1007/978-3-319-45823-6_51}; however it is interesting to note what these studies have focused in: population size \cite{diaz2022population}, hardware platform \cite{10.1007/978-3-319-45823-6_51}, the kind of algorithm \cite{garg2023analyzing} or the specific interpreter chosen to run the algorithm written in a specific language, JavaScript \cite{DBLP:conf/icsoft/GuervosGC23}. Although in this last case and in specific situation, energy savings of 90\% can be achieved, there are other possible choices that, in principle, might have a bigger impact without sacrificing performance (as would be the case when working with different hardware platforms).
 
-And one of them
+And one of them is the programming language itself. A comprehensive and recent study \cite{PEREIRA2021102609}, that measure energy consumption on a general workload (the so-called CLBG corpus) show low-level languages like C, Rust or C++ coming up on top consistently. Mid-level languages like Java are placed 5th on the overall energy ranking, with almost double energy consumption. Interpreted languages like JavaScript (probably using the mainstream interpreter, node.js) are placed 17th, spending energy at 4 times the rate of C. The last language in the ranking, Perl, spends 2 orders of magnitude more than the baseline; Python is next to last, with a difference that is not as significant. Choosing the right platform is not all, however, \cite{lima2016haskell} show that the same algorithm implemented using different data structures might yield different levels of consumption.
+
+In this paper, however, we will focus on the language itself, and how it consumes energy when working with the main functions in evolutionary algorithms. How we will be doing it is next.
 
 
 
