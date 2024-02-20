@@ -16,9 +16,8 @@ pairs.forEach((pair) => {
     const crossed_pair = crossover(pair[0], pair[1]);
     for (let x in crossed_pair) {
         const mutated = mutation(crossed_pair[x]);
-        newGeneration.push(mutated, countOnes(mutated));
-        console.log(crossed_pair[x], mutated, countOnes(mutated));
+        newGeneration.push([ mutated, countOnes(mutated) ] );
     }
 });
 
-console.log(newPairs);
+console.log(newGeneration.length, "chromosomes generated");
