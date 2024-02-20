@@ -75,7 +75,7 @@ generate.chromosomes.zig %>% group_by( size ) %>% summarise( mean.pkg = mean( PK
 generate.chromosomes.kotlin <- read.csv("../data/generate-chromosomes-kotlin-lion-24.csv")
 generate.chromosomes.kotlin %>% group_by( size ) %>% summarise( mean.pkg = mean( PKG ), mean.seconds = mean( seconds ) ) -> generate.chromosomes.kotlin.avg
 
-ggplot(generate.chromosomes.bun.avg, aes(x=mean.seconds,y=mean.pkg,color="Bun",size=log(size)))+ geom_point()+geom_point(data=generate.chromosomes.zig.avg,aes(x=mean.seconds,y=mean.pkg,color="Zig", size=log(size)))+geom_point(data=generate.chromosomes.kotlin.avg,aes(x=mean.seconds,y=mean.pkg,color="Kotlin",size=log(size)))
+ggplot(generate.chromosomes.bun.avg, aes(x=mean.seconds,y=mean.pkg,color="Bun",size=log(size)))+ geom_point()+geom_line(size=1)+geom_point(data=generate.chromosomes.zig.avg,aes(x=mean.seconds,y=mean.pkg,color="Zig", size=log(size)))+geom_line(data=generate.chromosomes.zig.avg,aes(x=mean.seconds,y=mean.pkg,color="Zig"),size=1)+geom_point(data=generate.chromosomes.kotlin.avg,aes(x=mean.seconds,y=mean.pkg,color="Kotlin",size=log(size)))+geom_line(data=generate.chromosomes.kotlin.avg,aes(x=mean.seconds,y=mean.pkg,color="Kotlin"), size=1)
 @
 
 
