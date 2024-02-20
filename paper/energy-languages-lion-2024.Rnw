@@ -84,6 +84,10 @@ The languages have been chosen using a certain criterion: \begin{itemize}
 \item Finally, we use Zig as the low-level language instead of the more popular in EA circles C++ or in general terms Rust. The main reason why we chose it is because the interpreter we use for JS is written using it; so we should maybe expect less energy consumption when we lower the level of abstraction. On the other hand, it would be a totally new implementation of evolutionary algorithms, so this work could serve to introduce the language (and its possibilities) to practitioners. Again, the implementation is hosted in the same repository as the others used for this paper.
 \end{itemize}
 
+All experiments for this paper have been carried out in a Linux machine {\tt 5.15.0-94-generic #104~20.04.1-Ubuntu SMP} using AMD Ryzen 9 3950X 16-Core Processor. These are the versions used for every tool and language:\begin{itemize}
+\item {\sf pinpoint} does not have a version, 
+\end{itemize}
+
 In this paper we will factor out the time needed to generate the chromosomes; this is usually a one-shot in evolutionary algorithms and not very significant in evolutionary algorithm workloads, and it will allow us to focus on the added energy consumption of the operations themselves.
 
 <<lion.setup, echo=F, message=F, fig.pos="h!tb", fig.height=4, fig.cap="Average running time and PKG energy consumption generating 40K chromosomes for the three languages (represented with different colors); dot size is proportional to the logarithm of the chromosome size">>=
