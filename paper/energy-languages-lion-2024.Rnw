@@ -91,6 +91,8 @@ All experiments for this paper have been carried out in a Linux machine {\tt 5.1
 \item Kotlin version string is {\tt 1.9.22-release-704}; this includes the JVM version, OpenJDK 11.0.21.
 \end{itemize}
 
+All programs are run through a Perl script that captures and processes output, generating CSV data files that are committed to this repository, and also available under a free license. Instructions to compile and run it are also included in the repository; in general, all that is needed to make the results of this paper reproducible. 
+
 In this paper we will factor out the time needed to generate the chromosomes; this is usually a one-shot in evolutionary algorithms and not very significant in evolutionary algorithm workloads, and it will allow us to focus on the added energy consumption of the operations themselves.
 
 <<lion.setup, echo=F, message=F, fig.pos="h!tb", fig.height=4, fig.cap="Average running time and PKG energy consumption generating 40K chromosomes for the three languages (represented with different colors); dot size is proportional to the logarithm of the chromosome size">>=
