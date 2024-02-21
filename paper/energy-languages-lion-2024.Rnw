@@ -91,9 +91,11 @@ All experiments for this paper have been carried out in a Linux machine {\tt 5.1
 \item Kotlin version string is {\tt 1.9.22-release-704}; this includes the JVM version, OpenJDK 11.0.21.
 \end{itemize}
 
-All programs are run through a Perl script that captures and processes output, generating CSV data files that are committed to this repository, and also available under a free license. Instructions to compile and run it are also included in the repository; in general, all that is needed to make the results of this paper reproducible. 
+All programs are run through a Perl script that captures and processes output, generating CSV data files that are committed to this repository, and also available under a free license. Instructions to compile and run it are also included in the repository; in general, all that is needed to make the results of this paper reproducible. All the code is tested also automatically, and tagged so that the exact version used in this paper can be retrieved.
 
-In this paper we will factor out the time needed to generate the chromosomes; this is usually a one-shot in evolutionary algorithms and not very significant in evolutionary algorithm workloads, and it will allow us to focus on the added energy consumption of the operations themselves.
+Previously, the experiment runner eliminated the baseline energy consumption by subtracting the average consumption of an idle system during the average time the experiments took; however, that implied that the energy (and time) measured included {\em generation} of the chromosomes, as well as the operations themselves.
+
+In this paper we will factor out that time, as well as the energy spent; this is usually a one-shot in evolutionary algorithms and not very significant in evolutionary algorithm workloads, and it will allow us to focus on the added energy consumption of the operations themselves; the results published in the next section will substract the average time and energy consumption of this operation, which is shown in figure \ref{fig:lion.setup}.
 
 <<lion.setup, echo=F, message=F, fig.pos="h!tb", fig.height=4, fig.cap="Average running time and PKG energy consumption generating 40K chromosomes for the three languages (represented with different colors); dot size is proportional to the logarithm of the chromosome size">>=
 library(dplyr)
@@ -110,6 +112,7 @@ generate.chromosomes.kotlin %>% group_by( size ) %>% summarise( mean.pkg = mean(
 ggplot(generate.chromosomes.bun.avg, aes(x=mean.seconds,y=mean.pkg,color="Bun"))+ geom_point(data=generate.chromosomes.bun.avg, aes(x=mean.seconds,y=mean.pkg,color="Bun", size=log(size)))+geom_line(linewidth=1)+geom_point(data=generate.chromosomes.zig.avg,aes(x=mean.seconds,y=mean.pkg,color="Zig", size=log(size)))+geom_line(data=generate.chromosomes.zig.avg,aes(x=mean.seconds,y=mean.pkg,color="Zig"),linewidth=1)+geom_point(data=generate.chromosomes.kotlin.avg,aes(x=mean.seconds,y=mean.pkg,color="Kotlin",size=log(size)))+geom_line(data=generate.chromosomes.kotlin.avg,aes(x=mean.seconds,y=mean.pkg,color="Kotlin"), linewidth=1)
 @
 
+This Figure, that shows average energy consumed ({\tt mean.pkg}) vs. time taken ({\tt mean.seconds}), already allows us at least an initial comparison of the orders of magnitude of difference we should expect. Clearly Kotlin is the fastest and also the one that consumes the most energy; it is followed by {\sf zig}, although time as well as energy consumption grows very fast with the size of the chromosomes (here represented logarithmically as the dot size). {\sf bun} is the slowest, as well as the one that consumes the most energy, although we should note that for the bigger size (2048 bits) the consumption of energy is slightly lower for {\sf zig}.
 
 <<lion.hiff.bun, echo=F, message=F>>=
 
