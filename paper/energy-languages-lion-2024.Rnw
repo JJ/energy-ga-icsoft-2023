@@ -93,6 +93,14 @@ All experiments for this paper have been carried out in a Linux machine {\tt 5.1
 
 All programs are run through a Perl script that captures and processes output, generating CSV data files that are committed to this repository, and also available under a free license. Instructions to compile and run it are also included in the repository; in general, all that is needed to make the results of this paper reproducible. All the code is tested also automatically, and tagged so that the exact version used in this paper can be retrieved.
 
+Implementing an algorithm will always imply some choices in the specifics used to program it. In general, we opted for the default implementation (as suggested by tutorials), but explicitly these are the decisions we took:\begin{itemize}
+\item {\sf bun} uses the same implementation as used previously, namely, mutable strings to represent the chromosome.
+\item {\sf zig} being a low-level language, needs a bigger set of choices. We have used {\tt DefaultPrng} as random number generator, {\tt page\_allocator} as allocator, and arrays of byte-size integers ({\tt u8}) for the chromosomes. This is the default implementation of integers in the language. Please note that we are using here the actual values 0 and 1 instead of the characters '0' and '1'. The executable has been generated with default options too ({\tt optimize} for optimization).
+\item {\sf Kotlin} uses again the same implementation as \cite{merelo2016ranking}, a {\tt BooleanArray} for every chromosome.
+\end{itemize}
+
+Please note that no sort of energy-wise optimizations have been performed on these implementations, since the main use case of this work would be scientists with no deep knowledge of specific languages that want to create energy-efficient implementations of their algorithms. Every one of the languages has different levers that could be used to optimize energy, but that is off focus in this paper. At any rate, if there is a close call in the results, the reader should take it into account, and again measure energy consumption for specific workloads.
+
 Previously, the experiment runner eliminated the baseline energy consumption by subtracting the average consumption of an idle system during the average time the experiments took; however, that implied that the energy (and time) measured included {\em generation} of the chromosomes, as well as the operations themselves.
 
 In this paper we will factor out that time, as well as the energy spent; this is usually a one-shot in evolutionary algorithms and not very significant in evolutionary algorithm workloads, and it will allow us to focus on the added energy consumption of the operations themselves; the results published in the next section will substract the average time and energy consumption of this operation, which is shown in figure \ref{fig:lion.setup}.
