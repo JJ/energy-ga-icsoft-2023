@@ -122,13 +122,17 @@ generate.chromosomes.kotlin %>% group_by( size ) %>% summarise( mean.pkg = mean(
 ggplot(generate.chromosomes.bun.avg, aes(x=mean.seconds,y=mean.pkg,color="Bun"))+ geom_point(data=generate.chromosomes.bun.avg, aes(x=mean.seconds,y=mean.pkg,color="Bun", size=log(size)))+geom_line(linewidth=1)+geom_point(data=generate.chromosomes.zig.avg,aes(x=mean.seconds,y=mean.pkg,color="Zig", size=log(size)))+geom_line(data=generate.chromosomes.zig.avg,aes(x=mean.seconds,y=mean.pkg,color="Zig"),linewidth=1)+geom_point(data=generate.chromosomes.kotlin.avg,aes(x=mean.seconds,y=mean.pkg,color="Kotlin",size=log(size)))+geom_line(data=generate.chromosomes.kotlin.avg,aes(x=mean.seconds,y=mean.pkg,color="Kotlin"), linewidth=1)
 @
 
-This Figure, that shows average energy consumed ({\tt mean.pkg}) vs. time taken ({\tt mean.seconds}), already allows us at least an initial comparison of the orders of magnitude of difference we should expect. Clearly Kotlin is the fastest and also the one that consumes the most energy; it is followed by {\sf zig}, although time as well as energy consumption grows very fast with the size of the chromosomes (here represented logarithmically as the dot size). {\sf bun} is the slowest, as well as the one that consumes the most energy, although we should note that for the bigger size (2048 bits) the consumption of energy is slightly lower for {\sf zig}.
+This Figure, that shows average energy consumed ({\tt mean.pkg}) vs. time taken ({\tt mean.seconds}), already allows us at least an initial comparison of the orders of magnitude of the difference we should expect. Clearly Kotlin is the fastest and also the one that consumes the least energy; it is followed by {\sf zig}, although time as well as energy consumption grows very fast with the size of the chromosomes (here represented logarithmically as the dot size). {\sf bun} is the slowest, as well as the one that consumes the most energy, although we should note that for the bigger size (2048 bits) the consumption of energy is slightly lower for {\sf zig}.
 
 We will proceed to the experiments on an evolutionary algorithm workload, which will use this as a baseline.
 
 \section{Results}
 \label{sec:results}
 
+The first experiment will perform 40K crossover + mutation + onemax operations on chromosomes of size 512, 1024 and 2048.
+
+
+The second experiment will examine energy consumption for the HIFF fitness function.
 <<lion.hiff.bun, echo=F, message=F>>=
 
 hiff.bun <- read.csv("../data/pinpoint-v3-HIFF-13-Dec-09-06-34.csv")
