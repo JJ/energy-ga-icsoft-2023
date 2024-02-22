@@ -14,7 +14,7 @@ my $ITERATIONS = 15;
 my ($mon,$day,$hh,$mm,$ss) = localtime() =~ /(\w+)\s+(\d+)\s+(\d+)\:(\d+)\:(\d+)/;
 my $suffix = "$day-$mon-$hh-$mm-$ss";
 
-open my $fh, ">", "../../data/pinpoint-$preffix-$suffix.csv";
+open my $fh, ">", "../../data/$preffix-$suffix.csv";
 say $fh "Platform,size,GPU,PKG,seconds";
 
 for my $l ( qw(512 1024 2048) ) {
