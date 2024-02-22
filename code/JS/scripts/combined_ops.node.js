@@ -1,3 +1,5 @@
+#!/home/jmerelo/.bun/bin/bun
+
 import { mutation, crossover, countOnes, generateChromosomes } from "../lib/utils.js";
 
 const size = process.argv[2] || 512;
