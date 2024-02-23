@@ -11,7 +11,7 @@ pub fn ourRng() !std.rand.DefaultPrng {
 }
 
 // MaxOnes or CountOnes implementation
-fn countOnes(binaryString: []const u8) u32 {
+pub fn countOnes(binaryString: []const u8) u32 {
     var count: u32 = 0;
     for (binaryString) |binaryChar| {
         count += if (binaryChar == '1') 1 else 0;
@@ -20,7 +20,7 @@ fn countOnes(binaryString: []const u8) u32 {
 }
 
 // mutation operator that changes a single random character in a string
-fn mutation(binaryString: []const u8, rndGen: *std.rand.DefaultPrng, allocator: std.mem.Allocator) ![]const u8 {
+pub fn mutation(binaryString: []const u8, rndGen: *std.rand.DefaultPrng, allocator: std.mem.Allocator) ![]const u8 {
     var binaryStringClone: []u8 = try allocator.dupeZ(u8, binaryString);
     var index = rndGen.random().int(u32) % binaryString.len;
     binaryStringClone[index] = if (binaryStringClone[index] == '1') '0' else '1';
@@ -28,7 +28,7 @@ fn mutation(binaryString: []const u8, rndGen: *std.rand.DefaultPrng, allocator: 
 }
 
 // Crossover operator that combines two strings, cutting them in two random points, interchanging the result
-fn crossover(binaryString1: []const u8, binaryString2: []const u8, rndGen: *std.rand.DefaultPrng, allocator: std.mem.Allocator) ![2][]const u8 {
+pub fn crossover(binaryString1: []const u8, binaryString2: []const u8, rndGen: *std.rand.DefaultPrng, allocator: std.mem.Allocator) ![2][]const u8 {
     var binaryString1Clone: []u8 = try allocator.dupeZ(u8, binaryString1);
     var binaryString2Clone: []u8 = try allocator.dupeZ(u8, binaryString2);
     var index1 = rndGen.random().int(u32) % binaryString1.len;
