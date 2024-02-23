@@ -123,7 +123,7 @@ library(ggplot2)
 generate.chromosomes.bun <- read.csv("../data/generate-chromosomes-bun-lion-24.csv")
 generate.chromosomes.bun  %>% group_by( size ) %>% summarise( mean.pkg = mean( PKG ), mean.seconds = mean( seconds ) ) -> generate.chromosomes.bun.avg
 
-generate.chromosomes.zig <- read.csv("../data/lion-zig-gen-23-Feb-11-08-10.csv")
+generate.chromosomes.zig <- read.csv("../data/lion-zig-gen-23-Feb-12-03-41.csv")
 generate.chromosomes.zig %>% group_by( size ) %>% summarise( mean.pkg = mean( PKG ), mean.seconds = mean( seconds ) ) -> generate.chromosomes.zig.avg
 
 generate.chromosomes.kotlin <- read.csv("../data/generate-chromosomes-kotlin-lion-24.csv")
