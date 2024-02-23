@@ -2,14 +2,14 @@ const std = @import("std");
 const expect = std.testing.expect;
 
 // function that generates a string array
-pub fn generate(allocator: std.mem.Allocator, stringLength: u16, numStrings: u32) ![]*const []u8 {
+pub fn generate(allocator: std.mem.Allocator, stringLength: u16, numStrings: u32) ![]*[]const u8 {
     var prng = std.rand.DefaultPrng.init(blk: {
         var seed: u64 = undefined;
         try std.os.getrandom(std.mem.asBytes(&seed));
         break :blk seed;
     });
 
-    var stringArray: []*const []const u8 = try allocator.alloc(*const []const u8, numStrings);
+    var stringArray: []*[]const u8 = try allocator.alloc(*[]const u8, numStrings);
 
     var i: u32 = 0;
     while (i < numStrings) {
