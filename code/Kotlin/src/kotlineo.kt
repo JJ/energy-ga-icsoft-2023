@@ -2,12 +2,7 @@ package kotlineo
 
 
 fun random_chromosome(length: Int): BooleanArray {
-  var new_chromosome = BooleanArray(length, {false});
-
-  for(i in 0..length-1){
-    new_chromosome[i] = Math.random() < 0.5;
-  }
-  return new_chromosome;
+  return BooleanArray(length) { Math.random() < 0.5 };
 }
 
 
@@ -17,12 +12,11 @@ fun compute_fitness(chromosome: BooleanArray):Int{
 
 
 fun mutate1(chromosome:BooleanArray):BooleanArray{
-  var mutation_point = (Math.random() * chromosome.size).toInt();
+  val mutation_point = (Math.random() * chromosome.size).toInt();
   var mutie = chromosome.clone();
 
   mutie[mutation_point]= mutie[mutation_point].not();
   return mutie;
-
 }
 
 
