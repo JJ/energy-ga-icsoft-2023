@@ -1,13 +1,5 @@
 const std = @import("std");
 
-fn countOnes(binaryString: []u8) u32 {
-    var count: u32 = 0;
-    for (binaryString) |binaryChar| {
-        count += binaryChar;
-    }
-    return count;
-}
-
 pub fn main() !void {
     const allocator = std.heap.page_allocator;
 
