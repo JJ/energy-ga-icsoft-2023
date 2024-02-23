@@ -32,14 +32,15 @@ fun crossover(chromosome1: BooleanArray, chromosome2:BooleanArray): Array<Boolea
     new_chromo1[i]=chromosome1[i];
     new_chromo2[i]=chromosome2[i];
   }
-  for(i in xover_point..xover_point+scope-1){
+
+/*  for(i in xover_point..xover_point+scope-1){
     new_chromo1[i]=chromosome2[i];
     new_chromo2[i]=chromosome1[i];
   }
   for(i in xover_point+scope..length-1){
     new_chromo1[i]=chromosome1[i];
     new_chromo2[i]=chromosome2[i];
-  }
+  }*/
 
   var result =  Array<BooleanArray>(2,{BooleanArray(0,{false})});
   result[0]=new_chromo1;
@@ -59,4 +60,25 @@ fun draw(chromosome:BooleanArray){
   }
   println();
   return;
+}
+
+fun t(a: String, b: String): String {
+  if (a == b) {
+    if (a == "0") {
+      return "0"
+    } else if (a == "1") {
+      return "1"
+    }
+  }
+    return "-"
+}
+
+
+fun hiff(stringChr:String): Int {
+when (stringChr) {
+    "0", "1" -> return 1
+    "00", "11" -> return 4
+    "01", "10" -> return 2
+    else -> return 10
+  }
 }
