@@ -10,7 +10,16 @@ pub fn ourRng() !std.rand.DefaultPrng {
     });
 }
 
-// test the function
+// MaxOnes or CountOnes implementation
+fn countOnes(binaryString: []u8) u32 {
+    var count: u32 = 0;
+    for (binaryString) |binaryChar| {
+        count += binaryChar;
+    }
+    return count;
+}
+
+// test the generator
 test "random generators" {
     var firstRng: std.rand.DefaultPrng = try ourRng();
     var secondRng: std.rand.DefaultPrng = try ourRng();

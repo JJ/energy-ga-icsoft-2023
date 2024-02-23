@@ -2,14 +2,14 @@ const std = @import("std");
 const expect = std.testing.expect;
 
 // function that generates a string array
-pub fn generate(allocator: std.mem.Allocator, stringLength: u16, numStrings: u32) ![]*[]u8 {
+pub fn generate(allocator: std.mem.Allocator, stringLength: u16, numStrings: u32) ![]*const []u8 {
     var prng = std.rand.DefaultPrng.init(blk: {
         var seed: u64 = undefined;
         try std.os.getrandom(std.mem.asBytes(&seed));
         break :blk seed;
     });
 
-    var stringArray: []*[]u8 = try allocator.alloc(*[]u8, numStrings);
+    var stringArray: []*const []u8 = try allocator.alloc(*const []u8, numStrings);
 
     var i: u32 = 0;
     while (i < numStrings) {
@@ -17,7 +17,7 @@ pub fn generate(allocator: std.mem.Allocator, stringLength: u16, numStrings: u32
 
         var c: u32 = 0;
         while (c < stringLength) : (c += 1) {
-            binaryString[c] = prng.random().intRangeAtMost(u8, 0, 1);
+            binaryString[c] = prng.random().intRangeAtMost(u8, '0', '1');
         }
 
         // add the new string to stringArray
@@ -40,7 +40,7 @@ test "generate" {
     while (i < numStrings) {
         var c: u16 = 0;
         while (c < stringLength) : (c += 1) {
-            try expect(stringArray[i].*[c] == 0 or stringArray[i].*[c] == 1);
+            try expect(stringArray[i].*[c] == '0' or stringArray[i].*[c] == '1');
         }
         i = i + 1;
     }
