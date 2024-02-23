@@ -11,7 +11,7 @@ pub fn ourRng() !std.rand.DefaultPrng {
 }
 
 // MaxOnes or CountOnes implementation
-fn countOnes(binaryString: []u8) u32 {
+fn countOnes(binaryString: *const []u8) u32 {
     var count: u32 = 0;
     for (binaryString) |binaryChar| {
         count += binaryChar;

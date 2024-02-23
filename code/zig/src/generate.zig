@@ -9,7 +9,7 @@ pub fn generate(allocator: std.mem.Allocator, stringLength: u16, numStrings: u32
         break :blk seed;
     });
 
-    var stringArray: []*const []u8 = try allocator.alloc(*const []u8, numStrings);
+    var stringArray: []*const []const u8 = try allocator.alloc(*const []const u8, numStrings);
 
     var i: u32 = 0;
     while (i < numStrings) {
@@ -20,7 +20,6 @@ pub fn generate(allocator: std.mem.Allocator, stringLength: u16, numStrings: u32
             binaryString[c] = prng.random().intRangeAtMost(u8, '0', '1');
         }
 
-        // add the new string to stringArray
         stringArray[i] = &binaryString;
         i = i + 1;
     }
