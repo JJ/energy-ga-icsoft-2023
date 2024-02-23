@@ -107,7 +107,7 @@ All programs are run through a Perl script that captures and processes output, g
 
 Implementing an algorithm will always imply some choices in the specifics used to program it. In general, we opted for the default implementation (as suggested by tutorials), but explicitly, these are the decisions we took:\begin{itemize}
 \item {\sf bun} uses the same implementation as previously used, namely, mutable strings, to represent the chromosome.
-\item {\sf zig} being a low-level language, needs a bigger set of choices. We have used {\tt DefaultPrng} as random number generator, {\tt page\_allocator} as allocator, and arrays of byte-size integers ({\tt u8}) for the chromosomes. This is the default implementation of integers in the language. Please note that we are using here the actual values 0 and 1 instead of the characters '0' and '1'. The executable has been generated with default options too ({\tt optimize} for optimization).
+\item {\sf zig} being a low-level language, needs a bigger set of choices. We have used {\tt DefaultPrng} as random number generator, {\tt page\_allocator} as allocator, and arrays of byte-size integers ({\tt u8}) for the chromosomes. This is the default implementation of integers in the language. The executable has been generated with default options too ({\tt optimize} for optimization).
 \item {\sf Kotlin} uses again the same implementation as \cite{merelo2016ranking}, a {\tt BooleanArray} for every chromosome.
 \end{itemize}
 
@@ -123,7 +123,7 @@ library(ggplot2)
 generate.chromosomes.bun <- read.csv("../data/generate-chromosomes-bun-lion-24.csv")
 generate.chromosomes.bun  %>% group_by( size ) %>% summarise( mean.pkg = mean( PKG ), mean.seconds = mean( seconds ) ) -> generate.chromosomes.bun.avg
 
-generate.chromosomes.zig <- read.csv("../data/generate-chromosomes-zig-lion-24.csv")
+generate.chromosomes.zig <- read.csv("../data/lion-zig-gen-23-Feb-11-08-10.csv")
 generate.chromosomes.zig %>% group_by( size ) %>% summarise( mean.pkg = mean( PKG ), mean.seconds = mean( seconds ) ) -> generate.chromosomes.zig.avg
 
 generate.chromosomes.kotlin <- read.csv("../data/generate-chromosomes-kotlin-lion-24.csv")
@@ -132,7 +132,7 @@ generate.chromosomes.kotlin %>% group_by( size ) %>% summarise( mean.pkg = mean(
 ggplot(generate.chromosomes.bun.avg, aes(x=mean.seconds,y=mean.pkg,color="Bun"))+ geom_point(data=generate.chromosomes.bun.avg, aes(x=mean.seconds,y=mean.pkg,color="Bun", size=log(size)))+geom_line(linewidth=1)+geom_point(data=generate.chromosomes.zig.avg,aes(x=mean.seconds,y=mean.pkg,color="Zig", size=log(size)))+geom_line(data=generate.chromosomes.zig.avg,aes(x=mean.seconds,y=mean.pkg,color="Zig"),linewidth=1)+geom_point(data=generate.chromosomes.kotlin.avg,aes(x=mean.seconds,y=mean.pkg,color="Kotlin",size=log(size)))+geom_line(data=generate.chromosomes.kotlin.avg,aes(x=mean.seconds,y=mean.pkg,color="Kotlin"), linewidth=1)
 @
 
-This Figure, that shows average energy consumed ({\tt mean.pkg}) vs. time taken ({\tt mean.seconds}), already allows us at least an initial comparison of the orders of magnitude of the difference we should expect. Clearly Kotlin is the fastest and also the one that consumes the least energy; it is followed by {\sf zig}, although time as well as energy consumption grows very fast with the size of the chromosomes (here represented logarithmically as the dot size). {\sf bun} is the slowest, as well as the one that consumes the most energy, although we should note that for the bigger size (2048 bits) the consumption of energy is slightly lower for {\sf zig}.
+This Figure, that shows average energy consumed ({\tt mean.pkg}) vs. time taken ({\tt mean.seconds}), already allows us at least an initial comparison of the orders of magnitude of the difference we should expect. Clearly Kotlin is the fastest and also the one that consumes the least energy; it is followed by {\sf zig}, although time as well as energy consumption grow very fast with the size of the chromosomes (here represented logarithmically as the dot size). {\sf bun} is the slowest, as well as the one that consumes the most energy, although we should note that for the bigger size (2048 bits) {\sf zig} takes almost the same amount of time, although with a lower consumption of energy\footnote{{\sf zig} will greatly vary the amount of energy needed depending on relatively irrelevant choices such as using constant or mutable pointers; in a previous experiment run, included in the repository, that used mutable pointers, energy consumption was almost 10\% higher.}.
 
 We will proceed to the experiments on an evolutionary algorithm workload, which will use this as a baseline.
 
