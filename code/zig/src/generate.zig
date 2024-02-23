@@ -1,14 +1,9 @@
 const std = @import("std");
 const expect = std.testing.expect;
+const ourRng = @import("utils.zig").ourRng;
 
 // function that generates a string array
-pub fn generate(allocator: std.mem.Allocator, stringLength: u16, numStrings: u32) ![]*[]const u8 {
-    var prng = std.rand.DefaultPrng.init(blk: {
-        var seed: u64 = undefined;
-        try std.os.getrandom(std.mem.asBytes(&seed));
-        break :blk seed;
-    });
-
+pub fn generate(allocator: std.mem.Allocator, prng: *std.rand.DefaultPrng, stringLength: u16, numStrings: u32) ![]*[]const u8 {
     var stringArray: []*[]const u8 = try allocator.alloc(*[]const u8, numStrings);
 
     var i: u32 = 0;
@@ -31,7 +26,8 @@ test "generate" {
     const stringLength: u16 = 10;
     const numStrings: u32 = 10;
     const allocator = std.heap.page_allocator;
-    const stringArray = try generate(allocator, stringLength, numStrings);
+    var prng = try ourRng();
+    const stringArray = try generate(allocator, &prng, stringLength, numStrings);
     try expect(stringArray[0].len == stringLength);
     try expect(stringArray[numStrings - 1].len == stringLength);
     // loop through all strings in StringArray to check that every element is either 1 or 0
