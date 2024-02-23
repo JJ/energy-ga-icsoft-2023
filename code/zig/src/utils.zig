@@ -19,6 +19,14 @@ fn countOnes(binaryString: []const u8) u32 {
     return count;
 }
 
+// mutation operator that changes a single random character in a string
+fn mutation(binaryString: []const u8, rndGen: *std.rand.DefaultPrng, allocator: std.mem.Allocator) ![]const u8 {
+    var binaryStringClone: []u8 = try allocator.dupeZ(u8, binaryString);
+    var index = rndGen.random().int(u32) % binaryString.len;
+    binaryStringClone[index] = if (binaryStringClone[index] == '1') '0' else '1';
+    return binaryStringClone;
+}
+
 // test the generator
 test "random generators" {
     var firstRng: std.rand.DefaultPrng = try ourRng();
@@ -30,4 +38,14 @@ test "random generators" {
 test "countOnes" {
     var binaryString: []const u8 = "101010";
     try expect(countOnes(binaryString) == 3);
+}
+
+// test the mutation function
+test "mutation" {
+    const binaryString: []const u8 = "101010";
+    var rndGen: std.rand.DefaultPrng = try ourRng();
+    var allocator = std.heap.page_allocator;
+    const mutatedString: []const u8 = try mutation(binaryString, &rndGen, allocator);
+    try expect(mutatedString.len == binaryString.len);
+    try expect(!std.mem.eql(u8, mutatedString, binaryString));
 }
