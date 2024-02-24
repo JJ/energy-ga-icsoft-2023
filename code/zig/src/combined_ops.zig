@@ -26,7 +26,6 @@ pub fn main() !void {
     var fitness = std.ArrayList(u32).init(allocator);
     var i: usize = 0;
     while (i < chromosomes.len) : (i += 2) {
-        std.debug.print("i: {}\n", .{i});
         const firstChromosome = try allocator.dupeZ(u8, chromosomes[i]);
         const secondChromosome = try allocator.dupeZ(u8, chromosomes[i + 1]);
 
