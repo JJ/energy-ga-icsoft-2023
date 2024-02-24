@@ -26,26 +26,25 @@ pub fn mutation(binaryString: *[]u8, rndGen: *std.rand.DefaultPrng) void {
 }
 
 // Crossover operator that combines two strings, cutting them in two random points, interchanging the result
-pub fn crossover(binaryString1: []const u8, binaryString2: []const u8, rndGen: *std.rand.DefaultPrng, allocator: std.mem.Allocator) ![2][]const u8 {
+pub fn crossover(allocator: std.mem.Allocator, binaryString1: *[]u8, binaryString2: *[]u8, rndGen: *std.rand.DefaultPrng) !void {
     var binaryString1Clone: []u8 = try allocator.dupeZ(u8, binaryString1);
+    defer allocator.free(binaryString1Clone);
     var binaryString2Clone: []u8 = try allocator.dupeZ(u8, binaryString2);
+    defer allocator.free(binaryString2Clone);
+
     var index1 = rndGen.random().int(u32) % binaryString1.len;
-    var index2 = rndGen.random().int(u32) % binaryString1.len;
-    // interchange values if index1 > index2
+    var index2 = rndGen.random().int(u32) % binaryString2.len;
+
     if (index1 > index2) {
         var temp = index1;
         index1 = index2;
         index2 = temp;
     }
 
-    // copy from binaryString1 to binaryString2Clone starting from indez1 to index2
     for (index1..index2) |i| {
-        binaryString2Clone[i] = binaryString1[i];
-        binaryString1Clone[i] = binaryString2[i];
+        binaryString2[i] = binaryString1Clone[i];
+        binaryString1[i] = binaryString2Clone[i];
     }
-
-    const returningPair: [2][]const u8 = [_][]const u8{ binaryString1Clone, binaryString2Clone };
-    return returningPair;
 }
 
 // test the generator
@@ -64,10 +63,12 @@ test "countOnes" {
 // test the mutation function
 test "mutation" {
     var allocator = std.heap.page_allocator;
+
     var binaryString = try allocator.dupeZ(u8, "101010");
     defer allocator.free(binaryString);
     var copyBinaryString = try allocator.dupeZ(u8, "101010");
     defer allocator.free(copyBinaryString);
+
     var rndGen: std.rand.DefaultPrng = try ourRng();
     mutation(&binaryString, &rndGen);
     try expect(copyBinaryString.len == binaryString.len);
@@ -77,13 +78,21 @@ test "mutation" {
 
 // test the crossover function
 test "crossover" {
-    const binaryString1: []const u8 = "101010";
-    const binaryString2: []const u8 = "010101";
     var rndGen: std.rand.DefaultPrng = try ourRng();
     var allocator = std.heap.page_allocator;
-    const crossoveredStrings: [2][]const u8 = try crossover(binaryString1, binaryString2, &rndGen, allocator);
-    try expect(crossoveredStrings[0].len == binaryString1.len);
-    try expect(crossoveredStrings[1].len == binaryString2.len);
-    try expect(!std.mem.eql(u8, crossoveredStrings[0], binaryString1));
-    try expect(!std.mem.eql(u8, crossoveredStrings[1], binaryString2));
+
+    var binaryString1 = try allocator.dupeZ(u8, "101010");
+    defer allocator.free(binaryString1);
+    var copyBinaryString1 = try allocator.dupeZ(u8, "101010");
+    defer allocator.free(copyBinaryString1);
+    var binaryString2 = try allocator.dupeZ(u8, "010101");
+    defer allocator.free(binaryString2);
+    var copyBinaryString2 = try allocator.dupeZ(u8, "010101");
+    defer allocator.free(copyBinaryString2);
+
+    try crossover(allocator, &binaryString1, &binaryString2, &rndGen);
+    try expect(copyBinaryString1.len == binaryString1.len);
+    try expect(copyBinaryString2.len == binaryString2.len);
+    try expect(!std.mem.eql(u8, copyBinaryString1, binaryString1));
+    try expect(!std.mem.eql(u8, copyBinaryString2, binaryString2));
 }
