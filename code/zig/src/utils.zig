@@ -12,10 +12,10 @@ pub fn ourRng() !std.rand.DefaultPrng {
 
 // test the generator
 test "random generators" {
-    var firstRng = try ourRng();
+    var first_rng = try ourRng();
     for (1..10) |_| {
-        var secondRng = try ourRng();
-        try expect(firstRng.random().int(i32) != secondRng.random().int(i32));
-        firstRng = secondRng;
+        var second_rng = try ourRng();
+        try expect(first_rng.random().int(i32) != second_rng.random().int(i32));
+        first_rng = second_rng;
     }
 }
