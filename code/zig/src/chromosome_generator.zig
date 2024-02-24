@@ -16,7 +16,11 @@ pub fn main() !void {
 
     const numStrings = 40000;
 
-    const output = try generate(allocator, &prng, stringLength, numStrings);
+    const output = try generate(allocator, prng.random(), stringLength, numStrings);
+    defer {
+        for (output) |str| allocator.free(str);
+        allocator.free(output);
+    }
     const stdout = std.io.getStdOut().writer();
     try stdout.print("{} \n", .{output.len});
 }

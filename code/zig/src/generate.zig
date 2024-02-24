@@ -3,18 +3,13 @@ const expect = std.testing.expect;
 const ourRng = @import("utils.zig").ourRng;
 
 // function that generates a string array
-pub fn generate(allocator: std.mem.Allocator, random: std.rand.Random, stringLength: u16, numStrings: u32) ![]*[]const u8 {
-    var stringArray: []*[]const u8 = try allocator.alloc(*[]const u8, numStrings);
-    var i: u32 = 0;
-    while (i < numStrings) {
-        var binaryString = try allocator.alloc(u8, stringLength);
-        var c: u32 = 0;
-        while (c < stringLength) : (c += 1) {
-            binaryString[c] = random.intRangeAtMost(u8, '0', '1');
+pub fn generate(allocator: std.mem.Allocator, random: std.rand.Random, string_length: u16, num_strings: u32) ![][]u8 {
+    var stringArray = try allocator.alloc([]u8, num_strings);
+    for (0..num_strings) |i| {
+        stringArray[i] = try allocator.alloc(u8, string_length);
+        for (0..string_length) |j| {
+            stringArray[i][j] = random.intRangeAtMost(u8, '0', '1');
         }
-
-        stringArray[i] = &binaryString;
-        i = i + 1;
     }
     return stringArray;
 }
@@ -33,8 +28,13 @@ test "generate" {
     while (i < numStrings) {
         var c: u16 = 0;
         while (c < stringLength) : (c += 1) {
-            try expect(stringArray[i].*[c] == '0' or stringArray[i].*[c] == '1');
+            try expect(stringArray[i][c] == '0' or stringArray[i][c] == '1');
         }
         i = i + 1;
     }
+
+    for (stringArray) |string| {
+        allocator.free(string);
+    }
+    allocator.free(stringArray);
 }

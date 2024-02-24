@@ -24,13 +24,13 @@ pub fn build(b: *std.build) void {
 
     b.installArtifact(exe);
 
-    const combined_ops = b.addExecutable(.{
-        .name = "combined_ops",
-        .root_source_file = .{ .path = "src/combined_ops.zig" },
-        .target = target,
-        .optimize = optimize,
-        .single_threaded = true,
-    });
+    // const combined_ops = b.addExecutable(.{
+    //     .name = "combined_ops",
+    //     .root_source_file = .{ .path = "src/combined_ops.zig" },
+    //     .target = target,
+    //     .optimize = optimize,
+    //     .single_threaded = true,
+    // });
 
-    b.installArtifact(combined_ops);
+    // b.installArtifact(combined_ops);
 }
