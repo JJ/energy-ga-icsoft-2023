@@ -1,11 +1,10 @@
 const std = @import("std");
 const generate = @import("generate.zig").generate;
-const utils = @import("utils.zig");
 
-const ourRng = utils.ourRng;
-const countOnes = utils.countOnes;
-const mutation = utils.mutation;
-const crossover = utils.crossover;
+const ourRng = @import("utils.zig").ourRng;
+const countOnes = @import("count_ones.zig").countOnes;
+const mutation = @import("mutation.zig").mutation;
+const crossover = @import("crossover.zig").crossover;
 
 pub fn main() !void {
     const allocator = std.heap.page_allocator;
@@ -21,26 +20,26 @@ pub fn main() !void {
 
     const numStrings = 40000;
 
-    const chromosomes = try generate(allocator, &prng, stringLength, numStrings);
+    const chromosomes = try generate(allocator, prng.random(), stringLength, numStrings);
 
     var results = std.ArrayList([]const u8).init(allocator);
     var fitness = std.ArrayList(u32).init(allocator);
     var i: usize = 0;
     while (i < chromosomes.len) : (i += 2) {
         std.debug.print("i: {}\n", .{i});
-        const firstChromosome = try allocator.dupeZ(u8, chromosomes[i].*);
-        const secondChromosome = try allocator.dupeZ(u8, chromosomes[i + 1].*);
+        const firstChromosome = try allocator.dupeZ(u8, chromosomes[i]);
+        const secondChromosome = try allocator.dupeZ(u8, chromosomes[i + 1]);
 
-        const crossoveredStrings: [2][]const u8 = try crossover(firstChromosome, secondChromosome, &prng, allocator);
+        try crossover(allocator, prng.random(), firstChromosome, secondChromosome);
 
-        const mutatedString1: []const u8 = try mutation(crossoveredStrings[0], &prng, allocator);
-        const mutatedString2: []const u8 = try mutation(crossoveredStrings[1], &prng, allocator);
+        mutation(firstChromosome, prng.random());
+        mutation(secondChromosome, prng.random());
 
-        const fitness1 = countOnes(mutatedString1);
-        const fitness2 = countOnes(mutatedString2);
+        const fitness1 = countOnes(firstChromosome);
+        const fitness2 = countOnes(secondChromosome);
 
-        try results.append(mutatedString1);
-        try results.append(mutatedString2);
+        try results.append(firstChromosome);
+        try results.append(secondChromosome);
         try fitness.append(fitness1);
         try fitness.append(fitness2);
     }
