@@ -20,7 +20,7 @@ pub fn countOnes(binaryString: []const u8) u32 {
 }
 
 // mutation operator that changes a single random character in a string
-pub fn mutation(binaryString: *[]u8, rndGen: *std.rand.DefaultPrng) !void {
+pub fn mutation(binaryString: *[]u8, rndGen: *std.rand.DefaultPrng) void {
     var index = rndGen.random().int(u32) % binaryString.len;
     binaryString.*[index] = if (binaryString.*[index] == '1') '0' else '1';
 }
@@ -69,7 +69,7 @@ test "mutation" {
     var copyBinaryString = try allocator.dupeZ(u8, "101010");
     defer allocator.free(copyBinaryString);
     var rndGen: std.rand.DefaultPrng = try ourRng();
-    try mutation(&binaryString, &rndGen);
+    mutation(&binaryString, &rndGen);
     try expect(copyBinaryString.len == binaryString.len);
     std.debug.print("binaryString: {s}\n", .{binaryString});
     try expect(!std.mem.eql(u8, copyBinaryString, binaryString));
