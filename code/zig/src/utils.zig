@@ -20,11 +20,9 @@ pub fn countOnes(binaryString: []const u8) u32 {
 }
 
 // mutation operator that changes a single random character in a string
-pub fn mutation(binaryString: []const u8, rndGen: *std.rand.DefaultPrng, allocator: std.mem.Allocator) ![]const u8 {
-    var binaryStringClone: []u8 = try allocator.dupeZ(u8, binaryString);
+pub fn mutation(binaryString: *[]u8, rndGen: *std.rand.DefaultPrng) !void {
     var index = rndGen.random().int(u32) % binaryString.len;
-    binaryStringClone[index] = if (binaryStringClone[index] == '1') '0' else '1';
-    return binaryStringClone;
+    binaryString.*[index] = if (binaryString.*[index] == '1') '0' else '1';
 }
 
 // Crossover operator that combines two strings, cutting them in two random points, interchanging the result
@@ -65,12 +63,14 @@ test "countOnes" {
 
 // test the mutation function
 test "mutation" {
-    const binaryString: []const u8 = "101010";
-    var rndGen: std.rand.DefaultPrng = try ourRng();
     var allocator = std.heap.page_allocator;
-    const mutatedString: []const u8 = try mutation(binaryString, &rndGen, allocator);
-    try expect(mutatedString.len == binaryString.len);
-    try expect(!std.mem.eql(u8, mutatedString, binaryString));
+    var binaryString = try allocator.dupeZ(u8, "101010");
+    var copyBinaryString = try allocator.dupeZ(u8, "101010");
+    var rndGen: std.rand.DefaultPrng = try ourRng();
+    try mutation(&binaryString, &rndGen);
+    try expect(copyBinaryString.len == binaryString.len);
+    std.debug.print("binaryString: {s}\n", .{binaryString});
+    try expect(!std.mem.eql(u8, copyBinaryString, binaryString));
 }
 
 // test the crossover function
