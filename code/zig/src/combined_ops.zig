@@ -23,19 +23,26 @@ pub fn main() !void {
 
     const chromosomes = try generate(allocator, &prng, stringLength, numStrings);
 
-    // go over pair of chromosomes in a loop and do crossover and mutation
     var results = std.ArrayList([]const u8).init(allocator);
+    var fitness = std.ArrayList(u32).init(allocator);
     var i: usize = 0;
     while (i < chromosomes.len) : (i += 2) {
-        const firstChromosome = chromosomes[i].*;
-        const secondChromosome = chromosomes[i + 1].*;
+        std.debug.print("i: {}\n", .{i});
+        const firstChromosome = try allocator.dupeZ(u8, chromosomes[i].*);
+        const secondChromosome = try allocator.dupeZ(u8, chromosomes[i + 1].*);
 
         const crossoveredStrings: [2][]const u8 = try crossover(firstChromosome, secondChromosome, &prng, allocator);
 
         const mutatedString1: []const u8 = try mutation(crossoveredStrings[0], &prng, allocator);
         const mutatedString2: []const u8 = try mutation(crossoveredStrings[1], &prng, allocator);
 
+        const fitness1 = countOnes(mutatedString1);
+        const fitness2 = countOnes(mutatedString2);
+
         try results.append(mutatedString1);
         try results.append(mutatedString2);
+        try fitness.append(fitness1);
+        try fitness.append(fitness2);
     }
+    std.debug.print("Results: {}\n", .{results.items.len});
 }

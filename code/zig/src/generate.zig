@@ -9,7 +9,6 @@ pub fn generate(allocator: std.mem.Allocator, prng: *std.rand.DefaultPrng, strin
     var i: u32 = 0;
     while (i < numStrings) {
         var binaryString = try allocator.alloc(u8, stringLength);
-
         var c: u32 = 0;
         while (c < stringLength) : (c += 1) {
             binaryString[c] = prng.random().intRangeAtMost(u8, '0', '1');
