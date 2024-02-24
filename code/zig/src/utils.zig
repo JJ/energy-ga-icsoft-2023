@@ -65,7 +65,9 @@ test "countOnes" {
 test "mutation" {
     var allocator = std.heap.page_allocator;
     var binaryString = try allocator.dupeZ(u8, "101010");
+    defer allocator.free(binaryString);
     var copyBinaryString = try allocator.dupeZ(u8, "101010");
+    defer allocator.free(copyBinaryString);
     var rndGen: std.rand.DefaultPrng = try ourRng();
     try mutation(&binaryString, &rndGen);
     try expect(copyBinaryString.len == binaryString.len);
