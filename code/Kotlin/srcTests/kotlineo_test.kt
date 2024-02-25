@@ -16,4 +16,19 @@ class KotlineoTests {
         }
     }
 
+    fun testCrossover() {
+        val chromosome1 = booleanArrayOf(true, false, true, false, true)
+        val chromosome2 = booleanArrayOf(false, true, false, true, false)
+        val copy_chromosome1 = chromosome1.copyOf()
+        val copy_chromosome2 = chromosome2.copyOf()
+        val actual = crossover(chromosome1, chromosome2)
+
+        assertEquals(copy_chromosome1, actual[0].size)
+        assertEquals(copy_chromosome2, actual[1].size)
+
+        assertNotEquals(copy_chromosome1, actual[0])
+        assertNotEquals(copy_chromosome2, actual[1])
+
+    }
+
 }
