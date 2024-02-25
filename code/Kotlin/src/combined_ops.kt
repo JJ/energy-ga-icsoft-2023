@@ -19,5 +19,4 @@ fun main(args : Array<String>) {
     }
 
     println("Generated "+new_chromosomes.size+" chromosomes");
-    println( "Fitness" + fitness.joinToString(",") );
 }
