@@ -215,8 +215,11 @@ We need to check the speed and consumption of the selected fitness function, HIF
 
 hiff.bun <- read.csv("../data/pinpoint-v3-HIFF-13-Dec-09-06-34.csv")
 hiff.bun %>% mutate( delta.pkg = PKG - generate.chromosomes.bun.avg$mean.pkg[ match( size, generate.chromosomes.bun.avg$size ) ], delta.seconds = seconds - generate.chromosomes.bun.avg$mean.seconds[ match( size, generate.chromosomes.bun.avg$size ) ] ) -> hiff.bun.delta
-
-
+hiff.bun.delta$size <- as.factor(hiff.bun.delta$size)
+ggplot(hiff.bun.delta, aes(x=delta.seconds, y=delta.pkg, shape=size)) +
+  geom_point() +
+  labs(title="HIFF in bun", x="Seconds", y="PKG") +
+  theme_minimal()
 
 @
 
