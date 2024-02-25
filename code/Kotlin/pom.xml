@@ -24,13 +24,6 @@
         <version>5.7.0</version>
         <scope>test</scope>
     </dependency>
-    <!-- JUnit Jupiter Engine -->
-    <dependency>
-        <groupId>org.junit.jupiter</groupId>
-        <artifactId>junit-jupiter-engine</artifactId>
-        <version>5.7.0</version>
-        <scope>test</scope>
-    </dependency>
         <dependency>
             <groupId>org.jetbrains.kotlin</groupId>
             <artifactId>kotlin-stdlib</artifactId>
@@ -42,6 +35,24 @@
         <sourceDirectory>${project.basedir}/src/</sourceDirectory>
         <testSourceDirectory>${project.basedir}/srcTests</testSourceDirectory>
         <plugins>
+            <plugin>
+                <groupId>org.apache.maven.plugins</groupId>
+                <artifactId>maven-surefire-plugin</artifactId>
+                <version>3.2.5</version>
+                <dependencies>
+                    <dependency>
+                        <groupId>org.junit.jupiter</groupId>
+                        <artifactId>junit-jupiter-engine</artifactId>
+                        <version>5.4.0</version>
+                    </dependency>
+                </dependencies>
+
+                 <configuration>
+                    <includes>
+                        <include>srcTests/*Test.kt</include>
+                    </includes>
+                </configuration>
+            </plugin>
             <plugin>
                 <groupId>org.jetbrains.kotlin</groupId>
                 <artifactId>kotlin-maven-plugin</artifactId>
