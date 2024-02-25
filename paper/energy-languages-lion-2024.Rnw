@@ -141,15 +141,82 @@ We will proceed to the experiments on an evolutionary algorithm workload, which 
 
 The first experiment will perform 40K crossover + mutation + onemax operations on chromosomes of size 512, 1024 and 2048.
 
+<<lion.combined.ops, echo=F, message=F, fig.pos="h!tb", fig.height=4, fig.cap="Running time and PKG energy consumption processing 40K chromosomes via crossover, mutation and ONEMAX for the three languages (represented with different colors); dot size is proportional to the logarithm of the chromosome size">>=
 
-The second experiment will examine energy consumption for the HIFF fitness function.
+combined.ops.bun <- read.csv("../data/lion-bun-22-Feb-13-55-23.csv")
+generate.bun.avgs.seconds <- c(rep( generate.chromosomes.bun.avg$mean.seconds[1], 15),
+                               rep( generate.chromosomes.bun.avg$mean.seconds[2], 15),
+                               rep( generate.chromosomes.bun.avg$mean.seconds[3], 15))
+combined.ops.bun$diff.seconds <- combined.ops.bun$seconds - generate.bun.avgs.seconds
+generate.bun.avgs.pkg <- c(rep( generate.chromosomes.bun.avg$mean.pkg[1], 15),
+                            rep( generate.chromosomes.bun.avg$mean.pkg[2], 15),
+                            rep( generate.chromosomes.bun.avg$mean.pkg[3], 15))
+combined.ops.bun$diff.PKG <- combined.ops.bun$PKG - generate.bun.avgs.pkg
+combined.ops.bun$size <- as.factor(combined.ops.bun$size)
+
+combined.ops.bun  %>% group_by( size ) %>% summarise( mean.pkg = mean( diff.PKG ), sd.pkg = sd(diff.PKG), mean.seconds = mean( diff.seconds ) ) -> combined.ops.bun.avg
+
+combined.ops.zig <- read.csv("../data/lion-zig-ops-24-Feb-20-08-58.csv")
+generate.zig.avgs.seconds <- c(rep( generate.chromosomes.zig.avg$mean.seconds[1], 15),
+                               rep( generate.chromosomes.zig.avg$mean.seconds[2], 15),
+                               rep( generate.chromosomes.zig.avg$mean.seconds[3], 15))
+combined.ops.zig$diff.seconds <- combined.ops.zig$seconds - generate.zig.avgs.seconds
+generate.zig.avgs.pkg <- c(rep( generate.chromosomes.zig.avg$mean.pkg[1], 15),
+                            rep( generate.chromosomes.zig.avg$mean.pkg[2], 15),
+                            rep( generate.chromosomes.zig.avg$mean.pkg[3], 15))
+combined.ops.zig$diff.PKG <- combined.ops.zig$PKG - generate.zig.avgs.pkg
+combined.ops.zig$size <- as.factor(combined.ops.zig$size)
+combined.ops.zig %>% group_by( size ) %>% summarise( mean.pkg = mean( diff.PKG ), sd.pkg = sd( diff.PKG), mean.seconds = mean( diff.seconds ) ) -> combined.ops.zig.avg
+
+combined.ops.kotlin <- read.csv("../data/lion-kt-ops-25-Feb-13-34-30.csv")
+generate.kotlin.avgs.seconds <- c(rep( generate.chromosomes.kotlin.avg$mean.seconds[1], 15),
+                               rep( generate.chromosomes.kotlin.avg$mean.seconds[2], 15),
+                               rep( generate.chromosomes.kotlin.avg$mean.seconds[3], 15))
+combined.ops.kotlin$diff.seconds <- combined.ops.kotlin$seconds - generate.kotlin.avgs.seconds
+generate.kotlin.avgs.pkg <- c(rep( generate.chromosomes.kotlin.avg$mean.pkg[1], 15),
+                            rep( generate.chromosomes.kotlin.avg$mean.pkg[2], 15),
+                            rep( generate.chromosomes.kotlin.avg$mean.pkg[3], 15))
+combined.ops.kotlin$diff.PKG <- combined.ops.kotlin$PKG - generate.kotlin.avgs.pkg
+combined.ops.kotlin$size <- as.factor(combined.ops.kotlin$size)
+
+combined.ops.kotlin %>% group_by( size ) %>% summarise( mean.pkg = mean( diff.PKG ), sd.pkg = sd(diff.PKG), mean.seconds = mean( diff.seconds ) ) -> combined.ops.kotlin.avg
+
+ggplot(combined.ops.bun, aes(x=diff.seconds, y=diff.PKG, shape=size, color="bun")) +
+  geom_point() +
+  geom_point(data=combined.ops.zig, aes(x=diff.seconds, y=diff.PKG, shape=size, color="zig")) +
+  geom_point(data=combined.ops.kotlin, aes(x=diff.seconds, y=diff.PKG, shape=size, color="kotlin"))
+  
+@
+
+Figure \ref{fig:lion.combined.ops} shows the difference in running time and PKG energy consumption for the three languages examined. We have opted to show the results for every experiment in a single plot, to reveal trends as well as some quirks that might be explained more by language idiosincrasies than by experimental errors. For instance, we can see that there are several cases where the Kotlin experimentation takes a long time, even for 1024 bits and 512 bits. One of the issues that the JVM has is garbage recollection; if there is a garbage recollection cycle it can clearly impact performance. The fact that it has hit a percentage of the experiments reveals that specific behaviors need to be taken into account and, to the extent that it is possible, mitigated.
+
+Another quirk is the lower-than-0 energy consumption for {\sf zig}, simply revealing that the difference in energy consumption is so low that it falls below the average for the generation of the chromosomes. {\sf zig}'s energy consumption is never higher than 60 joules, anyway.
+
+The trends need to be pondered too. In general, {\sf bun} is going to take longer and consume more energy than the rest for every size; Kotlin is the faster and boasts the lower consumption of energy, over all for smaller sizes. {\sf zig}, on the other hand, is faster than {\sf bun}, and its speed is quite consistent; not so for consumption of energy, which can go from very low, even less than Kotlin in some experiments (and virtually zero), to relatively high, with maximum closer to the average for {\sf bun}.
+
+<<lion.combined.ops.joules, echo=F, message=F>>=
+library(kableExtra)
+
+combined.ops.bun.avg$language <- "bun"
+combined.ops.zig.avg$language <- "zig"
+combined.ops.kotlin.avg$language <- "kotlin"
+
+combined.ops <- rbind(combined.ops.bun.avg, combined.ops.zig.avg, combined.ops.kotlin.avg)
+combined.ops$ops.joules <- 40000/ combined.ops$mean.pkg 
+combined.ops$sd.ops.joules <- 40000/ combined.ops$sd.pkg
+combined.ops %>% select( language, size, mean.pkg, sd.pkg, ops.joules ) %>% kable( digits = 2, col.names = c("Language","Size","PKG average","PKG SD", "Ops/joule average"), caption = "Average operatios per Joule in the combined ops experimentfor the three languages" )
+@
+
+What we see in Table \ref{tab:lion.combined.ops.joules} is a complicated scenario, where Kotlin has a very high number of operations per Joule, with a power consumption as low as 12 joules for the smallest size, although the trend is slightly different for the middle size of 1024 bits, where {\sf zig} obtains the lowest energy consumption and operations per joule, mainly due to the fact that the standard deviation for Kotlin, probably due to garbage recollection operations, is very high. Remarkably, the energy consumption for Kotlin can be as low as 1/3 of what {\sf bun} requires; {\sf zig} requires half (although they can be very close for the smallest value, where Kotlin excels).
+
+We need to check the speed and consumption of the selected fitness function, HIFF, for the three languages, so have a more complete picture of the energy profile of the three languages.
+
 <<lion.hiff.bun, echo=F, message=F>>=
 
 hiff.bun <- read.csv("../data/pinpoint-v3-HIFF-13-Dec-09-06-34.csv")
 hiff.bun %>% mutate( delta.pkg = PKG - generate.chromosomes.bun.avg$mean.pkg[ match( size, generate.chromosomes.bun.avg$size ) ], delta.seconds = seconds - generate.chromosomes.bun.avg$mean.seconds[ match( size, generate.chromosomes.bun.avg$size ) ] ) -> hiff.bun.delta
 
-generation.bun <- read.csv("../data/pinpoint-v3-generation-13-Dec-10-10-00.csv")
-generation.bun %>% mutate( delta.pkg = PKG - generate.chromosomes.bun.avg$mean.pkg[ match( size, generate.chromosomes.bun.avg$size ) ], delta.seconds = seconds - generate.chromosomes.bun.avg$mean.seconds[ match( size, generate.chromosomes.bun.avg$size ) ] ) -> generation.bun.delta
+
 
 @
 
