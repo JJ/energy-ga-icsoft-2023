@@ -3,9 +3,9 @@ import org.junit.jupiter.api.*
 import org.junit.jupiter.api.Assertions.*
 
 
-class KotlineoTest {
+public class KotlineoTest {
     @Test
-    fun testRandomChromosome() {
+    public fun testRandomChromosome() {
         val length = 10
         val actual = random_chromosome(length)
 
@@ -17,7 +17,7 @@ class KotlineoTest {
     }
 
     @Test
-    fun testCrossover() {
+    public fun testCrossover() {
         val chromosome1 = booleanArrayOf(true, false, true, false, true)
         val chromosome2 = booleanArrayOf(false, true, false, true, false)
         val copy_chromosome1 = chromosome1.copyOf()
@@ -33,7 +33,7 @@ class KotlineoTest {
     }
 
     @Test
-    fun testHIFF() {
+    public fun testHIFF() {
         val subjects = mapOf(
             "10" to 2,
             "1100" to 8,
