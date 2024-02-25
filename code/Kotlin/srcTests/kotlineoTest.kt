@@ -1,6 +1,6 @@
 import kotlineo.*
-import org.junit.jupiter.api.{Test,Assert}
-import org.junit.jupiter.api.Assertions.{assertEquals, assertNotEquals, assertTrue}
+import org.junit.jupiter.api.*
+import org.junit.jupiter.api.Assertions.*
 
 
 class KotlineoTest {
