@@ -1,7 +1,7 @@
 import kotlineo.*
-import org.junit.jupiter.api.Test
-import org.junit.jupiter.api.Assertions.assertEquals
-import org.junit.jupiter.api.Assertions.assertTrue
+import org.junit.jupiter.api.{Test,Assert}
+import org.junit.jupiter.api.Assertions.{assertEquals, assertNotEquals, assertTrue}
+
 
 class KotlineoTest {
     @Test
@@ -16,6 +16,7 @@ class KotlineoTest {
         }
     }
 
+    @Test
     fun testCrossover() {
         val chromosome1 = booleanArrayOf(true, false, true, false, true)
         val chromosome2 = booleanArrayOf(false, true, false, true, false)
