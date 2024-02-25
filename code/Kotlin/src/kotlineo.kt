@@ -33,14 +33,15 @@ fun crossover(chromosome1: BooleanArray, chromosome2:BooleanArray): Array<Boolea
     new_chromo2[i]=chromosome2[i];
   }
 
-/*  for(i in xover_point..xover_point+scope-1){
+  for(i in xover_point..xover_point+scope-1){
     new_chromo1[i]=chromosome2[i];
     new_chromo2[i]=chromosome1[i];
   }
+
   for(i in xover_point+scope..length-1){
     new_chromo1[i]=chromosome1[i];
     new_chromo2[i]=chromosome2[i];
-  }*/
+  }
 
   var result =  Array<BooleanArray>(2,{BooleanArray(0,{false})});
   result[0]=new_chromo1;
@@ -84,7 +85,7 @@ fun T(ev: String): String {
         "00" -> "0"
         "11" -> "1"
         "01", "10" -> "-"
-        else -> if (ev.length == 2 && ev.contains("-")) "-" 
+        else -> if (ev.length == 2 && ev.contains("-")) "-"
         else t(T(ev.slice(0 until ev.length / 2)), T(ev.slice(ev.length / 2 until ev.length)))
     }
 }
