@@ -88,7 +88,7 @@
                 <artifactId>exec-maven-plugin</artifactId>
                 <version>3.0.0</version>
                 <configuration>
-                    <mainClass>HiffKt</mainClass> <!-- Replace with your main class -->
+                    <mainClass>Combined_opsKt</mainClass> <!-- Replace with your main class -->
                 </configuration>
             </plugin>
         </plugins>
