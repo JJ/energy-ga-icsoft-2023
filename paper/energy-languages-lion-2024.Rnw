@@ -141,7 +141,7 @@ We will proceed to the experiments on an evolutionary algorithm workload, which 
 
 The first experiment will perform 40K crossover + mutation + onemax operations on chromosomes of size 512, 1024 and 2048.
 
-<<lion.combined.ops, echo=F, message=F, fig.pos="h!tb", fig.height=4, fig.cap="Running time and PKG energy consumption processing 40K chromosomes via crossover, mutation and ONEMAX for the three languages (represented with different colors); dot size is proportional to the logarithm of the chromosome size">>=
+<<lion.combined.ops, echo=F, message=F, fig.pos="h!tb", fig.height=4, fig.cap="Running time and PKG energy consumption processing 40K chromosomes via crossover, mutation and ONEMAX for the three languages (represented with different colors); dot shape represents the chromosome size">>=
 
 combined.ops.bun <- read.csv("../data/lion-bun-22-Feb-13-55-23.csv")
 generate.bun.avgs.seconds <- c(rep( generate.chromosomes.bun.avg$mean.seconds[1], 15),
@@ -209,19 +209,28 @@ combined.ops %>% select( language, size, mean.pkg, sd.pkg, ops.joules ) %>% kabl
 
 What we see in Table \ref{tab:lion.combined.ops.joules} is a complicated scenario, where Kotlin has a very high number of operations per Joule, with a power consumption as low as 12 joules for the smallest size, although the trend is slightly different for the middle size of 1024 bits, where {\sf zig} obtains the lowest energy consumption and operations per joule, mainly due to the fact that the standard deviation for Kotlin, probably due to garbage recollection operations, is very high. Remarkably, the energy consumption for Kotlin can be as low as 1/3 of what {\sf bun} requires; {\sf zig} requires half (although they can be very close for the smallest value, where Kotlin excels).
 
-We need to check the speed and consumption of the selected fitness function, HIFF, for the three languages, so have a more complete picture of the energy profile of the three languages.
+We need to check the speed and consumption of the selected fitness function, HIFF, for the three languages, so have a more complete picture of the energy profile of the three languages. This is a heavy-weight function, involving function calls of the order of one thousand. Even if it is going to take much more time than generating the chromosomes, we will still substract the time needed for that operation, simply to compare different things uniformly.
 
-<<lion.hiff.bun, echo=F, message=F>>=
+The operation for these functions needed some tweaking, namely, conversion to string in the case of Kotlin and to constant string in the case of {\sf zig}. This adds what is essentially a copying operation to the fitness itself, but we decided to do that in order to have HIFF defined in the most similar way possible (working with strings of 0s and 1s). 
+
+<<lion.hiff, echo=F, message=F, fig.pos="h!tb", fig.height=4, fig.cap="Running time and PKG energy consumption computing the HIFF fitness function for 40K chromosomes for the three languages (represented with different colors); dot shape represents the chromosome size">>=
 
 hiff.bun <- read.csv("../data/pinpoint-v3-HIFF-13-Dec-09-06-34.csv")
 hiff.bun %>% mutate( delta.pkg = PKG - generate.chromosomes.bun.avg$mean.pkg[ match( size, generate.chromosomes.bun.avg$size ) ], delta.seconds = seconds - generate.chromosomes.bun.avg$mean.seconds[ match( size, generate.chromosomes.bun.avg$size ) ] ) -> hiff.bun.delta
 hiff.bun.delta$size <- as.factor(hiff.bun.delta$size)
-ggplot(hiff.bun.delta, aes(x=delta.seconds, y=delta.pkg, shape=size)) +
-  geom_point() +
-  labs(title="HIFF in bun", x="Seconds", y="PKG") +
+
+hiff.kotlin <- read.csv("../data/lion-kt-hiff-27-Feb-09-41-42.csv")
+hiff.kotlin %>% mutate( delta.pkg = PKG - generate.chromosomes.kotlin.avg$mean.pkg[ match( size, generate.chromosomes.kotlin.avg$size ) ], delta.seconds = seconds - generate.chromosomes.kotlin.avg$mean.seconds[ match( size, generate.chromosomes.kotlin.avg$size ) ] ) -> hiff.kotlin.delta
+hiff.kotlin.delta$size <- as.factor(hiff.kotlin.delta$size)
+
+ggplot(hiff.bun.delta, aes(x=delta.seconds, y=delta.pkg, shape=size,color="bun")) +
+  geom_point() + geom_point(data=hiff.kotlin.delta, aes(x=delta.seconds, y=delta.pkg, shape=size, color="kotlin")) +
+  labs(title="HIFF", x="Seconds", y="PKG") +
   theme_minimal()
 
 @
+
+The results for time and energy consumption are represented in Figure \ref{fig:lion.hiff}. We can already observe that the consumption is more than one order of magnitude higher than before, and that since the number of function calls are dependent on the chromosome size, grows more or less linearly with that size. 
 
 \section{Discussion, conclusion and future work}
 \label{sec:conclusions}
