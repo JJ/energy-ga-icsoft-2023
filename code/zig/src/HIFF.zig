@@ -48,4 +48,6 @@ test "T" {
     try expect(T("-1") == '-');
     try expect(T("0-00") == '-');
     try expect(T("1100") == '-');
+    try expect(T("1111") == '1');
+    try expect(T("0000") == '0');
 }
