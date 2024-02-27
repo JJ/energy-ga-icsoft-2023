@@ -92,8 +92,6 @@ fun T(ev: String): String {
 
 
 fun hiff(stringChr:String): Int {
-  println("hiff: " + stringChr);
-
   return when (stringChr) {
       "0", "1" -> 1
       "00", "11" -> 4

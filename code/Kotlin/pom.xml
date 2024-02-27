@@ -99,7 +99,7 @@
       <configuration>
         <transformers>
           <transformer implementation="org.apache.maven.plugins.shade.resource.ManifestResourceTransformer">
-            <mainClass>run_hiffKt</mainClass>
+            <mainClass>Run_hiffKt</mainClass>
           </transformer>
         </transformers>
       </configuration>
