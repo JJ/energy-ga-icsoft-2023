@@ -234,7 +234,41 @@ ggplot(hiff.bun.delta, aes(x=delta.seconds, y=delta.pkg, shape=size,color="bun")
 
 @
 
-The results for time and energy consumption are represented in Figure \ref{fig:lion.hiff}. We can already observe that the consumption is more than one order of magnitude higher than before, and that since the number of function calls are dependent on the chromosome size, grows more or less linearly with that size. 
+The results for time and energy consumption are represented in Figure \ref{fig:lion.hiff}. We can already observe that the consumption is more than one order of magnitude higher than before, and that since the number of function calls are dependent on the chromosome size, grows more or less linearly with that size. We can also observe that, as usual, {\sf bun} is the slowest and the one that consumes the most energy.
+
+However, the situation with {\sf zig} and Kotlin is different. {\sf Kotlin} is in most cases slightly slower, but also more energy-saving, thus more {\em green} than  {\sf zig}. We represent a boxplot comparing them in Figure \ref{fig:lion.hiff.boxplot}.
+
+<<lion.hiff.boxplot, echo=F, message=F, warning=F, fig.pos="h!tb", fig.height=4, fig.cap="Boxplot of the energy consumption of the HIFF fitness function for 40K chromosomes for the Kotlin and {\\protect\\sf zig}">>=
+kotlin.zig.hiff <- data.frame(
+  language = c(rep("kotlin",nrow(hiff.kotlin.delta)), rep("zig",nrow(hiff.zig.delta))),
+  delta.pkg = c(hiff.kotlin.delta$delta.pkg, hiff.zig.delta$delta.pkg),
+  size=as.factor(c(hiff.kotlin.delta$size, hiff.zig.delta$size)) 
+  )
+ggplot(kotlin.zig.hiff, aes(x=size, y=delta.pkg, fill=language)) + geom_boxplot() + labs(title="HIFF", x="Size", y="PKG") + theme_minimal()
+# wilcox.test(delta.pkg ~ language, data=kotlin.zig.hiff[kotlin.zig.hiff$size=="512",])
+# wilcox.test(delta.pkg ~ language, data=kotlin.zig.hiff[kotlin.zig.hiff$size=="1024",])
+# wilcox.test(delta.pkg ~ language, data=kotlin.zig.hiff[kotlin.zig.hiff$size=="2048",])
+@
+
+Differences are significant for all three languages, for all sizes involved; in the case of the biggest size, there is indeed a considerable difference, with Kotlin spending on average less than 1500 Joules.
+
+<<lion.hiff.joules, echo=F, message=F>>=
+library(kableExtra)
+hiff.bun.delta %>% group_by( size ) %>% summarise( mean.pkg = mean( delta.pkg ), sd.pkg = sd( delta.pkg), mean.seconds = mean( delta.seconds ) ) -> hiff.bun.avg
+hiff.zig.delta %>% group_by( size ) %>% summarise( mean.pkg = mean( delta.pkg ), sd.pkg = sd( delta.pkg), mean.seconds = mean( delta.seconds ) ) -> hiff.zig.avg
+hiff.kotlin.delta %>% group_by( size ) %>% summarise( mean.pkg = mean( delta.pkg ), sd.pkg = sd( delta.pkg), mean.seconds = mean( delta.seconds ) ) -> hiff.kotlin.avg
+
+hiff.bun.avg$language <- "bun"
+hiff.zig.avg$language <- "zig"
+hiff.kotlin.avg$language <- "kotlin"
+
+hiff <- rbind(hiff.bun.avg, hiff.zig.avg, hiff.kotlin.avg)
+hiff$ops.joules <- 40000/ hiff$mean.pkg 
+hiff$sd.ops.joules <- 40000/ hiff$sd.pkg
+hiff %>% select( language, size, mean.pkg, sd.pkg, ops.joules ) %>% kable( digits = 2, col.names = c("Language","Size","PKG average","PKG SD", "Ops/joule average"), caption = "Average operatios per Joule in the HIFF experiment for the three languages" )
+@
+
+What we see in Table \ref{tab:hiff.joules} is the number of operations per Joule all three languages are able to perform.
 
 \section{Discussion, conclusion and future work}
 \label{sec:conclusions}
