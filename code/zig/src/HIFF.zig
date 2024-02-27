@@ -46,4 +46,6 @@ test "T" {
     try expect(T("1-") == '-');
     try expect(T("-0") == '-');
     try expect(T("-1") == '-');
+    try expect(T("0-00") == '-');
+    try expect(T("1100") == '-');
 }
