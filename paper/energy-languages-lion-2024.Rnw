@@ -219,12 +219,16 @@ hiff.bun <- read.csv("../data/pinpoint-v3-HIFF-13-Dec-09-06-34.csv")
 hiff.bun %>% mutate( delta.pkg = PKG - generate.chromosomes.bun.avg$mean.pkg[ match( size, generate.chromosomes.bun.avg$size ) ], delta.seconds = seconds - generate.chromosomes.bun.avg$mean.seconds[ match( size, generate.chromosomes.bun.avg$size ) ] ) -> hiff.bun.delta
 hiff.bun.delta$size <- as.factor(hiff.bun.delta$size)
 
+hiff.zig <- read.csv("../data/lion-zig-hiff-27-Feb-13-04-04.csv")
+hiff.zig %>% mutate( delta.pkg = PKG - generate.chromosomes.zig.avg$mean.pkg[ match( size, generate.chromosomes.zig.avg$size ) ], delta.seconds = seconds - generate.chromosomes.zig.avg$mean.seconds[ match( size, generate.chromosomes.zig.avg$size ) ] ) -> hiff.zig.delta
+hiff.zig.delta$size <- as.factor(hiff.zig.delta$size)
+
 hiff.kotlin <- read.csv("../data/lion-kt-hiff-27-Feb-09-41-42.csv")
 hiff.kotlin %>% mutate( delta.pkg = PKG - generate.chromosomes.kotlin.avg$mean.pkg[ match( size, generate.chromosomes.kotlin.avg$size ) ], delta.seconds = seconds - generate.chromosomes.kotlin.avg$mean.seconds[ match( size, generate.chromosomes.kotlin.avg$size ) ] ) -> hiff.kotlin.delta
 hiff.kotlin.delta$size <- as.factor(hiff.kotlin.delta$size)
 
 ggplot(hiff.bun.delta, aes(x=delta.seconds, y=delta.pkg, shape=size,color="bun")) +
-  geom_point() + geom_point(data=hiff.kotlin.delta, aes(x=delta.seconds, y=delta.pkg, shape=size, color="kotlin")) +
+  geom_point() + geom_point(data=hiff.zig.delta, aes(x=delta.seconds, y=delta.pkg, shape=size, color="zig")) + geom_point(data=hiff.kotlin.delta, aes(x=delta.seconds, y=delta.pkg, shape=size, color="kotlin")) +
   labs(title="HIFF", x="Seconds", y="PKG") +
   theme_minimal()
 
