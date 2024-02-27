@@ -33,4 +33,14 @@ pub fn build(b: *std.build) void {
     });
 
     b.installArtifact(combined_ops);
+
+    const hiff = b.addExecutable(.{
+        .name = "run_hiff",
+        .root_source_file = .{ .path = "src/run_hiff.zig" },
+        .target = target,
+        .optimize = optimize,
+        .single_threaded = true,
+    });
+
+    b.installArtifact(hiff);
 }
