@@ -188,11 +188,11 @@ ggplot(combined.ops.bun, aes(x=diff.seconds, y=diff.PKG, shape=size, color="bun"
   
 @
 
-Figure \ref{fig:lion.combined.ops} shows the difference in running time and PKG energy consumption for the three languages examined. We have opted to show the results for every experiment in a single plot, to reveal trends as well as some quirks that might be explained more by language idiosincrasies than by experimental errors. For instance, we can see that there are several cases where the Kotlin experimentation takes a long time, even for 1024 bits and 512 bits. One of the issues that the JVM has is garbage recollection; if there is a garbage recollection cycle it can clearly impact performance. The fact that it has hit a percentage of the experiments reveals that specific behaviors need to be taken into account and, to the extent that it is possible, mitigated.
+Figure \ref{fig:lion.combined.ops}, shows the difference in running time and PKG energy consumption for the three languages examined. We have opted to show the results for every experiment in a single plot, to reveal trends as well as some quirks that might be explained more by language idiosincrasies than by experimental errors. For instance, we can see that there are several cases where the Kotlin experimentation takes a long time, even for 1024 bits and 512 bits. One of the issues that the JVM has is garbage recollection; if there is a garbage recollection cycle it can clearly impact performance. The fact that it has hit a percentage of the experiments reveals that specific behaviors need to be taken into account and, to the extent that it is possible, mitigated.
 
 Another quirk is the lower-than-0 energy consumption for {\sf zig}, simply revealing that the difference in energy consumption is so low that it falls below the average for the generation of the chromosomes. {\sf zig}'s energy consumption is never higher than 60 joules, anyway.
 
-The trends need to be pondered too. In general, {\sf bun} is going to take longer and consume more energy than the rest for every size; Kotlin is the faster and boasts the lower consumption of energy, over all for smaller sizes. {\sf zig}, on the other hand, is faster than {\sf bun}, and its speed is quite consistent; not so for consumption of energy, which can go from very low, even less than Kotlin in some experiments (and virtually zero), to relatively high, with maximum closer to the average for {\sf bun}.
+The trends need to be pondered too. In general, {\sf bun} is going to take longer and consume more energy than the rest for every size; Kotlin is the faster and boasts the lower consumption of energy, over all for smaller sizes. {\sf zig}, on the other hand, is faster than {\sf bun}, and its speed is quite consistent; not so for consumption of energy, which can go from very low, even less than Kotlin in some experiments (and virtually zero), to relatively high, with a maximum closer to the average for {\sf bun}.
 
 <<lion.combined.ops.joules, echo=F, message=F>>=
 library(kableExtra)
@@ -209,7 +209,7 @@ combined.ops %>% select( language, size, mean.pkg, sd.pkg, ops.joules ) %>% kabl
 
 What we see in Table \ref{tab:lion.combined.ops.joules} is a complicated scenario, where Kotlin has a very high number of operations per Joule, with a power consumption as low as 12 joules for the smallest size, although the trend is slightly different for the middle size of 1024 bits, where {\sf zig} obtains the lowest energy consumption and operations per joule, mainly due to the fact that the standard deviation for Kotlin, probably due to garbage recollection operations, is very high. Remarkably, the energy consumption for Kotlin can be as low as 1/3 of what {\sf bun} requires; {\sf zig} requires half (although they can be very close for the smallest value, where Kotlin excels).
 
-We need to check the speed and consumption of the selected fitness function, HIFF, for the three languages, so have a more complete picture of the energy profile of the three languages. This is a heavy-weight function, involving function calls of the order of one thousand. Even if it is going to take much more time than generating the chromosomes, we will still substract the time needed for that operation, simply to compare different things uniformly.
+We need to check the speed and consumption of the selected fitness function, HIFF, for the three languages, so we can have a more complete picture of the energy profile for the three languages. This is a heavy-weight function, involving function calls in the order of one thousand. Even if it is going to take much more time than generating the chromosomes, we will still substract the time needed for that operation, simply to compare different things uniformly.
 
 The operation for these functions needed some tweaking, namely, conversion to string in the case of Kotlin and to constant string in the case of {\sf zig}. This adds what is essentially a copying operation to the fitness itself, but we decided to do that in order to have HIFF defined in the most similar way possible (working with strings of 0s and 1s). 
 
@@ -234,11 +234,11 @@ ggplot(hiff.bun.delta, aes(x=delta.seconds, y=delta.pkg, shape=size,color="bun")
 
 @
 
-The results for time and energy consumption are represented in Figure \ref{fig:lion.hiff}. We can already observe that the consumption is more than one order of magnitude higher than before, and that since the number of function calls are dependent on the chromosome size, grows more or less linearly with that size. We can also observe that, as usual, {\sf bun} is the slowest and the one that consumes the most energy.
+The results for time and energy consumption are represented in Figure \ref{fig:lion.hiff}. We can already observe that the consumption is more than one order of magnitude higher than before, and since the number of function calls are dependent on the chromosome size, it grows more or less linearly with size. We can also observe that, as usual, {\sf bun} is the slowest and the one that consumes the most energy.
 
-However, the situation with {\sf zig} and Kotlin is different. {\sf Kotlin} is in most cases slightly slower, but also more energy-saving, thus more {\em green} than  {\sf zig}. We represent a boxplot comparing them in Figure \ref{fig:lion.hiff.boxplot}.
+However, the situation with {\sf zig} and {\sf Kotlin} is different. {\sf Kotlin} is in most cases slightly slower, but also more energy-saving, thus more {\em green} than  {\sf zig}. We represent a boxplot comparing them in Figure \ref{fig:lion.hiff.boxplot}.
 
-<<lion.hiff.boxplot, echo=F, message=F, warning=F, fig.pos="h!tb", fig.height=4, fig.cap="Boxplot of the energy consumption of the HIFF fitness function for 40K chromosomes for the Kotlin and {\\protect\\sf zig}">>=
+<<lion.hiff.boxplot, echo=F, message=F, warning=F, fig.pos="h!tb", fig.height=4, fig.cap="Boxplot of the energy consumption of the HIFF fitness function for 40K chromosomes for Kotlin and {\\protect\\sf zig}">>=
 kotlin.zig.hiff <- data.frame(
   language = c(rep("kotlin",nrow(hiff.kotlin.delta)), rep("zig",nrow(hiff.zig.delta))),
   delta.pkg = c(hiff.kotlin.delta$delta.pkg, hiff.zig.delta$delta.pkg),
@@ -250,7 +250,7 @@ ggplot(kotlin.zig.hiff, aes(x=size, y=delta.pkg, fill=language)) + geom_boxplot(
 # wilcox.test(delta.pkg ~ language, data=kotlin.zig.hiff[kotlin.zig.hiff$size=="2048",])
 @
 
-Differences are significant for all three languages, for all sizes involved; in the case of the biggest size, there is indeed a considerable difference, with Kotlin spending on average less than 1500 Joules.
+Differences are significant for all three languages, for all sizes involved; in the case of the biggest size, there is indeed a considerable difference, with Kotlin spending less than 1500 Joules on average.
 
 <<lion.hiff.joules, echo=F, message=F>>=
 library(kableExtra)
@@ -273,8 +273,11 @@ What we see in Table \ref{tab:hiff.joules} is the number of operations per Joule
 \section{Discussion, conclusion and future work}
 \label{sec:conclusions}
 
-Implementing an algorithm implies making choices at different levels, from the type of language you will use to the specific language that meet your needs. Settling for languages at a certain level of abstraction will help you to stop your decisions at that level, and not have to carry them further, thus saving precious time in the life cycle of an experiment. % Conclude which languages are better
+Implementing an algorithm implies making choices at different levels of abstraction, from the family of languages you will use to the specific language meeting your needs. Settling for languages at a certain level of abstraction will help you to stop making decisions at that level, removing the need to look further for more alternatives, thus saving precious time in the computational experiment life cycle. % Conclude which languages are better
 
+In this work, we compared the performance regarding power consumption of three languages, JavaScript, Kotlin and Zig, when implementing evolutionary algorithms. We have used two different workloads, one with a combination of genetic operators and the OneMax fitness function, and another with the HIFF fitness function. We have found that Kotlin is the most energy-efficient language, followed by Zig, and finally JavaScript (bun). This is consistent with previous work, where Kotlin was found to be the most efficient language in terms of energy consumption \cite{PEREIRA2021102609}. However, it is important to note that the differences between the languages are not as significant as in this previous work, where the difference between the most and the least efficient language was of two orders of magnitude. In this work, the difference is of one order of magnitude at most. This is probably due to the fact that we are using more complex workloads, which involve more function calls and memory management, and the fact that we are using a different measuring tool, which is more accurate than the one used before.
+
+As a future work, we plan to extend this study to other languages and workloads. On the algorithmic side, another venue of research is to analyze the energy consumption of languages implementing different models of concurency, ether by language or through a specialized virtual machine. We also plan to analyze the energy consumption of different hardware platforms, and to develop a tool to help researchers and developers to choose the most energy-efficient language for their needs.
 
 \section*{Acknowledgements}
 
