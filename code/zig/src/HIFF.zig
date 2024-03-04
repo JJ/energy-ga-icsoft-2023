@@ -80,5 +80,5 @@ test "HIFF" {
     try expect(HIFF("01") == 2);
     try expect(HIFF("00") == 4);
     try expect(HIFF("1100") == 8);
-    try expect(HIFF("1111") == 8);
+    try expect(HIFF("1111") == 12);
 }
