@@ -73,8 +73,7 @@ An energy profiling methodology will start with selecting a tool to perform meas
 
 The measuring instrument was already chosen in a previous paper \cite{DBLP:conf/icsoft/GuervosGC23}. In general, there are system-wide as well as per-process measuring tools. We settled for {\sf pinpoint} \cite{9307947}, a command line tool under active development that takes per-process measures that are more accurate than other system-wide tools.
 
-In that paper, we selected a single integer arithmetic fitness function, MAXONES, and the crossover operation. However, in this paper we are taking a wider view of the problem so we will try to work with fundamental building blocks, but with ones that involve a bigger span of the runtime system of the language. We will thus use two functions:\begin{itemize}
-% Is not clear what is a 'fundamental building block' or 'bigger span of the runtime' - M 
+In that paper, we selected a single integer arithmetic fitness function, MAXONES, and the crossover operation. However, in this paper we are taking a wider view of the problem so we will try to work with fundamental building blocks, but with ones that involve a bigger range of runtime system of the language. We will thus use two functions:\begin{itemize}
 \item The Hierarchical If and only IF (HIFF) \cite{watson1998modeling} is an integer arithmetic function that works recursively, reducing a Boolean string of 0 and 1s by splitting it and applying the function to the halves; the final result will depend on the organization of 0s and 1s in the initial string, but will anyway involve many recursive function calls that will have to make use of the heap.
 \item The other function will apply crossover to randomly selected pairs of binary strings, followed by mutation to every member of the resulting pair, and evaluate the ONEMAX function on that result. These are essentially five function calls, not as complicated as before, but it is a fundamental operation in evolutionary algorithms and will essentially test the ability to access random elements in a string, as well as the creation of new ones (or the cloning of them, depending on the implementation)
 \end{itemize}
@@ -95,7 +94,6 @@ All experiments for this paper have been carried out in a Linux machine {\tt 5.1
 \end{itemize}
 
 All programs run through a Perl script that captures and processes output, generating CSV data files that are committed to this repository, and available under a free license. Instructions to compile and run it are also included in the repository; in general, all that is needed to reproduce the results of this paper. All the code is automatically tested and tagged so that the exact version used in this paper can be retrieved.
-% In the paragraph above: "are commited to this repository..." but no link is given  - M
 
 Implementing an algorithm will always imply some choices in the specifics used to program it. In general, we opted for the default implementation (as suggested by tutorials), but explicitly, these are the decisions we took:\begin{itemize}
 \item {\sf bun} uses the same implementation as previously used, namely, mutable strings, to represent the chromosome.
@@ -111,7 +109,7 @@ Previously, the experiment runner eliminated the baseline energy consumption by 
 
 In this paper, we will factor out that time, as well as the energy spent; this is usually a one-shot in evolutionary algorithms and not very significant in evolutionary algorithm workloads, and it will allow us to focus on the added energy consumption of the operations themselves; the results published in the next section will subtract the average time and energy consumption of this operation, which is shown in figure \ref{fig:lion.setup}.
 
-<<lion.setup, echo=F, message=F, fig.pos="h!tb", fig.height=4, fig.cap="Average running time and PKG energy consumption generating 40K chromosomes for the three languages (represented with different colors); dot size is proportional to the logarithm of the chromosome size">>=
+<<lion.setup, echo=F, message=F, fig.pos="h!tb", fig.height=4, fig.cap="Average running time and PKG energy consumption generating 40K chromosomes for the three languages (represented with different colors); dot size is proportional to the logarithm of the chromosome size.">>=
 library(dplyr)
 library(ggplot2)
 generate.chromosomes.bun <- read.csv("../data/generate-chromosomes-bun-lion-24.csv")
@@ -136,7 +134,7 @@ We will proceed to the experiments on an evolutionary algorithm workload, which 
 
 The first experiment will perform 40K crossover + mutation + onemax operations on chromosomes of size 512, 1024 and 2048.
 
-<<lion.combined.ops, echo=F, message=F, fig.pos="h!tb", fig.height=4, fig.cap="Running time and PKG energy consumption processing 40K chromosomes via crossover, mutation and ONEMAX for the three languages (represented with different colors); dot shape represents the chromosome size">>=
+<<lion.combined.ops, echo=F, message=F, fig.pos="h!tb", fig.height=4, fig.cap="Running time and PKG energy consumption processing 40K chromosomes via crossover, mutation and ONEMAX for the three languages (represented with different colors); dot shape represents the chromosome size.">>=
 
 combined.ops.bun <- read.csv("../data/lion-bun-22-Feb-13-55-23.csv")
 generate.bun.avgs.seconds <- c(rep( generate.chromosomes.bun.avg$mean.seconds[1], 15),
@@ -199,7 +197,7 @@ combined.ops.kotlin.avg$language <- "kotlin"
 combined.ops <- rbind(combined.ops.bun.avg, combined.ops.zig.avg, combined.ops.kotlin.avg)
 combined.ops$ops.joules <- 40000/ combined.ops$mean.pkg 
 combined.ops$sd.ops.joules <- 40000/ combined.ops$sd.pkg
-combined.ops %>% select( language, size, mean.pkg, sd.pkg, ops.joules ) %>% kable( digits = 2, col.names = c("Language","Size","PKG average","PKG SD", "Ops/joule average"), caption = "Average operatios per Joule in the combined ops experimentfor the three languages" )
+combined.ops %>% select( language, size, mean.pkg, sd.pkg, ops.joules ) %>% kable( digits = 2, col.names = c("Language","Size","PKG average","PKG SD", "Ops/joule average"), caption = "Average operations per Joule in the combined operations experiment for the three languages." )
 @
 
 What we see in Table \ref{tab:lion.combined.ops.joules} is a complicated scenario, where Kotlin has a very high number of operations per Joule, with a power consumption as low as 12 joules for the smallest size, although the trend is slightly different for the middle size of 1024 bits, where {\sf zig} obtains the lowest energy consumption and operations per joule, mainly due to the fact that the standard deviation for Kotlin, probably due to garbage recollection operations, is very high. Remarkably, the energy consumption for Kotlin can be as low as 1/3 of what {\sf bun} requires; {\sf zig} requires half (although they can be very close for the smallest value, where Kotlin excels).
@@ -208,7 +206,7 @@ We need to check the speed and consumption of the selected fitness function, HIF
 
 The operation for these functions needed some tweaking, namely, conversion to string in the case of Kotlin and to constant string in the case of {\sf zig}. This adds what is essentially a copying operation to the fitness itself, but we decided to do that in order to have HIFF defined in the most similar way possible (working with strings of 0s and 1s). 
 
-<<lion.hiff, echo=F, message=F, fig.pos="h!tb", fig.height=4, fig.cap="Running time and PKG energy consumption computing the HIFF fitness function for 40K chromosomes for the three languages (represented with different colors); dot shape represents the chromosome size">>=
+<<lion.hiff, echo=F, message=F, fig.pos="h!tb", fig.height=4, fig.cap="Running time and PKG energy consumption computing the HIFF fitness function for 40K chromosomes for the three languages (represented with different colors); dot shape represents the chromosome size.">>=
 
 hiff.bun <- read.csv("../data/pinpoint-v3-HIFF-13-Dec-09-06-34.csv")
 hiff.bun %>% mutate( delta.pkg = PKG - generate.chromosomes.bun.avg$mean.pkg[ match( size, generate.chromosomes.bun.avg$size ) ], delta.seconds = seconds - generate.chromosomes.bun.avg$mean.seconds[ match( size, generate.chromosomes.bun.avg$size ) ] ) -> hiff.bun.delta
@@ -260,7 +258,7 @@ hiff.kotlin.avg$language <- "kotlin"
 hiff <- rbind(hiff.bun.avg, hiff.zig.avg, hiff.kotlin.avg)
 hiff$ops.joules <- 40000/ hiff$mean.pkg 
 hiff$sd.ops.joules <- 40000/ hiff$sd.pkg
-hiff %>% select( language, size, mean.pkg, sd.pkg, ops.joules ) %>% kable( digits = 2, col.names = c("Language","Size","PKG average","PKG SD", "Ops/joule average"), caption = "Average operatios per Joule in the HIFF experiment for the three languages" )
+hiff %>% select( language, size, mean.pkg, sd.pkg, ops.joules ) %>% kable( digits = 2, col.names = c("Language","Size","PKG average","PKG SD", "Ops/joule average"), caption = "Average operations per Joule in the HIFF experiment for the three languages." )
 @
 
 What we see in Table \ref{tab:lion.hiff.joules} is the number of operations per Joule all three languages are able to perform.
