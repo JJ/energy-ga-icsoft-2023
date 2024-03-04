@@ -270,7 +270,7 @@ hiff$sd.ops.joules <- 40000/ hiff$sd.pkg
 hiff %>% select( language, size, mean.pkg, sd.pkg, ops.joules ) %>% kable( digits = 2, col.names = c("Language","Size","PKG average","PKG SD", "Ops/joule average"), caption = "Average operatios per Joule in the HIFF experiment for the three languages" )
 @
 
-What we see in Table \ref{tab:hiff.joules} is the number of operations per Joule all three languages are able to perform.
+What we see in Table \ref{tab:lion.hiff.joules} is the number of operations per Joule all three languages are able to perform.
 
 \section{Discussion, conclusion and future work}
 \label{sec:conclusions}
