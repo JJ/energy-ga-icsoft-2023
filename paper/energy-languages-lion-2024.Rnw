@@ -183,7 +183,7 @@ ggplot(combined.ops.bun, aes(x=diff.seconds, y=diff.PKG, shape=size, color="bun"
 
 Figure \ref{fig:lion.combined.ops}, shows the difference in running time and PKG energy consumption for the three languages examined. We have opted to show the results for every experiment in a single plot, to reveal trends as well as some quirks that might be explained more by language idiosyncrasies than by experimental errors. For instance, we can see that there are several cases where the Kotlin experimentation takes a long time, even for 1024 bits and 512 bits. One of the issues that the JVM has is garbage recollection; if there is a garbage recollection cycle it can clearly impact performance. The fact that it has hit a percentage of the experiments reveals that specific behaviors need to be taken into account and, to the extent that it is possible, mitigated.
 
-Another quirk is the lower-than-0 energy consumption for {\sf zig}, simply revealing that the difference in energy consumption is so low that it falls below the average for the generation of the chromosomes. {\sf zig}'s energy consumption is never higher than 60 joules, anyway.
+Another quirk is the lower-than-0 energy consumption for {\sf zig}, simply revealing that the difference in energy consumption is so low that it falls below the average for the generation of the chromosomes. {\sf zig}'s energy consumption is never higher than 60 Joules, anyway.
 
 The trends need to be pondered, too. In general, {\sf bun} is going to take longer and consume more energy than the rest for every size; Kotlin is the fastest and boasts the lower consumption of energy overall for smaller sizes. {\sf zig}, on the other hand, is faster than {\sf bun}, and its speed is quite consistent; not so for consumption of energy, which can go from very low, to even less than Kotlin in some experiments (and virtually zero), to relatively high, with a maximum closer to the average for {\sf bun}.
 
@@ -197,10 +197,10 @@ combined.ops.kotlin.avg$language <- "kotlin"
 combined.ops <- rbind(combined.ops.bun.avg, combined.ops.zig.avg, combined.ops.kotlin.avg)
 combined.ops$ops.joules <- 40000/ combined.ops$mean.pkg 
 combined.ops$sd.ops.joules <- 40000/ combined.ops$sd.pkg
-combined.ops %>% select( language, size, mean.pkg, sd.pkg, ops.joules ) %>% kable( digits = 2, col.names = c("Language","Size","PKG average","PKG SD", "Ops/joule average"), caption = "Average operations per Joule in the combined operations experiment for the three languages." )
+combined.ops %>% select( language, size, mean.pkg, sd.pkg, ops.joules ) %>% kable( digits = 2, col.names = c("Language","Size","PKG average","PKG SD", "Ops/Joule average"), caption = "Average operations per Joule in the combined operations experiment for the three languages." )
 @
 
-What we see in Table \ref{tab:lion.combined.ops.joules} is a complicated scenario, where Kotlin has a very high number of operations per Joule, with a power consumption as low as 12 joules for the smallest size, although the trend is slightly different for the middle size of 1024 bits, where {\sf zig} obtains the lowest energy consumption and operations per joule, mainly due to the fact that the standard deviation for Kotlin, probably due to garbage recollection operations, is very high. Remarkably, the energy consumption for Kotlin can be as low as 1/3 of what {\sf bun} requires; {\sf zig} requires half (although they can be very close for the smallest value, where Kotlin excels).
+What we see in Table \ref{tab:lion.combined.ops.joules} is a complicated scenario, where Kotlin has a very high number of operations per Joule, with a power consumption as low as 12 Joules for the smallest size, although the trend is slightly different for the middle size of 1024 bits, where {\sf zig} obtains the lowest energy consumption and operations per Joule, mainly due to the fact that the standard deviation for Kotlin, probably due to garbage recollection operations, is very high. Remarkably, the energy consumption for Kotlin can be as low as 1/3 of what {\sf bun} requires; {\sf zig} requires half (although they can be very close for the smallest value, where Kotlin excels).
 
 We need to check the speed and consumption of the selected fitness function, HIFF, for the three languages, so we can have a more complete picture of the energy profile for the three languages. This is a heavy-weight function, involving function calls in the order of one thousand. Even if it is going to take much more time than generating the chromosomes, we will still subtract the time needed for that operation to compare different things uniformly.
 
@@ -258,7 +258,7 @@ hiff.kotlin.avg$language <- "kotlin"
 hiff <- rbind(hiff.bun.avg, hiff.zig.avg, hiff.kotlin.avg)
 hiff$ops.joules <- 40000/ hiff$mean.pkg 
 hiff$sd.ops.joules <- 40000/ hiff$sd.pkg
-hiff %>% select( language, size, mean.pkg, sd.pkg, ops.joules ) %>% kable( digits = 2, col.names = c("Language","Size","PKG average","PKG SD", "Ops/joule average"), caption = "Average operations per Joule in the HIFF experiment for the three languages." )
+hiff %>% select( language, size, mean.pkg, sd.pkg, ops.joules ) %>% kable( digits = 2, col.names = c("Language","Size","PKG average","PKG SD", "Ops/Joule average"), caption = "Average operations per Joule in the HIFF experiment for the three languages." )
 @
 
 What we see in Table \ref{tab:lion.hiff.joules} is the number of operations per Joule all three languages are able to perform.
