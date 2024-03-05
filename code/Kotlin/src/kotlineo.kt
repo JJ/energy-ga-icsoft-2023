@@ -1,15 +1,12 @@
 package kotlineo
 
-
 fun random_chromosome(length: Int): BooleanArray {
   return BooleanArray(length) { Math.random() < 0.5 };
 }
 
-
 fun compute_fitness(chromosome: BooleanArray):Int{
   return chromosome.count( { c->c==true } );
 }
-
 
 fun mutate1(chromosome:BooleanArray):BooleanArray{
   val mutation_point = (Math.random() * chromosome.size).toInt();
@@ -18,7 +15,6 @@ fun mutate1(chromosome:BooleanArray):BooleanArray{
   mutie[mutation_point]= mutie[mutation_point].not();
   return mutie;
 }
-
 
 fun crossover(chromosome1: BooleanArray, chromosome2:BooleanArray): Array<BooleanArray>{
   var length = chromosome1.size
@@ -49,7 +45,6 @@ fun crossover(chromosome1: BooleanArray, chromosome2:BooleanArray): Array<Boolea
   return result;
 }
 
-
 fun draw(chromosome:BooleanArray){
   for (i in chromosome.indices){
     if(chromosome[i]){
@@ -78,7 +73,6 @@ fun t(a: String, b: String): String {
     return "-"
 }
 
-
 fun T(ev: String): String {
     return when (ev) {
         "-", "1", "0" -> ev
@@ -89,7 +83,6 @@ fun T(ev: String): String {
         else t(T(ev.slice(0 until ev.length / 2)), T(ev.slice(ev.length / 2 until ev.length)))
     }
 }
-
 
 fun hiff(stringChr:String): Int {
   return when (stringChr) {
