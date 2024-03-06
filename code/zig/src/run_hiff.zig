@@ -5,7 +5,9 @@ const ourRng = @import("utils.zig").ourRng;
 const HIFF = @import("HIFF.zig").HIFF;
 
 pub fn main() !void {
-    const allocator = std.heap.page_allocator;
+    var buffer: [82000000]u8 = undefined;
+    var fba = std.heap.FixedBufferAllocator.init(&buffer);
+    const allocator = fba.allocator();
     var prng: std.rand.DefaultPrng = try ourRng();
 
     var argsIterator = try std.process.argsWithAllocator(allocator);
