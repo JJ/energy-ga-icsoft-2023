@@ -18,7 +18,7 @@ pub fn build(b: *std.build) void {
         .name = "chromosome_generator",
         .root_source_file = .{ .path = "src/chromosome_generator.zig" },
         .target = target,
-        .optimize = .ReleaseFast,
+        .optimize = optimize,
         .single_threaded = true,
     });
 
@@ -28,7 +28,7 @@ pub fn build(b: *std.build) void {
         .name = "combined_ops",
         .root_source_file = .{ .path = "src/combined_ops.zig" },
         .target = target,
-        .optimize = .ReleaseFast,
+        .optimize = optimize,
         .single_threaded = true,
     });
 
@@ -38,7 +38,7 @@ pub fn build(b: *std.build) void {
         .name = "run_hiff",
         .root_source_file = .{ .path = "src/run_hiff.zig" },
         .target = target,
-        .optimize = .ReleaseFast,
+        .optimize = optimize,
         .single_threaded = true,
     });
 
