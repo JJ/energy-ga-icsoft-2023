@@ -28,7 +28,7 @@ pub fn build(b: *std.build) void {
         .name = "bool_chromosome_generator",
         .root_source_file = .{ .path = "src/bool_chromosome_generator.zig" },
         .target = target,
-        .optimize = optimize,
+        .optimize = .ReleaseFast,
         .single_threaded = true,
     });
     boolExe.stack_size = 40000 * 4096;
