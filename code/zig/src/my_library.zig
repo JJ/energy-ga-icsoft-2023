@@ -1,5 +1,6 @@
 const std = @import("std");
 pub const generate = @import("generate.zig").generate;
+pub const boolGenerate = @import("bool_generate.zig").boolGenerate;
 pub const ourRng = @import("utils.zig").ourRng;
 pub const crossover = @import("crossover.zig").crossover;
 pub const mutation = @import("mutation.zig").mutation;

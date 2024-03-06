@@ -24,6 +24,16 @@ pub fn build(b: *std.build) void {
 
     b.installArtifact(exe);
 
+    const boolExe = b.addExecutable(.{
+        .name = "bool_chromosome_generator",
+        .root_source_file = .{ .path = "src/bool_chromosome_generator.zig" },
+        .target = target,
+        .optimize = .ReleaseFast,
+        .single_threaded = true,
+    });
+
+    b.installArtifact(boolExe);
+
     const combined_ops = b.addExecutable(.{
         .name = "combined_ops",
         .root_source_file = .{ .path = "src/combined_ops.zig" },
