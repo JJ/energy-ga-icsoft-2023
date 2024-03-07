@@ -75,9 +75,11 @@ ggplot(generate.chromosomes.zig, aes(x=seconds, y=PKG, color="Default", shape=si
   geom_point(data=generate.chromosomes.fast.fba, aes(x=seconds, y=PKG, color="ReleaseFastFBA", shape=size)) +
   scale_color_manual(values=c("black", "red", "blue", "green")) +
   labs(title="Running time and PKG energy consumption generating 40K chromosomes",
-       x="Chromosome size", y="PKG (Joules)") +
+       x="Running time", y="PKG (Joules)") +
   theme_minimal()
 @
+
+This figure shows the dramatic change in energy consumption (as well as performance) that can be obtained just by changing compiling and programming options. Using a fixed buffer alongside the {\sf ReleaseFast} option implies a 95\% reduction in the energy consumed\footnote{We should take into account that generating chromosomes uses allocation heavily, so this is the kind of operation that would be the most impacted}. Even with the default compilation options, applying changes in the allocator and the data structure used reduces by 50\% energy used. The impact on running time, although not the focus of this paper, is also significant.
 
 The first experiment will perform 40K crossover + mutation + onemax operations on chromosomes of size 512, 1024 and 2048.
 
