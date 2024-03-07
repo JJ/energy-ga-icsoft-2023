@@ -34,6 +34,16 @@ pub fn build(b: *std.build) void {
     boolExe.stack_size = 40000 * 4096;
     b.installArtifact(boolExe);
 
+    const boolOps = b.addExecutable(.{
+        .name = "bool_combined_ops",
+        .root_source_file = .{ .path = "src/bool_combined_ops.zig" },
+        .target = target,
+        .optimize = optimize,
+        .single_threaded = true,
+    });
+    boolOps.stack_size = 80000 * 4096;
+    b.installArtifact(boolOps);
+
     const combined_ops = b.addExecutable(.{
         .name = "combined_ops",
         .root_source_file = .{ .path = "src/combined_ops.zig" },
