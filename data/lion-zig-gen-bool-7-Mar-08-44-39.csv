@@ -1,0 +1,32 @@
+Platform,size,GPU,PKG,seconds
+lion-zig-gen-bool, 512, 18.65, 48.65, 0.88755342
+lion-zig-gen-bool, 512, 18.68, 48.56, 0.88392293
+lion-zig-gen-bool, 512, 18.31, 44.96, 0.87533509
+lion-zig-gen-bool, 512, 18.34, 44.07, 0.85886602
+lion-zig-gen-bool, 512, 17.27, 40.57, 0.83413062
+lion-zig-gen-bool, 512, 17.50, 40.58, 0.83232860
+lion-zig-gen-bool, 512, 18.53, 41.87, 0.86857339
+lion-zig-gen-bool, 512, 18.52, 42.86, 0.86815484
+lion-zig-gen-bool, 512, 18.67, 42.54, 0.85301028
+lion-zig-gen-bool, 512, 17.43, 40.68, 0.83310221
+lion-zig-gen-bool, 512, 17.33, 40.20, 0.84607219
+lion-zig-gen-bool, 512, 17.51, 42.92, 0.84041020
+lion-zig-gen-bool, 512, 18.52, 44.70, 0.86553433
+lion-zig-gen-bool, 512, 17.36, 41.19, 0.81304581
+lion-zig-gen-bool, 512, 17.38, 40.50, 0.83561998
+lion-zig-gen-bool, 1024, 33.61, 81.03, 1.63855935
+lion-zig-gen-bool, 1024, 34.70, 80.78, 1.70025722
+lion-zig-gen-bool, 1024, 33.79, 82.66, 1.64304416
+lion-zig-gen-bool, 1024, 32.65, 76.55, 1.59669879
+lion-zig-gen-bool, 1024, 34.42, 87.80, 1.66111213
+lion-zig-gen-bool, 1024, 34.21, 84.87, 1.65816982
+lion-zig-gen-bool, 1024, 33.23, 79.42, 1.62939098
+lion-zig-gen-bool, 1024, 33.05, 79.58, 1.62868778
+lion-zig-gen-bool, 1024, 33.35, 80.25, 1.64804917
+lion-zig-gen-bool, 1024, 32.43, 76.52, 1.59094984
+lion-zig-gen-bool, 1024, 33.52, 79.25, 1.63267170
+lion-zig-gen-bool, 1024, 32.61, 75.58, 1.59100800
+lion-zig-gen-bool, 1024, 33.75, 80.12, 1.63770127
+lion-zig-gen-bool, 1024, 33.45, 80.12, 1.63895915
+lion-zig-gen-bool, 1024, 34.69, 84.23, 1.68530142
+
