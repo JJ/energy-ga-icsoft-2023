@@ -32,26 +32,51 @@ One of the concerns in modern evolutionary computing is reducing the amount of e
 
 In \cite{DBLP:conf/icsoft/GuervosGC23} the main factor under study was the different interpreters used in a high-level language, JavaScript. In the case of low-level languages like {\sf zig}, a language that emphasizes safety and maintainability \cite{friesen2023designing}, there is a single compiler, but there are several choices to be made, even if the defaults should provide enough performance and energy efficiency. Yet, in general, developers, and even more so scientific developers, are unaware of the energy impact of their algorithm implementations \cite{7155416}, not to mention techniques available for their reduction \cite{longo2019reducing}.
 
-
+In this paper we will work on a generic evolutionary algorithm workload, and see what the impact of different choices will have on its energy consumption. With this, we will try to find some best practices that will help practitioners implement evolutionary algorithms in {\sf zig} or other low-level languages.
 
 \section{Methodology and results}
 \label{sec:res}
 
-All experiments for this paper have been carried out in a Linux machine {\tt 5.15.0-94-generic \#104~20.04.1-Ubuntu SMP} using AMD Ryzen 9 3950X 16-Core Processor. These are the versions used for every tool and language:\begin{itemize}
-\item {\sf pinpoint} does not have a version, but it has been compiled from commit {\tt 1578db07b1ee30318966d7a2097ee1bb219a9dc8}, October 26 2023.
-\item {\sf bun} uses version 1.0.7.\footnote{Please note that at the time of writing this, many other versions have been published; we have used this one to be able to compare with previous papers. These same papers show that its performance and energy consumption have important improvements, so in case of close calls, we would recommend retaking measurements at the time of running your experiments}
-\item {\sf zig} uses version 0.11.0. This version, released by August 3, 2023, is the last one at the time of writing this paper.
-\item Kotlin version string is {\tt 1.9.22-release-704}; this includes the JVM version, OpenJDK 11.0.21.
+The experiment setup will match the one used in \cite{DBLP:conf/icsoft/GuervosGC23}, using the same tools for energy profiling ({\sf pinpoint}) as well as Perl scripts to run the experiments and process the results.
+All experiments for this paper have been carried out in a Linux machine {\tt 5.15.0-94-generic \#104~20.04.1-Ubuntu SMP} using AMD Ryzen 9 3950X 16-Core Processor. These are the versions used for every tool and language, with {\sf zig}  version 0.11.0, released by August 3, 2023, which the last stable one at the time of writing this paper. The Perl scripts generate CSV files that are then processed and plotted using R embedded in the source code of this paper. All code, data and source for this paper are available at \url{https://github.com/JJ/energy-ga-icsoft2023} under a free license.
+
+We will be examining choices in three different areas\begin{itemize}
+\item By default, {\sf zig} adds debug information to the resulting binary, without performing any kind of optimization. We will test the impact of using the {\sf ReleaseFast} option when building binaries.
+\item The first version used strings for representing chromosomes. We will test instead arrays of boolean values, which is  primitive type too.
+\item Unlike other languages, {\sf zig} provides different memory allocators, which can be chosen by the developer. By default, a page allocator is used, but there is the possibility of using a fixed buffer size allocator.
 \end{itemize}
 
-All programs are run through a Perl script that captures and processes output, generating CSV data files that are committed to this repository, and available under a free license. Instructions to compile and run it are also included in the repository; in general, all that is needed to reproduce the results of this paper. All the code is automatically tested and tagged so that the exact version used in this paper can be retrieved.
+We will first generate 40000 chromosomes of size 512, 1024 and 2048, and measure the energy consumption and running time of this operation. Not all combinations of the three techniques above could be tested, we show the results in Figure \ref{fig:lion.zig.setup}, along with the baseline that was compiled using default settings, character strings and page allocator. The other choices tested are: Built with {\sf ReleaseFast} option (tagged "ReleaseFast"), built in the same way and using a Fixed Buffer Allocator ("ReleaseFastFBA"), built with default options, using Boolean arrays as well as the Fixed Buffer Allocator ("Bool")\footnote{This combination proved difficult in practice, crashing the program for size 2048; it did not work with the {\sf ReleaseFast} option either}.
 
-<<lion.setup, echo=F, message=F, fig.pos="h!tb", fig.height=4, fig.cap="Average running time and PKG energy consumption generating 40K chromosomes for the three languages (represented with different colors); dot size is proportional to the logarithm of the chromosome size.">>=
+<<lion.zig.setup, echo=F, message=F, fig.pos="h!tb", fig.height=3, fig.cap="Average running time and PKG energy consumption generating 40K chromosomes for the different techniques used (represented with different colors); dot shape represents the chromosome size.">>=
 library(dplyr)
 library(ggplot2)
 
 generate.chromosomes.zig <- read.csv("../data/lion-zig-gen-23-Feb-12-03-41.csv")
 generate.chromosomes.zig %>% group_by( size ) %>% summarise( mean.pkg = mean( PKG ), mean.seconds = mean( seconds ) ) -> generate.chromosomes.zig.avg
+generate.chromosomes.zig$size <- as.factor(generate.chromosomes.zig$size)
+
+generate.chromosomes.fast <- read.csv("../data/lion-zig-gen-release-fast-6-Mar-09-35-05.csv")
+generate.chromosomes.fast %>% group_by( size ) %>% summarise( mean.pkg = mean( PKG ), mean.seconds = mean( seconds ) ) -> generate.chromosomes.fast.avg
+generate.chromosomes.fast$size <- as.factor(generate.chromosomes.fast$size)
+
+generate.chromosomes.bool <- read.csv("../data/lion-zig-gen-bool-7-Mar-08-44-39.csv")
+generate.chromosomes.bool %>% group_by( size ) %>% summarise( mean.pkg = mean( PKG ), mean.seconds = mean( seconds ) ) -> generate.chromosomes.bool.avg
+generate.chromosomes.bool$size <- as.factor(generate.chromosomes.bool$size)
+
+generate.chromosomes.fast.fba <- read.csv("../data/lion-zig-gen-release-fast-fba-6-Mar-09-53-10.csv")
+generate.chromosomes.fast.fba %>% group_by( size ) %>% summarise( mean.pkg = mean( PKG ), mean.seconds = mean( seconds ) ) -> generate.chromosomes.fast.fba.avg
+generate.chromosomes.fast.fba$size <- as.factor(generate.chromosomes.fast.fba$size)
+
+ggplot(generate.chromosomes.zig, aes(x=seconds, y=PKG, color="Default", shape=size)) +
+  geom_point() +
+  geom_point(data=generate.chromosomes.fast, aes(x=seconds, y=PKG, color="ReleaseFast", shape=size)) +
+  geom_point(data=generate.chromosomes.bool, aes(x=seconds, y=PKG, color="Bool", shape=size)) +
+  geom_point(data=generate.chromosomes.fast.fba, aes(x=seconds, y=PKG, color="ReleaseFastFBA", shape=size)) +
+  scale_color_manual(values=c("black", "red", "blue", "green")) +
+  labs(title="Running time and PKG energy consumption generating 40K chromosomes",
+       x="Chromosome size", y="PKG (Joules)") +
+  theme_minimal()
 @
 
 The first experiment will perform 40K crossover + mutation + onemax operations on chromosomes of size 512, 1024 and 2048.
