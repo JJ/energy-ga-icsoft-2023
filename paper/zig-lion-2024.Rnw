@@ -1,0 +1,177 @@
+\documentclass[runningheads]{llncs}
+
+\usepackage[T1]{fontenc}
+\usepackage{graphicx}
+\usepackage{hyperref}
+\usepackage{color}
+\renewcommand\UrlFont{\color{blue}\rmfamily}
+
+\newcommand{\pinp}{\texttt{pinpoint}}
+\newcommand{\lik}{\texttt{likwid}}
+
+\begin{document}
+\title{Minimizing evolutionary algorithms energy consumption in the low-level language Zig}
+
+\author{
+  Juan J. Merelo-Guervós\inst{1}\orcidID{0000-0002-1385-9741}
+}
+\institute{Department of Computer Engineering, Automatics and Robotics, University of Granada, Granada, Spain}
+
+
+\maketitle
+
+\begin{abstract}
+
+\keywords{Green computing, metaheuristics, energy-aware computing, evolutionary algorithms, zig}
+\end{abstract}
+
+\section{\uppercase{Introduction}}
+\label{sec:introduction}
+
+
+\section{State of the art}
+\label{sec:soa}
+
+
+\section{Methodology and results}
+\label{sec:res}
+
+All experiments for this paper have been carried out in a Linux machine {\tt 5.15.0-94-generic \#104~20.04.1-Ubuntu SMP} using AMD Ryzen 9 3950X 16-Core Processor. These are the versions used for every tool and language:\begin{itemize}
+\item {\sf pinpoint} does not have a version, but it has been compiled from commit {\tt 1578db07b1ee30318966d7a2097ee1bb219a9dc8}, October 26 2023.
+\item {\sf bun} uses version 1.0.7.\footnote{Please note that at the time of writing this, many other versions have been published; we have used this one to be able to compare with previous papers. These same papers show that its performance and energy consumption have important improvements, so in case of close calls, we would recommend retaking measurements at the time of running your experiments}
+\item {\sf zig} uses version 0.11.0. This version, released by August 3, 2023, is the last one at the time of writing this paper.
+\item Kotlin version string is {\tt 1.9.22-release-704}; this includes the JVM version, OpenJDK 11.0.21.
+\end{itemize}
+
+All programs are run through a Perl script that captures and processes output, generating CSV data files that are committed to this repository, and available under a free license. Instructions to compile and run it are also included in the repository; in general, all that is needed to reproduce the results of this paper. All the code is automatically tested and tagged so that the exact version used in this paper can be retrieved.
+
+<<lion.setup, echo=F, message=F, fig.pos="h!tb", fig.height=4, fig.cap="Average running time and PKG energy consumption generating 40K chromosomes for the three languages (represented with different colors); dot size is proportional to the logarithm of the chromosome size.">>=
+library(dplyr)
+library(ggplot2)
+
+generate.chromosomes.zig <- read.csv("../data/lion-zig-gen-23-Feb-12-03-41.csv")
+generate.chromosomes.zig %>% group_by( size ) %>% summarise( mean.pkg = mean( PKG ), mean.seconds = mean( seconds ) ) -> generate.chromosomes.zig.avg
+@
+
+The first experiment will perform 40K crossover + mutation + onemax operations on chromosomes of size 512, 1024 and 2048.
+
+<<lion.combined.ops, echo=F, message=F, fig.pos="h!tb", fig.height=4, fig.cap="Running time and PKG energy consumption processing 40K chromosomes via crossover, mutation and ONEMAX for the three languages (represented with different colors); dot shape represents the chromosome size.">>=
+
+combined.ops.zig <- read.csv("../data/lion-zig-ops-24-Feb-20-08-58.csv")
+generate.zig.avgs.seconds <- c(rep( generate.chromosomes.zig.avg$mean.seconds[1], 15),
+                               rep( generate.chromosomes.zig.avg$mean.seconds[2], 15),
+                               rep( generate.chromosomes.zig.avg$mean.seconds[3], 15))
+combined.ops.zig$diff.seconds <- combined.ops.zig$seconds - generate.zig.avgs.seconds
+generate.zig.avgs.pkg <- c(rep( generate.chromosomes.zig.avg$mean.pkg[1], 15),
+                            rep( generate.chromosomes.zig.avg$mean.pkg[2], 15),
+                            rep( generate.chromosomes.zig.avg$mean.pkg[3], 15))
+combined.ops.zig$diff.PKG <- combined.ops.zig$PKG - generate.zig.avgs.pkg
+combined.ops.zig$size <- as.factor(combined.ops.zig$size)
+combined.ops.zig %>% group_by( size ) %>% summarise( mean.pkg = mean( diff.PKG ), sd.pkg = sd( diff.PKG), mean.seconds = mean( diff.seconds ) ) -> combined.ops.zig.avg
+
+combined.ops.kotlin <- read.csv("../data/lion-kt-ops-25-Feb-13-34-30.csv")
+generate.kotlin.avgs.seconds <- c(rep( generate.chromosomes.kotlin.avg$mean.seconds[1], 15),
+                               rep( generate.chromosomes.kotlin.avg$mean.seconds[2], 15),
+                               rep( generate.chromosomes.kotlin.avg$mean.seconds[3], 15))
+combined.ops.kotlin$diff.seconds <- combined.ops.kotlin$seconds - generate.kotlin.avgs.seconds
+generate.kotlin.avgs.pkg <- c(rep( generate.chromosomes.kotlin.avg$mean.pkg[1], 15),
+                            rep( generate.chromosomes.kotlin.avg$mean.pkg[2], 15),
+                            rep( generate.chromosomes.kotlin.avg$mean.pkg[3], 15))
+combined.ops.kotlin$diff.PKG <- combined.ops.kotlin$PKG - generate.kotlin.avgs.pkg
+combined.ops.kotlin$size <- as.factor(combined.ops.kotlin$size)
+
+combined.ops.kotlin %>% group_by( size ) %>% summarise( mean.pkg = mean( diff.PKG ), sd.pkg = sd(diff.PKG), mean.seconds = mean( diff.seconds ) ) -> combined.ops.kotlin.avg
+
+ggplot(combined.ops.bun, aes(x=diff.seconds, y=diff.PKG, shape=size, color="bun")) +
+  geom_point() +
+  geom_point(data=combined.ops.zig, aes(x=diff.seconds, y=diff.PKG, shape=size, color="zig")) +
+  geom_point(data=combined.ops.kotlin, aes(x=diff.seconds, y=diff.PKG, shape=size, color="kotlin"))
+  
+@
+
+<<lion.combined.ops.joules, echo=F, message=F>>=
+library(kableExtra)
+
+
+combined.ops.zig.avg$language <- "zig"
+combined.ops.kotlin.avg$language <- "kotlin"
+
+combined.ops <- rbind(combined.ops.bun.avg, combined.ops.zig.avg, combined.ops.kotlin.avg)
+combined.ops$ops.joules <- 40000/ combined.ops$mean.pkg 
+combined.ops$sd.ops.joules <- 40000/ combined.ops$sd.pkg
+combined.ops %>% select( language, size, mean.pkg, sd.pkg, ops.joules ) %>% kable( digits = 2, col.names = c("Language","Size","PKG average","PKG SD", "Ops/Joule average"), caption = "Average operations per Joule in the combined operations experiment for the three languages." )
+@
+
+
+<<lion.hiff, echo=F, message=F, fig.pos="h!tb", fig.height=4, fig.cap="Running time and PKG energy consumption computing the HIFF fitness function for 40K chromosomes for the three languages (represented with different colors); dot shape represents the chromosome size.">>=
+
+hiff.zig <- read.csv("../data/lion-zig-hiff-27-Feb-13-04-04.csv")
+hiff.zig %>% mutate( delta.pkg = PKG - generate.chromosomes.zig.avg$mean.pkg[ match( size, generate.chromosomes.zig.avg$size ) ], delta.seconds = seconds - generate.chromosomes.zig.avg$mean.seconds[ match( size, generate.chromosomes.zig.avg$size ) ] ) -> hiff.zig.delta
+hiff.zig.delta$size <- as.factor(hiff.zig.delta$size)
+
+hiff.kotlin <- read.csv("../data/lion-kt-hiff-27-Feb-09-41-42.csv")
+hiff.kotlin %>% mutate( delta.pkg = PKG - generate.chromosomes.kotlin.avg$mean.pkg[ match( size, generate.chromosomes.kotlin.avg$size ) ], delta.seconds = seconds - generate.chromosomes.kotlin.avg$mean.seconds[ match( size, generate.chromosomes.kotlin.avg$size ) ] ) -> hiff.kotlin.delta
+hiff.kotlin.delta$size <- as.factor(hiff.kotlin.delta$size)
+
+ggplot(hiff.bun.delta, aes(x=delta.seconds, y=delta.pkg, shape=size,color="bun")) +
+  geom_point() + geom_point(data=hiff.zig.delta, aes(x=delta.seconds, y=delta.pkg, shape=size, color="zig")) + geom_point(data=hiff.kotlin.delta, aes(x=delta.seconds, y=delta.pkg, shape=size, color="kotlin")) +
+  labs(title="HIFF", x="Seconds", y="PKG") +
+  theme_minimal()
+
+@
+
+
+<<lion.hiff.boxplot, echo=F, message=F, warning=F, fig.pos="h!tb", fig.height=4, fig.cap="Boxplot of the energy consumption of the HIFF fitness function for 40K chromosomes for Kotlin and {\\protect\\sf zig}">>=
+kotlin.zig.hiff <- data.frame(
+  language = c(rep("kotlin",nrow(hiff.kotlin.delta)), rep("zig",nrow(hiff.zig.delta))),
+  delta.pkg = c(hiff.kotlin.delta$delta.pkg, hiff.zig.delta$delta.pkg),
+  size=as.factor(c(hiff.kotlin.delta$size, hiff.zig.delta$size)) 
+  )
+ggplot(kotlin.zig.hiff, aes(x=size, y=delta.pkg, fill=language)) + geom_boxplot() + labs(title="HIFF", x="Size", y="PKG") + theme_minimal()
+# wilcox.test(delta.pkg ~ language, data=kotlin.zig.hiff[kotlin.zig.hiff$size=="512",])
+# wilcox.test(delta.pkg ~ language, data=kotlin.zig.hiff[kotlin.zig.hiff$size=="1024",])
+# wilcox.test(delta.pkg ~ language, data=kotlin.zig.hiff[kotlin.zig.hiff$size=="2048",])
+@
+
+
+<<lion.hiff.joules, echo=F, message=F>>=
+library(kableExtra)
+hiff.bun.delta %>% group_by( size ) %>% summarise( mean.pkg = mean( delta.pkg ), sd.pkg = sd( delta.pkg), mean.seconds = mean( delta.seconds ) ) -> hiff.bun.avg
+hiff.zig.delta %>% group_by( size ) %>% summarise( mean.pkg = mean( delta.pkg ), sd.pkg = sd( delta.pkg), mean.seconds = mean( delta.seconds ) ) -> hiff.zig.avg
+hiff.kotlin.delta %>% group_by( size ) %>% summarise( mean.pkg = mean( delta.pkg ), sd.pkg = sd( delta.pkg), mean.seconds = mean( delta.seconds ) ) -> hiff.kotlin.avg
+
+hiff.bun.avg$language <- "bun"
+hiff.zig.avg$language <- "zig"
+hiff.kotlin.avg$language <- "kotlin"
+
+hiff <- rbind(hiff.bun.avg, hiff.zig.avg, hiff.kotlin.avg)
+hiff$ops.joules <- 40000/ hiff$mean.pkg 
+hiff$sd.ops.joules <- 40000/ hiff$sd.pkg
+hiff %>% select( language, size, mean.pkg, sd.pkg, ops.joules ) %>% kable( digits = 2, col.names = c("Language","Size","PKG average","PKG SD", "Ops/Joule average"), caption = "Average operations per Joule in the HIFF experiment for the three languages." )
+@
+
+What we see in Table \ref{tab:lion.hiff.joules} is the number of operations per Joule all three languages are able to perform.
+
+\section{Discussion, conclusion and future work}
+\label{sec:conclusions}
+
+
+\section*{Acknowledgements}
+
+This work is supported by the Ministerio espa\~{n}ol de Econom\'{\i}a y
+Competitividad (Spanish Ministry of Competitivity and Economy) under project
+PID2020-115570GB-C22 (DemocratAI::UGR).
+
+We are also very grateful to the {\sf zig} community, without which programming these operations in that language would have been impossible.
+
+\section*{Data availability}
+
+The source of this paper as well as the data and whole writing history is available from \url{https://github.com/JJ/energy-ga-icsoft-2023} under a GPL license.
+
+\bibliographystyle{splncs04}
+
+\bibliography{energy,javascript,geneura}
+
+
+\end{document}
+
