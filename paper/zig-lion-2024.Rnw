@@ -25,12 +25,13 @@ Managing energy resources in scientific computing implies needing to be aware of
 \keywords{Green computing, metaheuristics, energy-aware computing, evolutionary algorithms, zig}
 \end{abstract}
 
-\section{\uppercase{Introduction}}
+\section{Introduction and state of the art}
 \label{sec:introduction}
 
+One of the concerns in modern evolutionary computing is reducing the amount of energy spent in experiments, trying to make nature-inspired computing more nature-friendly \cite{fernandez2019}. This involves developing a methodology to measure energy spent, as well as identifying the EC operations that consume the most energy. In \cite{DBLP:conf/icsoft/GuervosGC23} we settled on a language and OS-independent set of tools, but also followed \cite{abdelhafez2019component} in choosing the set of operations under measure: mutation, crossover and a simple fitness evaluation, ONEMAX.
 
-\section{State of the art}
-\label{sec:soa}
+In \cite{DBLP:conf/icsoft/GuervosGC23} the main factor under study was the different interpreters used in a high-level language, JavaScript. In the case of low-level languages like {\sf zig}, a language that emphasizes safety and maintainability \cite{friesen2023designing}, there is a single compiler, but there are several choices to be made, even if the defaults should provide enough performance and energy efficiency. Yet, in general, developers, and even more so scientific developers, are unaware of the energy impact of their algorithm implementations \cite{7155416}, not to mention techniques available for their reduction \cite{longo2019reducing}.
+
 
 
 \section{Methodology and results}
