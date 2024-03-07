@@ -21,7 +21,7 @@
 \maketitle
 
 \begin{abstract}
-
+Managing energy resources in scientific computing implies needing to be aware of a wide range of engineering techniques that, when applied, are able to minimize the energy footprint of experiments. In the case of evolutionary computation, we are talking about a specialized workload that includes generation of chromosomes and operations that change parts of them or access and operate on them to obtain a floating point number. In a low level language such as Zig, we will show how different choices will affect the energy consumption of an experiment.
 \keywords{Green computing, metaheuristics, energy-aware computing, evolutionary algorithms, zig}
 \end{abstract}
 
@@ -156,15 +156,13 @@ What we see in Table \ref{tab:lion.hiff.joules} is the number of operations per 
 \label{sec:conclusions}
 
 
-\section*{Acknowledgements}
+\section*{Acknowledgements and data availability}
 
 This work is supported by the Ministerio espa\~{n}ol de Econom\'{\i}a y
 Competitividad (Spanish Ministry of Competitivity and Economy) under project
 PID2020-115570GB-C22 (DemocratAI::UGR).
 
 We are also very grateful to the {\sf zig} community, without which programming these operations in that language would have been impossible.
-
-\section*{Data availability}
 
 The source of this paper as well as the data and whole writing history is available from \url{https://github.com/JJ/energy-ga-icsoft-2023} under a GPL license.
 
