@@ -40,9 +40,11 @@ In this paper we will work on a generic evolutionary algorithm workload, and see
 The experiment setup will match the one used in \cite{DBLP:conf/icsoft/GuervosGC23}, using the same tools for energy profiling ({\sf pinpoint}) as well as Perl scripts to run the experiments and process the results.
 All experiments for this paper have been carried out in a Linux machine {\tt 5.15.0-94-generic \#104~20.04.1-Ubuntu SMP} using AMD Ryzen 9 3950X 16-Core Processor. These are the versions used for every tool and language, with {\sf zig}  version 0.11.0, released by August 3, 2023, which the last stable one at the time of writing this paper. The Perl scripts generate CSV files that are then processed and plotted using R embedded in the source code of this paper. All code, data and source for this paper are available at \url{https://github.com/JJ/energy-ga-icsoft2023} under a free license.
 
+There are several units whose consumption can be measured using {\sf pinpoint} via the RAPL interface; since the use of GPU is negligible in these examples, only memory and CPUs will be measured. Together, they are called the {\em package} (alongside with caches and memory controllers); this is usually represented by the acronym {\sf PKG}.
+
 We will be examining choices in three different areas\begin{itemize}
 \item By default, {\sf zig} adds debug information to the resulting binary, without performing any kind of optimization. We will test the impact of using the {\sf ReleaseFast} option when building binaries.
-\item The first version used strings for representing chromosomes. We will test instead arrays of boolean values, which is  primitive type too.
+\item The first version used strings for representing chromosomes. We will test instead arrays of Boolean values, which is  primitive type too.
 \item Unlike other languages, {\sf zig} provides different memory allocators, which can be chosen by the developer. By default, a page allocator is used, but there is the possibility of using a fixed buffer size allocator.
 \end{itemize}
 
