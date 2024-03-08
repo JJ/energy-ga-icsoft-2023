@@ -48,7 +48,7 @@ We will be examining choices in three different areas\begin{itemize}
 \item Unlike other languages, {\sf zig} provides different memory allocators, which can be chosen by the developer. By default, a page allocator is used, but there is the possibility of using a fixed buffer size allocator.
 \end{itemize}
 
-We will first generate 40000 chromosomes of size 512, 1024 and 2048, and measure the energy consumption and running time of this operation. Not all combinations of the three techniques above could be tested, we show the results in Figure \ref{fig:lion.zig.setup}, along with the baseline that was compiled using default settings, character strings and page allocator. The other choices tested are: Built with {\sf ReleaseFast} option (tagged "ReleaseFast"), built in the same way and using a Fixed Buffer Allocator ("ReleaseFastFBA"), built with default options, using Boolean arrays as well as the Fixed Buffer Allocator ("Bool")\footnote{This combination proved difficult in practice, crashing the program for size 2048; it did not work with the {\sf ReleaseFast} option either}.
+We will first generate 40000 chromosomes of size 512, 1024 and 2048, and measure the energy consumption and running time of this operation; every combination is run 15 times. Not all combinations of the three techniques above could be tested, we show the results in Figure \ref{fig:lion.zig.setup}, along with the baseline that was compiled using default settings, character strings and page allocator. The other choices tested are: Built with {\sf ReleaseFast} option (tagged "ReleaseFast"), built in the same way and using a Fixed Buffer Allocator ("ReleaseFastFBA"), built with default options, using Boolean arrays as well as the Fixed Buffer Allocator ("Bool")\footnote{This combination proved difficult in practice, crashing the program for size 2048; it did not work with the {\sf ReleaseFast} option either}.
 
 <<lion.zig.setup, echo=F, message=F, fig.pos="h!tb", fig.height=3, fig.cap="Average running time and PKG energy consumption generating 40K chromosomes for the different techniques used (represented with different colors); dot shape represents the chromosome size.">>=
 library(dplyr)
@@ -83,7 +83,7 @@ ggplot(generate.chromosomes.zig, aes(x=seconds, y=PKG, color="Default", shape=si
 
 This figure shows the dramatic change in energy consumption (as well as performance) that can be obtained just by changing compiling and programming options. Using a fixed buffer alongside the {\sf ReleaseFast} option implies a 95\% reduction in the energy consumed\footnote{We should take into account that generating chromosomes uses allocation heavily, so this is the kind of operation that would be the most impacted}. Even with the default compilation options, applying changes in the allocator and the data structure used reduces by 50\% energy used. The impact on running time, although not the focus of this paper, is also significant.
 
-The first experiment will perform 40K crossover + mutation + onemax operations on chromosomes of size 512, 1024 and 2048.
+We will now run an experiment that, after generating the 40K chromosomes, will perform crossover + mutation + onemax operations on chromosomes of size 512, 1024 and 2048.
 
 <<lion.combined.ops, echo=F, message=F, fig.pos="h!tb", fig.height=4, fig.cap="Running time and PKG energy consumption processing 40K chromosomes via crossover, mutation and ONEMAX for the three languages (represented with different colors); dot shape represents the chromosome size.">>=
 
