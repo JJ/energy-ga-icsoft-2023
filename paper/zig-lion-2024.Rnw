@@ -129,12 +129,11 @@ In this paper we have used different techniques that potentially could reduce th
 
 
 
-\small
 \section*{Acknowledgements and data availability}
 
 This work is supported by the Ministerio espa\~{n}ol de Econom\'{\i}a y
 Competitividad (Spanish Ministry of Competitivity and Economy) under project
-PID2020-115570GB-C22 (DemocratAI::UGR). We are also very grateful to the {\sf zig} community, without which programming these operations in that language would have been impossible. The source of this paper as well as the data and whole writing history is available from \url{https://github.com/JJ/energy-ga-icsoft-2023} under a GPL license.
+PID2020-115570GB-C22 (DemocratAI::UGR). We are also very grateful to the {\sf zig} community. Source and data available from \url{https://github.com/JJ/energy-ga-icsoft-2023} under a GPL license.
 
 \bibliographystyle{splncs04}
 
