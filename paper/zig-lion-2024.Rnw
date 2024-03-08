@@ -25,17 +25,11 @@ Managing energy resources in scientific computing implies needing to be aware of
 \keywords{Green computing, metaheuristics, energy-aware computing, evolutionary algorithms, zig}
 \end{abstract}
 
-\section{Introduction and state of the art}
-\label{sec:introduction}
-
 One of the concerns in modern evolutionary computing is reducing the amount of energy spent in experiments, trying to make nature-inspired computing more nature-friendly \cite{fernandez2019}. This involves developing a methodology to measure energy spent, as well as identifying the EC operations that consume the most energy. In \cite{DBLP:conf/icsoft/GuervosGC23} we settled on a language and OS-independent set of tools, but also followed \cite{abdelhafez2019component} in choosing the set of operations under measure: mutation, crossover and a simple fitness evaluation, ONEMAX.
 
 In \cite{DBLP:conf/icsoft/GuervosGC23} the main factor under study was the different interpreters used in a high-level language, JavaScript. In the case of low-level languages like {\sf zig}, a language that emphasizes safety and maintainability \cite{friesen2023designing}, there is a single compiler, but there are several choices to be made, even if the defaults should provide enough performance and energy efficiency. Yet, in general, developers, and even more so scientific developers, are unaware of the energy impact of their algorithm implementations \cite{7155416}, not to mention techniques available for their reduction \cite{longo2019reducing}.
 
 In this paper we will work on a generic evolutionary algorithm workload, and see what the impact of different choices will have on its energy consumption. With this, we will try to find some best practices that will help practitioners implement evolutionary algorithms in {\sf zig} or other low-level languages.
-
-\section{Methodology and results}
-\label{sec:res}
 
 The experiment setup will match the one used in \cite{DBLP:conf/icsoft/GuervosGC23}, using the same tools for energy profiling ({\sf pinpoint}) as well as Perl scripts to run the experiments and process the results.
 All experiments for this paper have been carried out in a Linux machine {\tt 5.15.0-94-generic \#104~20.04.1-Ubuntu SMP} using AMD Ryzen 9 3950X 16-Core Processor. These are the versions used for every tool and language, with {\sf zig}  version 0.11.0, released by August 3, 2023, which the last stable one at the time of writing this paper. The Perl scripts generate CSV files that are then processed and plotted using R embedded in the source code of this paper. All code, data and source for this paper are available at \url{https://github.com/JJ/energy-ga-icsoft2023} under a free license.
@@ -120,29 +114,27 @@ combined.ops.fast$diff.PKG <- combined.ops.fast$PKG - generate.fast.avgs.pkg
 combined.ops.fast$size <- as.factor(combined.ops.fast$size)
 combined.ops.fast %>% group_by( size ) %>% summarise( mean.pkg = mean( diff.PKG ), sd.pkg = sd( diff.PKG), mean.seconds = mean( diff.seconds ) ) -> combined.ops.fast.avg
 
-ggplot(combined.ops.zig, aes(x=size, y=PKG, color="Baseline"))+geom_boxplot(notch=T)+geom_point()+geom_boxplot(data=combined.ops.bool, aes(x=size, y=PKG, color="Boolean"))+geom_point(data=combined.ops.bool, aes(x=size, y=PKG, color="Boolean"))+geom_boxplot(data=combined.ops.fast, aes(x=size, y=PKG, color="ReleaseFast"))+geom_point(data=combined.ops.fast, aes(x=size, y=PKG, color="ReleaseFast"))+
+combined.ops <- rbind(combined.ops.zig, combined.ops.bool, combined.ops.fast)
+ggplot(combined.ops, aes(x=size, y=diff.PKG, color=Platform))+geom_boxplot(notch=T)+
   labs(title="Running time and PKG energy consumption, combined operations.",
        x="Chromosome size", y="PKG (Joules)") +
   theme_minimal()
 @
 
-This case is relatively similar to the one shown in Figure \ref{fig:lion.zig.setup}, even if now the majority of the operations are purely based in memory and CPU. Using a more efficient data structure, a Boolean array instead of a string, already reduces consumption almost by half; since in this case allocation is not used extensively, this proves that the majority of the improvement is due to the data structure and not the allocator used. We again obtain a 90\% reduction in energy consumption by generating the {\em fast} binary.
+This case is remarkably different to the one shown in Figure \ref{fig:lion.zig.setup}. For starters, the energy consumption is very low, one order of magnitude lower; regular genetic operations do not spend a lot of energy indeed, with most consumption focused on fitness functions. Even so, the fast compilation spends half the energy the other combinations. Remarkably, using a different data structure does not always imply a better energy profile; it does so only for the smaller size, 512 bits (which is anyway closer to usual chromosome sizes).
 
-\section{Discussion, conclusion and future work}
-\label{sec:conclusions}
-
+In this paper we have used different techniques that potentially could reduce the amount of energy spent by a genetic algorithm implemented using the low-level language {\sf zig}: testing different data structures, allocation policies and compilation options. The most dramatic reduction is achieved with the {\em fast} compilation policy, but additional improvements can be obtained by using adequate data structures and allocation policies. By using best practices in this area, {\sf zig} implementations can indeed be considered the {\em greener} ones among other high-level or Java Virtual Machine based languages. it remains as future work, however, how applying similar techniques when available will impact the energy consumption of other languages.
 
 
 
+
+
+\small
 \section*{Acknowledgements and data availability}
 
 This work is supported by the Ministerio espa\~{n}ol de Econom\'{\i}a y
 Competitividad (Spanish Ministry of Competitivity and Economy) under project
-PID2020-115570GB-C22 (DemocratAI::UGR).
-
-We are also very grateful to the {\sf zig} community, without which programming these operations in that language would have been impossible.
-
-The source of this paper as well as the data and whole writing history is available from \url{https://github.com/JJ/energy-ga-icsoft-2023} under a GPL license.
+PID2020-115570GB-C22 (DemocratAI::UGR). We are also very grateful to the {\sf zig} community, without which programming these operations in that language would have been impossible. The source of this paper as well as the data and whole writing history is available from \url{https://github.com/JJ/energy-ga-icsoft-2023} under a GPL license.
 
 \bibliographystyle{splncs04}
 
