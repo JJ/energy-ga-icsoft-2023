@@ -85,8 +85,7 @@ This figure shows the dramatic change in energy consumption (as well as performa
 
 We will now run an experiment that, after generating the 40K chromosomes, will perform crossover + mutation + onemax operations on chromosomes of size 512, 1024 and 2048.
 
-<<lion.combined.ops, echo=F, message=F, fig.pos="h!tb", fig.height=4, fig.cap="Running time and PKG energy consumption processing 40K chromosomes via crossover, mutation and ONEMAX for the three languages (represented with different colors); dot shape represents the chromosome size.">>=
-
+<<lion.zig.combined.ops, echo=F, message=F, fig.pos="h!tb", fig.height=3, fig.cap="Boxplot of PKG energy consumption processing 40K chromosomes via crossover, mutation and ONEMAX for different combinations of optimization techniques in Zig">>=
 combined.ops.zig <- read.csv("../data/lion-zig-ops-24-Feb-20-08-58.csv")
 generate.zig.avgs.seconds <- c(rep( generate.chromosomes.zig.avg$mean.seconds[1], 15),
                                rep( generate.chromosomes.zig.avg$mean.seconds[2], 15),
@@ -99,86 +98,35 @@ combined.ops.zig$diff.PKG <- combined.ops.zig$PKG - generate.zig.avgs.pkg
 combined.ops.zig$size <- as.factor(combined.ops.zig$size)
 combined.ops.zig %>% group_by( size ) %>% summarise( mean.pkg = mean( diff.PKG ), sd.pkg = sd( diff.PKG), mean.seconds = mean( diff.seconds ) ) -> combined.ops.zig.avg
 
-combined.ops.kotlin <- read.csv("../data/lion-kt-ops-25-Feb-13-34-30.csv")
-generate.kotlin.avgs.seconds <- c(rep( generate.chromosomes.kotlin.avg$mean.seconds[1], 15),
-                               rep( generate.chromosomes.kotlin.avg$mean.seconds[2], 15),
-                               rep( generate.chromosomes.kotlin.avg$mean.seconds[3], 15))
-combined.ops.kotlin$diff.seconds <- combined.ops.kotlin$seconds - generate.kotlin.avgs.seconds
-generate.kotlin.avgs.pkg <- c(rep( generate.chromosomes.kotlin.avg$mean.pkg[1], 15),
-                            rep( generate.chromosomes.kotlin.avg$mean.pkg[2], 15),
-                            rep( generate.chromosomes.kotlin.avg$mean.pkg[3], 15))
-combined.ops.kotlin$diff.PKG <- combined.ops.kotlin$PKG - generate.kotlin.avgs.pkg
-combined.ops.kotlin$size <- as.factor(combined.ops.kotlin$size)
+combined.ops.bool <- read.csv("../data/lion-zig-ops-bool-7-Mar-09-32-33.csv")
+generate.bool.avgs.seconds <- c(rep( generate.chromosomes.bool.avg$mean.seconds[1], 15),
+                               rep( generate.chromosomes.bool.avg$mean.seconds[2], 15))
+combined.ops.bool$diff.seconds <- combined.ops.bool$seconds - generate.bool.avgs.seconds
+generate.bool.avgs.pkg <- c(rep( generate.chromosomes.bool.avg$mean.pkg[1], 15),
+                            rep( generate.chromosomes.bool.avg$mean.pkg[2], 15))
+combined.ops.bool$diff.PKG <- combined.ops.bool$PKG - generate.bool.avgs.pkg
+combined.ops.bool$size <- as.factor(combined.ops.bool$size)
+combined.ops.bool %>% group_by( size ) %>% summarise( mean.pkg = mean( diff.PKG ), sd.pkg = sd( diff.PKG), mean.seconds = mean( diff.seconds ) ) -> combined.ops.bool.avg
 
-combined.ops.kotlin %>% group_by( size ) %>% summarise( mean.pkg = mean( diff.PKG ), sd.pkg = sd(diff.PKG), mean.seconds = mean( diff.seconds ) ) -> combined.ops.kotlin.avg
+combined.ops.fast <- read.csv("../data/lion-zig-ops-release-fast-6-Mar-09-36-11.csv")
+generate.fast.avgs.seconds <- c(rep( generate.chromosomes.fast.avg$mean.seconds[1], 15),
+                               rep( generate.chromosomes.fast.avg$mean.seconds[2], 15),
+                               rep( generate.chromosomes.fast.avg$mean.seconds[3], 15))
+combined.ops.fast$diff.seconds <- combined.ops.fast$seconds - generate.fast.avgs.seconds
+generate.fast.avgs.pkg <- c(rep( generate.chromosomes.fast.avg$mean.pkg[1], 15),
+                            rep( generate.chromosomes.fast.avg$mean.pkg[2], 15),
+                            rep( generate.chromosomes.fast.avg$mean.pkg[3], 15))
+combined.ops.fast$diff.PKG <- combined.ops.fast$PKG - generate.fast.avgs.pkg
+combined.ops.fast$size <- as.factor(combined.ops.fast$size)
+combined.ops.fast %>% group_by( size ) %>% summarise( mean.pkg = mean( diff.PKG ), sd.pkg = sd( diff.PKG), mean.seconds = mean( diff.seconds ) ) -> combined.ops.fast.avg
 
-ggplot(combined.ops.bun, aes(x=diff.seconds, y=diff.PKG, shape=size, color="bun")) +
-  geom_point() +
-  geom_point(data=combined.ops.zig, aes(x=diff.seconds, y=diff.PKG, shape=size, color="zig")) +
-  geom_point(data=combined.ops.kotlin, aes(x=diff.seconds, y=diff.PKG, shape=size, color="kotlin"))
-  
-@
-
-<<lion.combined.ops.joules, echo=F, message=F>>=
-library(kableExtra)
-
-
-combined.ops.zig.avg$language <- "zig"
-combined.ops.kotlin.avg$language <- "kotlin"
-
-combined.ops <- rbind(combined.ops.bun.avg, combined.ops.zig.avg, combined.ops.kotlin.avg)
-combined.ops$ops.joules <- 40000/ combined.ops$mean.pkg 
-combined.ops$sd.ops.joules <- 40000/ combined.ops$sd.pkg
-combined.ops %>% select( language, size, mean.pkg, sd.pkg, ops.joules ) %>% kable( digits = 2, col.names = c("Language","Size","PKG average","PKG SD", "Ops/Joule average"), caption = "Average operations per Joule in the combined operations experiment for the three languages." )
-@
-
-
-<<lion.hiff, echo=F, message=F, fig.pos="h!tb", fig.height=4, fig.cap="Running time and PKG energy consumption computing the HIFF fitness function for 40K chromosomes for the three languages (represented with different colors); dot shape represents the chromosome size.">>=
-
-hiff.zig <- read.csv("../data/lion-zig-hiff-27-Feb-13-04-04.csv")
-hiff.zig %>% mutate( delta.pkg = PKG - generate.chromosomes.zig.avg$mean.pkg[ match( size, generate.chromosomes.zig.avg$size ) ], delta.seconds = seconds - generate.chromosomes.zig.avg$mean.seconds[ match( size, generate.chromosomes.zig.avg$size ) ] ) -> hiff.zig.delta
-hiff.zig.delta$size <- as.factor(hiff.zig.delta$size)
-
-hiff.kotlin <- read.csv("../data/lion-kt-hiff-27-Feb-09-41-42.csv")
-hiff.kotlin %>% mutate( delta.pkg = PKG - generate.chromosomes.kotlin.avg$mean.pkg[ match( size, generate.chromosomes.kotlin.avg$size ) ], delta.seconds = seconds - generate.chromosomes.kotlin.avg$mean.seconds[ match( size, generate.chromosomes.kotlin.avg$size ) ] ) -> hiff.kotlin.delta
-hiff.kotlin.delta$size <- as.factor(hiff.kotlin.delta$size)
-
-ggplot(hiff.bun.delta, aes(x=delta.seconds, y=delta.pkg, shape=size,color="bun")) +
-  geom_point() + geom_point(data=hiff.zig.delta, aes(x=delta.seconds, y=delta.pkg, shape=size, color="zig")) + geom_point(data=hiff.kotlin.delta, aes(x=delta.seconds, y=delta.pkg, shape=size, color="kotlin")) +
-  labs(title="HIFF", x="Seconds", y="PKG") +
+ggplot(combined.ops.zig, aes(x=size, y=PKG, color="Baseline"))+geom_boxplot(notch=T)+geom_point()+geom_boxplot(data=combined.ops.bool, aes(x=size, y=PKG, color="Boolean"))+geom_point(data=combined.ops.bool, aes(x=size, y=PKG, color="Boolean"))+geom_boxplot(data=combined.ops.fast, aes(x=size, y=PKG, color="ReleaseFast"))+geom_point(data=combined.ops.fast, aes(x=size, y=PKG, color="ReleaseFast"))+
+  labs(title="Running time and PKG energy consumption, combined operations.",
+       x="Chromosome size", y="PKG (Joules)") +
   theme_minimal()
-
 @
 
 
-<<lion.hiff.boxplot, echo=F, message=F, warning=F, fig.pos="h!tb", fig.height=4, fig.cap="Boxplot of the energy consumption of the HIFF fitness function for 40K chromosomes for Kotlin and {\\protect\\sf zig}">>=
-kotlin.zig.hiff <- data.frame(
-  language = c(rep("kotlin",nrow(hiff.kotlin.delta)), rep("zig",nrow(hiff.zig.delta))),
-  delta.pkg = c(hiff.kotlin.delta$delta.pkg, hiff.zig.delta$delta.pkg),
-  size=as.factor(c(hiff.kotlin.delta$size, hiff.zig.delta$size)) 
-  )
-ggplot(kotlin.zig.hiff, aes(x=size, y=delta.pkg, fill=language)) + geom_boxplot() + labs(title="HIFF", x="Size", y="PKG") + theme_minimal()
-# wilcox.test(delta.pkg ~ language, data=kotlin.zig.hiff[kotlin.zig.hiff$size=="512",])
-# wilcox.test(delta.pkg ~ language, data=kotlin.zig.hiff[kotlin.zig.hiff$size=="1024",])
-# wilcox.test(delta.pkg ~ language, data=kotlin.zig.hiff[kotlin.zig.hiff$size=="2048",])
-@
-
-
-<<lion.hiff.joules, echo=F, message=F>>=
-library(kableExtra)
-hiff.bun.delta %>% group_by( size ) %>% summarise( mean.pkg = mean( delta.pkg ), sd.pkg = sd( delta.pkg), mean.seconds = mean( delta.seconds ) ) -> hiff.bun.avg
-hiff.zig.delta %>% group_by( size ) %>% summarise( mean.pkg = mean( delta.pkg ), sd.pkg = sd( delta.pkg), mean.seconds = mean( delta.seconds ) ) -> hiff.zig.avg
-hiff.kotlin.delta %>% group_by( size ) %>% summarise( mean.pkg = mean( delta.pkg ), sd.pkg = sd( delta.pkg), mean.seconds = mean( delta.seconds ) ) -> hiff.kotlin.avg
-
-hiff.bun.avg$language <- "bun"
-hiff.zig.avg$language <- "zig"
-hiff.kotlin.avg$language <- "kotlin"
-
-hiff <- rbind(hiff.bun.avg, hiff.zig.avg, hiff.kotlin.avg)
-hiff$ops.joules <- 40000/ hiff$mean.pkg 
-hiff$sd.ops.joules <- 40000/ hiff$sd.pkg
-hiff %>% select( language, size, mean.pkg, sd.pkg, ops.joules ) %>% kable( digits = 2, col.names = c("Language","Size","PKG average","PKG SD", "Ops/Joule average"), caption = "Average operations per Joule in the HIFF experiment for the three languages." )
-@
 
 What we see in Table \ref{tab:lion.hiff.joules} is the number of operations per Joule all three languages are able to perform.
 
