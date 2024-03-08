@@ -48,7 +48,7 @@ We will be examining choices in three different areas\begin{itemize}
 \item Unlike other languages, {\sf zig} provides different memory allocators, which can be chosen by the developer. By default, a page allocator is used, but there is the possibility of using a fixed buffer size allocator.
 \end{itemize}
 
-We will first generate 40000 chromosomes of size 512, 1024 and 2048, and measure the energy consumption and running time of this operation; every combination is run 15 times. Not all combinations of the three techniques above could be tested, we show the results in Figure \ref{fig:lion.zig.setup}, along with the baseline that was compiled using default settings, character strings and page allocator. The other choices tested are: Built with {\sf ReleaseFast} option (tagged "ReleaseFast"), built in the same way and using a Fixed Buffer Allocator ("ReleaseFastFBA"), built with default options, using Boolean arrays as well as the Fixed Buffer Allocator ("Bool")\footnote{This combination proved difficult in practice, crashing the program for size 2048; it did not work with the {\sf ReleaseFast} option either}.
+We will first generate 40000 chromosomes of size 512, 1024 and 2048, and measure the energy consumption and running time of this operation; every combination is run 15 times. Not all combinations of the three techniques above could be tested, we show the results in Figure \ref{fig:lion.zig.setup}, along with the baseline that was compiled using default settings, character strings and page allocator. The other choices tested are: Built with {\sf ReleaseFast} option (tagged "ReleaseFast"), built in the same way and using a Fixed Buffer Allocator ("ReleaseFastFBA"), built with default options, using Boolean arrays as well as the Fixed Buffer Allocator ("Boolean")\footnote{This combination proved difficult in practice, crashing the program for size 2048; it did not work with the {\sf ReleaseFast} option either}.
 
 <<lion.zig.setup, echo=F, message=F, fig.pos="h!tb", fig.height=3, fig.cap="Average running time and PKG energy consumption generating 40K chromosomes for the different techniques used (represented with different colors); dot shape represents the chromosome size.">>=
 library(dplyr)
@@ -70,10 +70,10 @@ generate.chromosomes.fast.fba <- read.csv("../data/lion-zig-gen-release-fast-fba
 generate.chromosomes.fast.fba %>% group_by( size ) %>% summarise( mean.pkg = mean( PKG ), mean.seconds = mean( seconds ) ) -> generate.chromosomes.fast.fba.avg
 generate.chromosomes.fast.fba$size <- as.factor(generate.chromosomes.fast.fba$size)
 
-ggplot(generate.chromosomes.zig, aes(x=seconds, y=PKG, color="Default", shape=size)) +
+ggplot(generate.chromosomes.zig, aes(x=seconds, y=PKG, color="Baseline", shape=size)) +
   geom_point() +
   geom_point(data=generate.chromosomes.fast, aes(x=seconds, y=PKG, color="ReleaseFast", shape=size)) +
-  geom_point(data=generate.chromosomes.bool, aes(x=seconds, y=PKG, color="Bool", shape=size)) +
+  geom_point(data=generate.chromosomes.bool, aes(x=seconds, y=PKG, color="Boolean", shape=size)) +
   geom_point(data=generate.chromosomes.fast.fba, aes(x=seconds, y=PKG, color="ReleaseFastFBA", shape=size)) +
   scale_color_manual(values=c("black", "red", "blue", "green")) +
   labs(title="Running time and PKG energy consumption generating 40K chromosomes",
@@ -81,9 +81,9 @@ ggplot(generate.chromosomes.zig, aes(x=seconds, y=PKG, color="Default", shape=si
   theme_minimal()
 @
 
-This figure shows the dramatic change in energy consumption (as well as performance) that can be obtained just by changing compiling and programming options. Using a fixed buffer alongside the {\sf ReleaseFast} option implies a 95\% reduction in the energy consumed\footnote{We should take into account that generating chromosomes uses allocation heavily, so this is the kind of operation that would be the most impacted}. Even with the default compilation options, applying changes in the allocator and the data structure used reduces by 50\% energy used. The impact on running time, although not the focus of this paper, is also significant.
+This Figure \ref{fig:lion.zig.setup} shows the dramatic change in energy consumption (as well as performance) that can be obtained just by changing compiling and programming options. Using a fixed buffer alongside the {\sf ReleaseFast} option implies a 95\% reduction in the energy consumed\footnote{We should take into account that generating chromosomes uses allocation heavily, so this is the kind of operation that would be the most impacted}. Even with the default compilation options, applying changes in the allocator and the data structure used reduces by 50\% energy used. The impact on running time, although not the focus of this paper, is also significant.
 
-We will now run an experiment that, after generating the 40K chromosomes, will perform crossover + mutation + onemax operations on chromosomes of size 512, 1024 and 2048.
+We will now run an experiment that, after generating the 40K chromosomes, will perform crossover + mutation + onemax operations on chromosomes of size 512, 1024 and 2048 \footnote{As indicated above, we could not make the Boolean bitstring along with fixed buffer allocation work for the biggest size}. In this case, the combination of fixed buffer allocator plus {\sf ReleaseFast} has been skipped, since beyond the initial generation of chromosomes, there is barely any allocation happening; in fact, just two temporary bitstrings during the crossover operation. Comparison for the other two combinations plus baseline are shown in Figure \ref{fig:lion.zig.combined.ops}.
 
 <<lion.zig.combined.ops, echo=F, message=F, fig.pos="h!tb", fig.height=3, fig.cap="Boxplot of PKG energy consumption processing 40K chromosomes via crossover, mutation and ONEMAX for different combinations of optimization techniques in Zig">>=
 combined.ops.zig <- read.csv("../data/lion-zig-ops-24-Feb-20-08-58.csv")
@@ -126,12 +126,12 @@ ggplot(combined.ops.zig, aes(x=size, y=PKG, color="Baseline"))+geom_boxplot(notc
   theme_minimal()
 @
 
-
-
-What we see in Table \ref{tab:lion.hiff.joules} is the number of operations per Joule all three languages are able to perform.
+This case is relatively similar to the one shown in Figure \ref{fig:lion.zig.setup}, even if now the majority of the operations are purely based in memory and CPU. Using a more efficient data structure, a Boolean array instead of a string, already reduces consumption almost by half; since in this case allocation is not used extensively, this proves that the majority of the improvement is due to the data structure and not the allocator used. We again obtain a 90\% reduction in energy consumption by generating the {\em fast} binary.
 
 \section{Discussion, conclusion and future work}
 \label{sec:conclusions}
+
+
 
 
 \section*{Acknowledgements and data availability}
