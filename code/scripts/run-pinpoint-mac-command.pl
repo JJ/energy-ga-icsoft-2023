@@ -14,15 +14,15 @@ my $ITERATIONS = 15;
 my ($mon,$day,$hh,$mm,$ss) = localtime() =~ /(\w+)\s+(\d+)\s+(\d+)\:(\d+)\:(\d+)/;
 my $suffix = "$day-$mon-$hh-$mm-$ss";
 
-open my $fh, ">", "data/pinpoint-mac-$script-$suffix.csv";
-say $fh "Tool,VM,size,RAM,ECPU,PCPU,seconds";
+open my $fh, ">", "../../data/$preffix-$suffix.csv";
+say $fh "Prefix,size,RAM,ECPU,PCPU,seconds";
 
-for my $l ( qw(1024 2048 4096) ) {
+for my $l ( qw(512 1024 2048) ) {
     my $total_seconds;
     my $successful = 0;
     my @results;
     do {
-      my $cli = "$command $l"
+      my $cli = "$command $l";
       say $cli;
       my $output = `pinpoint $cli 2>&1`;
       if ($output !~ /0.00\s+J\s+applem:Energy_Counters:PCPU/) {
@@ -34,7 +34,7 @@ for my $l ( qw(1024 2048 4096) ) {
         my $ecpu = $counters[15];
         my $pcpu = $counters[25];
 
-        say "$preffix, $c, $l , $dram ,$ecpu, $pcpu, $seconds";
+        say "$preffix, $l , $dram ,$ecpu, $pcpu, $seconds";
         push @results, [$dram, $ecpu, $pcpu, $seconds];
       }
     } while ( $successful < $ITERATIONS );
