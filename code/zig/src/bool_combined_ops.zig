@@ -7,9 +7,7 @@ const boolMutation = @import("bool_mutation.zig").boolMutation;
 const boolCrossover = @import("bool_crossover.zig").boolCrossover;
 
 pub fn main() !void {
-    var buffer: [160000000]u8 = undefined;
-    var fba = std.heap.FixedBufferAllocator.init(&buffer);
-    const allocator = fba.allocator();
+    const allocator = std.heap.page_allocator;
     var prng: std.rand.DefaultPrng = try ourRng();
 
     var argsIterator = try std.process.argsWithAllocator(allocator);
