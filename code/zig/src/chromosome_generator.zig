@@ -3,9 +3,7 @@ const generate = @import("generate.zig").generate;
 const ourRng = @import("utils.zig").ourRng;
 
 pub fn main() !void {
-    var buffer: [82000000]u8 = undefined;
-    var fba = std.heap.FixedBufferAllocator.init(&buffer);
-    const allocator = fba.allocator();
+    const allocator = std.heap.page_allocator;
     var prng: std.rand.DefaultPrng = try ourRng();
 
     var argsIterator = try std.process.argsWithAllocator(allocator);
