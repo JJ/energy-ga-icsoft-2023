@@ -3,17 +3,13 @@ const expect = std.testing.expect;
 const ourRng = @import("utils.zig").ourRng;
 
 // Crossover operator that combines two strings, cutting them in two random points, interchanging the result
-pub fn crossover(allocator: std.mem.Allocator, random: std.rand.Random, binary_string_1: []u8, binary_string_2: []u8) !void {
-    var binary_string_1Clone = try allocator.dupeZ(u8, binary_string_1);
-    defer allocator.free(binary_string_1Clone);
-    var binary_string_2Clone = try allocator.dupeZ(u8, binary_string_2);
-    defer allocator.free(binary_string_2Clone);
-
+pub fn crossover(random: std.rand.Random, binary_string_1: []u8, binary_string_2: []u8) void {
     var index = random.int(u32) % (binary_string_1.len - 1);
     var len = 1 + random.int(u32) % (binary_string_1.len - index - 1);
     for (index..index + len) |i| {
-        binary_string_2[i] = binary_string_1Clone[i];
-        binary_string_1[i] = binary_string_2Clone[i];
+        const bit: u8 = binary_string_2[i];
+        binary_string_2[i] = binary_string_1[i];
+        binary_string_1[i] = bit;
     }
 }
 
@@ -32,7 +28,7 @@ test "crossover" {
         var binary_string_2 = try allocator.dupeZ(u8, "0101010");
         defer allocator.free(binary_string_2);
 
-        try crossover(allocator, prng.random(), binary_string_1, binary_string_2);
+        crossover(prng.random(), binary_string_1, binary_string_2);
 
         try expect(copy_binary_string_1.len == binary_string_1.len);
         try expect(copy_binary_string_2.len == binary_string_2.len);
