@@ -22,7 +22,7 @@
 \maketitle
 
 \begin{abstract}
-Managing energy resources in scientific computing implies needing to be aware of a wide range of engineering techniques that, when applied, are able to minimize the energy footprint of experiments. In the case of evolutionary computation, we are talking about a specific workload that includes generation of chromosomes and operations that change parts of them or access and operate on them to obtain a fitness value. In a low level language such as Zig, we will show how different choices will affect the energy consumption of an experiment.
+The most fruitful way of making evolutionary algorithms spend the least amount of energy is to consider all possible programming techniques that could, theoretically, affect performance, and carry out experiments using EA workloads in different platforms, eventually choosing those techniques that yield the minimum amount of energy expenses. These techniques include choice of different data structures, as well as affecting compilation in such a way that energy footprint is reduced; they have to be replicated in different computing platforms, because these expenditures may be affected by all the layers of the operating system and runtime framework used. In this paper we will experiment with different data structures and code refactoring techniques in the low-level language {\sf zig}, trying to come up with rules of thumb that will help developers create {\em green} evolutionary algorithms.
 \keywords{Green computing, metaheuristics, energy-aware computing, evolutionary algorithms, zig}
 \end{abstract}
 
