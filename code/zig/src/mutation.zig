@@ -3,7 +3,7 @@ const expect = std.testing.expect;
 const ourRng = @import("utils.zig").ourRng;
 
 // mutation operator that changes a single random character in a string
-pub fn mutation(binaryString: []u8, random: std.rand.Random) void {
+pub inline fn mutation(binaryString: []u8, random: std.rand.Random) void {
     var index = random.int(u32) % binaryString.len;
     binaryString[index] = if (binaryString[index] == '1') '0' else '1';
 }

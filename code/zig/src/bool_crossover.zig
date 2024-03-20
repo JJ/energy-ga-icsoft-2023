@@ -3,7 +3,7 @@ const expect = std.testing.expect;
 const ourRng = @import("utils.zig").ourRng;
 
 // Crossover operator that combines two strings, cutting them in two random points, interchanging the result
-pub fn boolCrossover(random: std.rand.Random, binary_string_1: []bool, binary_string_2: []bool) void {
+pub inline fn boolCrossover(random: std.rand.Random, binary_string_1: []bool, binary_string_2: []bool) void {
     var index = random.int(u32) % (binary_string_1.len - 1);
     var len = 1 + random.int(u32) % (binary_string_1.len - index - 1);
 

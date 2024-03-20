@@ -3,7 +3,7 @@ const expect = std.testing.expect;
 const ourRng = @import("utils.zig").ourRng;
 
 // MaxOnes or CountOnes implementation
-pub fn countOnes(binaryString: []const u8) u32 {
+pub inline fn countOnes(binaryString: []const u8) u32 {
     var count: u32 = 0;
     for (binaryString) |binaryChar| {
         count += if (binaryChar == '1') 1 else 0;
@@ -11,7 +11,7 @@ pub fn countOnes(binaryString: []const u8) u32 {
     return count;
 }
 
-pub fn boolCountOnes(binaryString: []const bool) u32 {
+pub inline fn boolCountOnes(binaryString: []const bool) u32 {
     var count: u32 = 0;
     for (binaryString) |binaryChar| {
         count += if (binaryChar == true) 1 else 0;
