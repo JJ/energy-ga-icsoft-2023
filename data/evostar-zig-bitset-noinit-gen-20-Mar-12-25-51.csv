@@ -1,0 +1,16 @@
+Platform,size,GPU,PKG,seconds
+evostar-zig-bitset-noinit-gen, 2048, 14.59, 34.88, 0.68754758
+evostar-zig-bitset-noinit-gen, 2048, 15.59, 39.29, 0.70785030
+evostar-zig-bitset-noinit-gen, 2048, 14.58, 37.22, 0.68055204
+evostar-zig-bitset-noinit-gen, 2048, 14.45, 41.06, 0.67938188
+evostar-zig-bitset-noinit-gen, 2048, 15.52, 40.29, 0.70135788
+evostar-zig-bitset-noinit-gen, 2048, 14.49, 37.87, 0.67638176
+evostar-zig-bitset-noinit-gen, 2048, 15.43, 40.71, 0.70209152
+evostar-zig-bitset-noinit-gen, 2048, 14.36, 36.02, 0.68750086
+evostar-zig-bitset-noinit-gen, 2048, 15.56, 39.23, 0.70603700
+evostar-zig-bitset-noinit-gen, 2048, 14.46, 37.02, 0.68061087
+evostar-zig-bitset-noinit-gen, 2048, 15.46, 39.38, 0.70923551
+evostar-zig-bitset-noinit-gen, 2048, 14.42, 37.46, 0.68464838
+evostar-zig-bitset-noinit-gen, 2048, 14.36, 37.03, 0.67198303
+evostar-zig-bitset-noinit-gen, 2048, 14.42, 35.28, 0.68888635
+evostar-zig-bitset-noinit-gen, 2048, 14.51, 35.84, 0.68473945
