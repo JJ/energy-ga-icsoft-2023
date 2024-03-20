@@ -38,16 +38,17 @@ The experiments for this paper will be carried out in two different platforms:\b
 \item a MacBook Air M1 with 16GB of RAM and macOS Ventura 13.2.1.
 \end{itemize}
 
-We use {\sf zig}  version 0.11.0, released by August 3, 2023, which is the last stable one at the time of writing this paper. The {\sf pinpoint} tool has no versions, but we have used one compiled from source and commit hash {\tt 1578db0}. Outputs of pinpoing are processed by Perl scripts, that generate CSV files that are then processed and plotted using R embedded in the source code of this paper. All code, data and source for this paper are available at \url{https://github.com/JJ/energy-ga-icsoft2023} under a free license.
+We use {\sf zig}  version 0.11.0, released by August 3, 2023, which is the last stable one at the time of writing this paper. The {\sf pinpoint} tool has no versions, but we have used one compiled from source and commit hash {\tt 1578db0}. Outputs of {\sf pinpoint} are processed by Perl scripts, that generate CSV files that are then processed and plotted using R embedded in the source code of this paper. All code, data and source for this paper are available at \url{https://github.com/JJ/energy-ga-icsoft2023} under a free license.
 
-% Revised up to here
+There are several units whose consumption can be measured using {\sf pinpoint} via the RAPL interface; since the use of GPU is negligible in these examples, only memory and CPUs will be measured. Together, they are called the {\em package} (alongside with caches and memory controllers); this is usually represented by the acronym {\sf PKG}. In the case of the Mac, this measurement is divided in three parts: the "E" (efficiency) and "P" (performance) CPUs, and the memory. Again, these user-initiated processes run on the "P" CPUs, so that will be the one we will be measuring.
 
-There are several units whose consumption can be measured using {\sf pinpoint} via the RAPL interface; since the use of GPU is negligible in these examples, only memory and CPUs will be measured. Together, they are called the {\em package} (alongside with caches and memory controllers); this is usually represented by the acronym {\sf PKG}.
+By default, all programs will be generated using the {\tt .ReleaseFast} compile option, that optimizes performance, but also energy consumption. We will be using the {\tt page_allocator} that allocates memory in the heap. This is an efficient allocator, but also the default choice.
 
-We will be examining choices in three different areas\begin{itemize}
-\item By default, {\sf zig} adds debug information to the resulting binary, without performing any kind of optimization. We will test the impact of using the {\sf ReleaseFast} option when building binaries.
-\item The first version used strings for representing chromosomes. We will test arrays of Boolean values instead, which is a primitive type too.
+We will be examining options in different areas\begin{itemize}
+\item Several type of data structures will be checked for: the default string, arrays of Boolean values and bit sets.
+\item The default crossover operator used an allocator to create temporary copies of chromosomes. It will be refactored so that no allocation is necessary.
 \item Unlike other languages, {\sf zig} provides different memory allocators, which can be chosen by the developer. By default, a page allocator is used, but there is the possibility of using a fixed buffer size allocator.
+\item We will check the behavior of these in two different platforms, Linux (with AMD) and Mac (with M1).
 \end{itemize}
 
 We will first generate 40000 chromosomes of size 512, 1024 and 2048, and measure the energy consumption and running time of this operation; every combination is run 15 times. Not all combinations of the three techniques above could be tested, we show the results in Figure \ref{fig:lion.zig.setup}, along with the baseline that was compiled using default settings, character strings and page allocator. The other choices tested are: Built with {\sf ReleaseFast} option (tagged "ReleaseFast"), built in the same way and using a Fixed Buffer Allocator ("ReleaseFastFBA"), built with default options, using Boolean arrays as well as the Fixed Buffer Allocator ("Boolean")\footnote{This combination proved difficult in practice, crashing the program for size 2048; it did not work with the {\sf ReleaseFast} option either}.

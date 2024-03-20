@@ -1,4 +1,4 @@
-Tool,VM,size,RAM,ECPU,PCPU,seconds
+Platform,size,RAM,ECPU,PCPU,seconds
 evostar-mac-gen, 1024, 0.06, 0.02, 0.39, 0.52280646
 evostar-mac-gen, 1024, 0.04, 0.00, 0.36, 0.14487871
 evostar-mac-gen, 1024, 0.04, 0.00, 0.36, 0.14226675
