@@ -6,7 +6,6 @@ const ourRng = @import("utils.zig").ourRng;
 pub fn generate(allocator: std.mem.Allocator, random: std.rand.Random, comptime T: type, num_strings: u32) ![]T {
     var bitField = try allocator.alloc(T, num_strings);
     for (0..num_strings) |i| {
-        bitField[i] = T.initEmpty();
         for (0..bitField[i].capacity()) |j| {
             if (random.intRangeAtMost(u8, 0, 1) == 1) {
                 bitField[i].set(j);
