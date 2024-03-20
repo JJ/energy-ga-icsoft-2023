@@ -10,12 +10,13 @@
 \newcommand{\lik}{\texttt{likwid}}
 
 \begin{document}
-\title{Minimizing evolutionary algorithms energy consumption in the low-level language Zig}
+\title{Best practices for energy-thrifty evolutionary algorithms in the low-level language {\sf zig}}
 
 \author{
-  Juan J. Merelo-Guervós\inst{1}\orcidID{0000-0002-1385-9741}
+  Juan J. Merelo-Guervós\inst{1}\orcidID{0000-0002-1385-9741} \and Antonio M. Mora\inst{2}\orcidID{0000-0003-1603-9105}
 }
 \institute{Department of Computer Engineering, Automatics and Robotics, University of Granada, Granada, Spain}
+\institute{Department of Signal Theory, Telematics and Communications, University of Granada, Granada, Spain}
 
 
 \maketitle
@@ -124,6 +125,7 @@ ggplot(combined.ops, aes(x=size, y=diff.PKG, color=Platform))+geom_boxplot(notch
 This case is remarkably different to the one shown in Figure \ref{fig:lion.zig.setup}. For starters, the energy consumption is very low, one order of magnitude lower; regular genetic operations do not spend a lot of energy indeed, with most consumption focused on fitness functions. Even so, the fast compilation spends half the energy of the other combinations. Remarkably, using a different data structure does not always imply a better energy profile; it does so only for the smaller size, 512 bits (which is anyway closer to usual chromosome sizes).
 
 In this paper we have used different techniques that potentially could reduce the amount of energy spent by a genetic algorithm implemented using the low-level language {\sf zig}: testing different data structures, allocation policies and compilation options. The most dramatic reduction is achieved with the {\em fast} compilation policy, but additional improvements can be obtained by using adequate data structures and allocation policies. By using best practices in this area, {\sf zig} implementations can indeed be considered the {\em greener} ones among other high-level or Java Virtual Machine based languages. it remains as future work, however, how applying similar techniques when available will impact the energy consumption of other languages.
+
 
 \section*{Acknowledgements and data availability}
 
