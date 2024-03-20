@@ -25,13 +25,12 @@ test "generate" {
     const bitFieldArray = try generate(allocator, prng.random(), std.bit_set.StaticBitSet(stringLength), numStrings);
     try expect(bitFieldArray[0].capacity() == stringLength);
     try expect(bitFieldArray[numStrings - 1].capacity() == stringLength);
-    var i: u32 = 0;
-    while (i < numStrings) {
+    for (0..numStrings) |i| {
+        std.debug.print("bitField {}\n", .{bitFieldArray[i]});
         var c: u16 = 0;
         while (c < stringLength) : (c += 1) {
             try expect(bitFieldArray[i].isSet(c) or !bitFieldArray[i].isSet(c));
         }
-        i = i + 1;
     }
 
     allocator.free(bitFieldArray);
