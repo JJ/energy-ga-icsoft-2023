@@ -14,25 +14,18 @@ pub fn build(b: *std.build) void {
     const run_tests = b.addRunArtifact(tests);
     test_step.dependOn(&run_tests.step);
 
-    const exe = b.addExecutable(.{
-        .name = "chromosome_generator",
-        .root_source_file = .{ .path = "src/chromosome_generator.zig" },
-        .target = target,
-        .optimize = .ReleaseFast,
-        .single_threaded = true,
-    });
+    const generators = [3][]const u8{ "chromosome_generator", "bool_chromosome_generator", "bitset_chromosome_generator" };
+    for (generators) |generator| {
+        const exe = b.addExecutable(.{
+            .name = generator,
+            .root_source_file = .{ .path = "src/" ++ generator ++ ".zig" },
+            .target = target,
+            .optimize = .ReleaseFast,
+            .single_threaded = true,
+        });
 
-    b.installArtifact(exe);
-
-    const boolExe = b.addExecutable(.{
-        .name = "bool_chromosome_generator",
-        .root_source_file = .{ .path = "src/bool_chromosome_generator.zig" },
-        .target = target,
-        .optimize = .ReleaseFast,
-        .single_threaded = true,
-    });
-    boolExe.stack_size = 40000 * 4096;
-    b.installArtifact(boolExe);
+        b.installArtifact(exe);
+    }
 
     const boolOps = b.addExecutable(.{
         .name = "bool_combined_ops",
