@@ -2,8 +2,8 @@ const std = @import("std");
 
 pub fn main() void {
     const generators: [3][]const u8 = .{ "chromosome_generator", "bool_chromosome_generator", "bitset_chromosome_generator" };
-    for (generators) |g| {
+    inline for (generators) |g| {
         const path = "src/" ++ g ++ ".zig";
-        std.debug.print("Building: {}\n", .{path});
+        std.debug.print("Building: {s}\n", .{path});
     }
 }
