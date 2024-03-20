@@ -15,7 +15,7 @@ pub fn build(b: *std.build) void {
     test_step.dependOn(&run_tests.step);
 
     const generators = [3][]const u8{ "chromosome_generator", "bool_chromosome_generator", "bitset_chromosome_generator" };
-    for (generators) |generator| {
+    inline for (generators) |generator| {
         const exe = b.addExecutable(.{
             .name = generator,
             .root_source_file = .{ .path = "src/" ++ generator ++ ".zig" },
