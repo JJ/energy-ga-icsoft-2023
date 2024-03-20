@@ -29,7 +29,7 @@ pub fn main() !void {
         const firstChromosome = try allocator.dupe(bool, chromosomes[i]);
         const secondChromosome = try allocator.dupe(bool, chromosomes[i + 1]);
 
-        try boolCrossover(allocator, prng.random(), firstChromosome, secondChromosome);
+        boolCrossover(prng.random(), firstChromosome, secondChromosome);
 
         boolMutation(firstChromosome, prng.random());
         boolMutation(secondChromosome, prng.random());

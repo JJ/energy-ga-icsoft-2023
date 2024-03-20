@@ -29,7 +29,7 @@ pub fn main() !void {
         const firstChromosome = try allocator.dupeZ(u8, chromosomes[i]);
         const secondChromosome = try allocator.dupeZ(u8, chromosomes[i + 1]);
 
-        try crossover(allocator, prng.random(), firstChromosome, secondChromosome);
+        crossover(prng.random(), firstChromosome, secondChromosome);
 
         mutation(firstChromosome, prng.random());
         mutation(secondChromosome, prng.random());
