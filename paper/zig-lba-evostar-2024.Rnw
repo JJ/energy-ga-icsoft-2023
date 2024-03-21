@@ -54,7 +54,6 @@ We will be examining options in different areas\begin{itemize}
 We will first generate 40000 chromosomes of size 512, 1024 and 2048, and measure the energy consumption and running time of this operation; every combination is run 15 times. 
 
 <<evostar.zig.gen, echo=F, message=F, fig.pos="h!tb", fig.height=3, fig.cap="Average running time and PKG energy consumption generating 40K chromosomes for the different parametrizations used (represented with different colors); dot shape represents the chromosome size.">>=
-library(dplyr)
 library(ggplot2)
 
 generate.chromosomes <- read.csv("../data/evostar-zig-gen-19-Mar-09-31-21.csv")
@@ -91,10 +90,77 @@ Figure \ref{fig:evostar.zig.gen} represents energy consumption, as well as time 
 
 Another observation is that, except for using bitsets as data structures, there does not seem to be a significant difference between using either strings or Boolean arrays in neither architecture, at least for this baseline operation. However, generating chromosomes is done essentially once, so it is not the most significant operation in EAs.
 
-Thus, we will now run an experiment that, after generating the 40K chromosomes, will perform crossover + mutation + onemax operations on chromosomes of size 512, 1024 and 2048 using the strings and Boolean arrays in the two architectures used above.
+Thus, we will now run an experiment that, after generating the 40K chromosomes, will perform crossover + mutation + ONEMAX operations on chromosomes of size 512, 1024 and 2048 using the strings and Boolean arrays in the two architectures used above.
 
-<<lion.zig.combined.ops, echo=F, message=F, fig.pos="h!tb", fig.height=3, fig.cap="Boxplot of PKG energy consumption processing 40K chromosomes via crossover, mutation and ONEMAX for different combinations of optimization techniques in Zig">>=
+<<lion.zig.combined.ops, echo=F, message=F, fig.pos="h!tb", fig.height=3, fig.cap="Boxplot of PKG energy consumption processing 40K chromosomes via crossover, mutation and ONEMAX for different combinations of optimization techniques and platforms in Zig">>=
+library(dplyr)
 
+generate.chromosomes %>% group_by( size ) %>% summarise( mean.pkg = mean( PKG ), mean.seconds = mean( seconds ) ) -> generate.chromosomes.avg
+generate.avgs.seconds <- c(rep( generate.chromosomes.avg$mean.seconds[1], 15),
+                               rep( generate.chromosomes.avg$mean.seconds[2], 15),
+                               rep( generate.chromosomes.avg$mean.seconds[3], 15))
+generate.avgs.pkg <- c(rep( generate.chromosomes.avg$mean.pkg[1], 15),
+                           rep( generate.chromosomes.avg$mean.pkg[2], 15),
+                           rep( generate.chromosomes.avg$mean.pkg[3], 15))
+
+combined.ops <- read.csv("../data/evostar-zig-ops-19-Mar-09-32-38.csv")
+combined.ops$size <- as.factor(combined.ops$size)
+
+combined.ops$diff.seconds <- combined.ops$seconds - generate.avgs.seconds
+combined.ops$diff.PKG <- combined.ops$PKG - generate.avgs.pkg
+
+generate.chromosomes.bool %>% group_by( size ) %>% summarise( mean.pkg = mean( PKG ), mean.seconds = mean( seconds ) ) -> generate.chromosomes.bool.avg
+generate.bool.avgs.seconds <- c(rep( generate.chromosomes.bool.avg$mean.seconds[1], 15),
+                               rep( generate.chromosomes.bool.avg$mean.seconds[2], 15),
+                               rep( generate.chromosomes.bool.avg$mean.seconds[3], 15))
+generate.bool.avgs.pkg <- c(rep( generate.chromosomes.bool.avg$mean.pkg[1], 15),
+                           rep( generate.chromosomes.bool.avg$mean.pkg[2], 15),
+                           rep( generate.chromosomes.bool.avg$mean.pkg[3], 15))
+
+combined.ops.bool <- read.csv("../data/evostar-zig-ops-bool-19-Mar-09-29-42.csv")
+combined.ops.bool$size <- as.factor(combined.ops.bool$size)
+
+combined.ops.bool$diff.seconds <- combined.ops.bool$seconds - generate.bool.avgs.seconds
+combined.ops.bool$diff.PKG <- combined.ops.bool$PKG - generate.bool.avgs.pkg
+
+generate.chromosomes.mac %>% group_by( size ) %>% summarise( mean.pkg = mean( PKG ), mean.seconds = mean( seconds ) ) -> generate.chromosomes.mac.avg
+generate.mac.avgs.seconds <- c(rep( generate.chromosomes.mac.avg$mean.seconds[1], 15),
+                               rep( generate.chromosomes.mac.avg$mean.seconds[2], 15),
+                               rep( generate.chromosomes.mac.avg$mean.seconds[3], 15))
+generate.mac.avgs.pkg <- c(rep( generate.chromosomes.mac.avg$mean.pkg[1], 15),
+                           rep( generate.chromosomes.mac.avg$mean.pkg[2], 15),
+                           rep( generate.chromosomes.mac.avg$mean.pkg[3], 15))
+
+combined.ops.mac <- read.csv("../data/evostar-mac-ops-19-Mar-10-39-59.csv")
+combined.ops.mac$PKG <- combined.ops.mac$ECPU + combined.ops.mac$PCPU + combined.ops.mac$RAM
+combined.ops.mac$size <- as.factor(combined.ops.mac$size)
+combined.ops.mac$diff.seconds <- combined.ops.mac$seconds - generate.mac.avgs.seconds
+combined.ops.mac$diff.PKG <- combined.ops.mac$PKG - generate.mac.avgs.pkg
+combined.ops.mac$Platform <- combined.ops.mac$Prefix
+
+generate.chromosomes.mac.bool %>% group_by( size ) %>% summarise( mean.pkg = mean( PKG ), mean.seconds = mean( seconds ) ) -> generate.chromosomes.mac.bool.avg
+generate.mac.bool.avgs.seconds <- c(rep( generate.chromosomes.mac.bool.avg$mean.seconds[1], 15),
+                               rep( generate.chromosomes.mac.bool.avg$mean.seconds[2], 15),
+                               rep( generate.chromosomes.mac.bool.avg$mean.seconds[3], 15))
+generate.mac.bool.avgs.pkg <- c(rep( generate.chromosomes.mac.bool.avg$mean.pkg[1], 15),
+                           rep( generate.chromosomes.mac.bool.avg$mean.pkg[2], 15),
+                           rep( generate.chromosomes.mac.bool.avg$mean.pkg[3], 15))
+combined.ops.mac.bool <- read.csv("../data/evostar-mac-ops-bool-19-Mar-10-36-18.csv")
+combined.ops.mac.bool$PKG <- combined.ops.mac.bool$ECPU + combined.ops.mac.bool$PCPU + combined.ops.mac.bool$RAM
+combined.ops.mac.bool$size <- as.factor(combined.ops.mac.bool$size)
+combined.ops.mac.bool$diff.seconds <- combined.ops.mac.bool$seconds - generate.mac.bool.avgs.seconds
+combined.ops.mac.bool$diff.PKG <- combined.ops.mac.bool$PKG - generate.mac.bool.avgs.pkg
+combined.ops.mac.bool$Platform <- combined.ops.mac.bool$Prefix
+
+all.combined.ops <- data.frame( Platform = c( combined.ops.mac$Platform, combined.ops.mac.bool$Platform, combined.ops$Platform, combined.ops.bool$Platform ),
+                                size = c( combined.ops.mac$size, combined.ops.mac.bool$size, combined.ops$size, combined.ops.bool$size ),
+                                diff.seconds = c( combined.ops.mac$diff.seconds, combined.ops.mac.bool$diff.seconds, combined.ops$diff.seconds, combined.ops.bool$diff.second ),
+                                diff.PKG = c( combined.ops.mac$diff.PKG, combined.ops.mac.bool$diff.PKG, combined.ops$diff.PKG, combined.ops.bool$diff.PKG ) )
+
+ggplot( data = all.combined.ops, aes( x = size, y = diff.PKG, fill=Platform ) ) +
+  geom_boxplot() +
+  labs( title = "Energy consumption difference between different compilation policies for zig", y = "Energy consumption difference (seconds)" ) +
+  theme_minimal()
 @
 
 This case is remarkably different to the one shown in Figure \ref{fig:lion.zig.setup}. For starters, the energy consumption is very low, one order of magnitude lower; regular genetic operations do not spend a lot of energy indeed, with most consumption focused on fitness functions. Even so, the fast compilation spends half the energy of the other combinations. Remarkably, using a different data structure does not always imply a better energy profile; it does so only for the smaller size, 512 bits (which is anyway closer to usual chromosome sizes).
