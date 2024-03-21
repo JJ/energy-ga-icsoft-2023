@@ -50,7 +50,7 @@ By default, all programs will be generated using the {\tt .ReleaseFast} compile 
 % Yes :-)
 
 We will be examining options in different areas\begin{itemize}
-\item Several data structures used in the implementation of EAs will be checked for: the default string, arrays of Boolean values and bit sets. - Mario
+\item Several data structures used in the implementation of EAs will be checked for: the default string, arrays of Boolean values and bit sets.
 % Or at the beginning: ... options in different implementation areas of EAs - Mario
 \item The default crossover operator used an allocator to create temporary copies of chromosomes. Several implementations will be tested.
 % In this case, we knoy that allocation of memory is a very expensive operation, so we will refactor the code to avoid it? - Mario
