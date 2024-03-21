@@ -171,25 +171,27 @@ combined.ops.noalloc <- read.csv("../data/evostar-zig-ops-nx-noalloc-20-Mar-09-4
 combined.ops.noalloc$size <- as.factor(combined.ops.noalloc$size)
 combined.ops.noalloc$diff.seconds <- combined.ops.noalloc$seconds - generate.avgs.seconds
 combined.ops.noalloc$diff.PKG <- combined.ops.noalloc$PKG - generate.avgs.pkg
+combined.ops.noalloc$Platform <- "Base"
 
 combined.ops.noalloc.bool <- read.csv("../data/evostar-zig-bool-ops-nx-noalloc-20-Mar-09-45-48.csv")
 combined.ops.noalloc.bool$size <- as.factor(combined.ops.noalloc.bool$size)
 combined.ops.noalloc.bool$diff.seconds <- combined.ops.noalloc.bool$seconds - generate.bool.avgs.seconds
 combined.ops.noalloc.bool$diff.PKG <- combined.ops.noalloc.bool$PKG - generate.bool.avgs.pkg
+combined.ops.noalloc.bool$Platform <- "Bool"
 
 combined.ops.mac.noalloc <- read.csv("../data/evostar-zig-mac-ops-nx-noalloc-20-Mar-09-52-13.csv")
 combined.ops.mac.noalloc$PKG <- combined.ops.mac.noalloc$ECPU + combined.ops.mac.noalloc$PCPU + combined.ops.mac.noalloc$RAM
 combined.ops.mac.noalloc$size <- as.factor(combined.ops.mac.noalloc$size)
 combined.ops.mac.noalloc$diff.seconds <- combined.ops.mac.noalloc$seconds - generate.mac.avgs.seconds
 combined.ops.mac.noalloc$diff.PKG <- combined.ops.mac.noalloc$PKG - generate.mac.avgs.pkg
-combined.ops.mac.noalloc$Platform <- combined.ops.mac.noalloc$Prefix
+combined.ops.mac.noalloc$Platform <- "Mac Base"
 
 combined.ops.mac.noalloc.bool <- read.csv("../data/evostar-zig-mac-bool-ops-nx-noalloc-20-Mar-09-50-15.csv")
 combined.ops.mac.noalloc.bool$PKG <- combined.ops.mac.noalloc.bool$ECPU + combined.ops.mac.noalloc.bool$PCPU + combined.ops.mac.noalloc.bool$RAM
 combined.ops.mac.noalloc.bool$size <- as.factor(combined.ops.mac.noalloc.bool$size)
 combined.ops.mac.noalloc.bool$diff.seconds <- combined.ops.mac.noalloc.bool$seconds - generate.mac.bool.avgs.seconds
 combined.ops.mac.noalloc.bool$diff.PKG <- combined.ops.mac.noalloc.bool$PKG - generate.mac.bool.avgs.pkg
-combined.ops.mac.noalloc.bool$Platform <- combined.ops.mac.noalloc.bool$Prefix
+combined.ops.mac.noalloc.bool$Platform <- "Mac Bool"
 
 all.combined.ops.noalloc <- data.frame( Platform = c( combined.ops.mac.noalloc$Platform, combined.ops.mac.noalloc.bool$Platform, combined.ops.noalloc$Platform, combined.ops.noalloc.bool$Platform ),
                                 size = c( combined.ops.mac.noalloc$size, combined.ops.mac.noalloc.bool$size, combined.ops.noalloc$size, combined.ops.noalloc.bool$size ),
@@ -202,7 +204,14 @@ ggplot( data = all.combined.ops.noalloc, aes( x = size, y = diff.PKG, fill=Platf
   theme_minimal()
 @
 
-In this paper we have used different techniques that potentially could reduce the amount of energy spent by a genetic algorithm implemented using the low-level language {\sf zig}: testing different data structures, allocation policies and compilation options. The most dramatic reduction is achieved with the {\em fast} compilation policy, but additional improvements can be obtained by using adequate data structures and allocation policies. By using best practices in this area, {\sf zig} implementations can indeed be considered the {\em greener} ones among other high-level or Java Virtual Machine based languages. it remains as future work, however, how applying similar techniques when available will impact the energy consumption of other languages.
+Figure \ref{fig:evostar.combined.ops.refactor} shows the energy consumption after refactoring. Both platforms experiment a considerable improvement, but it is more dramatic in the case of the Mac platform. We can anyway observe that, although there is certain difference between both data structures, string and Boolean array, that difference does not hold across platforms and sizes. Strings seem to best the other option in more ocassions, but when the size is the biggest, it might be at a certain disadvantage. It is probably the case that the amount of memory used by any of them is the same, and the random-access structure is also similar in performance and energy consumption (and unlike bitsets, which probably used more memory for storage, since it internally used structs). On the other hand, eliminating allocation from the crossover operator results in energy savings across the board, although they are much more dramatic in the Mac platform, consuming energy for 40k evaluations that is a fraction of a Joule, and almost two orders of magnitude less of what the desktop computer consumes. 
+
+
+This leads us to the conclusion, carried over from other papers, that better than taking assumptions on the behavior of implementations based on first principles or on knowledge of the computing platform, we need to always create energy profiles of the implementations, and measure for different data structures and across refactoring of the evolutionary algorithm code.
+
+It seems clear, anyway, that platforms that emphasize energy savings like the M1 chip used by the MacAir will use much less energy, dramatically so in some cases, than desktop solutions based on AMD. This does not extend to the operating system immplementation itself: operations that depend on it, such as memory allocation, will have a different impact on the energy profile, which might be one of the reasons they should be minimized whenever possible. Fortunately, {\sf zig} is a language and toolchain with very strict control over memory allocation, allowing us to be very conscious over where it could be eliminated, as we have done in this case.
+
+As a final conclusion, implementing an EA in {\sf zig} and running in on a Mac may result in an improvement of several orders of magnitude in consumption of energy over using high-level platforms (like Python or Javascript) and desktop machines. If we strive for greener computing, we should really considere them for our experiments.
 
 
 \section*{Acknowledgements and data availability}
