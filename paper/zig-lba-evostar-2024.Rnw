@@ -28,33 +28,41 @@ The most fruitful way of making evolutionary algorithms spend the least amount o
 \keywords{Green computing, metaheuristics, energy-aware computing, evolutionary algorithms, zig}
 \end{abstract}
 % When mentioning the layers maybe include also the hardware layer, because many green computing techniques are implemented at that level. - Mario
+% In the final sentence of the abstrast may use develop or create intead of come up with. - Mario
 
-A straightforward methodology for measuring energy consumption of EA implementations with the objective of reducing it would consider a baseline implementation and then change the code at different levels, measuring the resulting energy expenses. In \cite{DBLP:conf/icsoft/GuervosGC23}, the main factor under study was the different interpreters used in a high-level language, JavaScript. In this paper, we will focus on different techniques applied to the low-level language {\sf zig}, a language that emphasizes safety and maintainability \cite{friesen2023designing}, and that has as a motto "no implicit memory allocation", unlike other languages like C or C++, that will allocate memory without the user noticing. This strict memory management has several implications in terms of programming, but also gives the programmer more control over when memory is allocated and deallocated.
+A straightforward methodology for measuring energy consumption of EA implementations with the objective of reducing it would consider a baseline implementation and then change the code at different levels, measuring the resulting energy expenses. In \cite{DBLP:conf/icsoft/GuervosGC23}, the main factor under study was the different interpreters used in a high-level language, JavaScript. In this paper, we will focus on different techniques applied to the low-level language {\sf zig}, a language that emphasizes safety and maintainability \cite{friesen2023designing}, and that has as a motto "no implicit memory allocation," unlike other languages like C or C++, that will allocate memory without the user noticing. This strict memory management has several implications in terms of programming, but also gives the programmer more control over when memory is allocated and deallocated.
 % I though that in C at least you have to call malloc to allocate memory, but I'm not sure. - Mario
 
-In this paper we will work on a generic evolutionary algorithm workload, and see what the impact of different choices will have on its energy consumption. With this, we will try to find some best practices that will help practitioners implement evolutionary algorithms in {\sf zig}, hopefully extensible to other low-level languages (which could include C and C++, but also Rust or Go).
+In this paper, we will work on a generic evolutionary algorithm workload, and see what the impact of different choices will have on its energy consumption. With this, we will try to find some best practices that will help practitioners implement evolutionary algorithms in {\sf zig}, hopefully extensible to other low-level languages (which could include C and C++, but also Rust or Go).
 
-The experiment setup will match the one used in \cite{DBLP:conf/icsoft/GuervosGC23}, using the same tools for energy profiling ({\sf pinpoint}) as well as Perl scripts to run the experiments and process the results.
+The experiment setup will match the one used in \cite{DBLP:conf/icsoft/GuervosGC23}, using the same tools for energy profiling ({\sf pinpoint}) as well as Perl scripts to run the experiments and process the results. % Mayba add some justification of why we are using the same tools. Resutls will be more comparable? - Mario
+
 The experiments for this paper will be carried out in two different platforms:\begin{itemize} 
 \item A Linux machine {\tt 5.15.0-94-generic \#104~20.04.1-Ubuntu SMP} using AMD Ryzen 9 3950X 16-Core Processor.
-\item a MacBook Air M1 with 16GB of RAM and macOS Ventura 13.2.1.
+\item An M1 MacBook Air  with 16GB of RAM and macOS Ventura 13.2.1.
 \end{itemize}
 
-We use {\sf zig}  version 0.11.0, released by August 3, 2023, which is the last stable one at the time of writing this paper. The {\sf pinpoint} tool has no versions, but we have used one compiled from source and commit hash {\tt 1578db0}. Outputs of {\sf pinpoint} are processed by Perl scripts, that generate CSV files that are then processed and plotted using R embedded in the source code of this paper. All code, data and source for this paper are available at \url{https://github.com/JJ/energy-ga-icsoft2023} under a free license.
+We use {\sf zig}  version 0.11.0, released by August 3, 2023, which is the last stable one at the time of writing this paper. The {\sf pinpoint} tool has no versions, but we have used one compiled from source and commit hash {\tt 1578db0}. Outputs of {\sf pinpoint} are processed by Perl scripts that generate CSV files that are then processed and plotted using R embedded in the source code of this paper. This paper's code, data, and source are available at \url{https://github.com/JJ/energy-ga-icsoft2023} under a free license.
 
-There are several units whose consumption can be measured using {\sf pinpoint} via the RAPL interface; since the use of GPU is negligible in these examples, only memory and CPUs will be measured. Together, they are called the {\em package} (alongside with caches and memory controllers); this is usually represented by the acronym {\sf PKG}. In the case of the Mac, this measurement is divided in three parts: the "E" (efficiency) and "P" (performance) CPUs, and the memory. Again, these user-initiated processes run on the "P" CPUs, so that will be the one we will be measuring.
+There are several units whose consumption can be measured using {\sf pinpoint} via the RAPL interface; since the use of GPU is negligible in these examples, only memory and CPUs will be measured. Together, they are called the {\em package} (alongside caches and memory controllers); this is usually represented by the acronym {\sf PKG}. In the case of the Mac, this measurement is divided into three parts: the "E" (efficiency) and "P" (performance) CPUs, and the memory. Again, these user-initiated processes run on the "P" CPUs, so that will be the one we will be measuring.
 
-By default, all programs will be generated using the {\tt .ReleaseFast} compile option, that optimizes performance, but also energy consumption. We will be using the {\tt page\_allocator} that allocates memory in the heap. This is an efficient allocator, but also the default choice.
+By default, all programs will be generated using the {\tt .ReleaseFast} compile option, that optimizes performance, but also energy consumption. We will use the {\tt page\_allocator} that allocates memory in the heap. This is an efficient allocator, but also the default choice.
+% The ReleaseFast option begins with a dot? - Mario
 
 We will be examining options in different areas\begin{itemize}
 \item Several type of data structures will be checked for: the default string, arrays of Boolean values and bit sets.
+% Several data structures used in the implementation of EAs will be checked for: the default string, arrays of Boolean values and bit sets. - Mario
+% Or at the beginning: ... options in different implementation areas of EAs - Mario
 \item The default crossover operator used an allocator to create temporary copies of chromosomes. It will be refactored so that no allocation is necessary.
-\item Unlike other languages, {\sf zig} provides different memory allocators, which can be chosen by the developer. By default, a page allocator is used, but there is the possibility of using a fixed buffer size allocator.
-\item We will check the behavior of these in two different platforms, Linux (with AMD) and Mac (with M1).
+% In this case, we knoy that allocation of memory is a very expensive operation, so we will refactor the code to avoid it? - Mario
+% I had the idea that erasing or replacing data in memory was more expensive than allocating new memory. - Mario
+\item Unlike other languages, {\sf zig} provides different memory allocators, which the developer can choose. By default, a page allocator is used, but there is the possibility of using a fixed buffer size allocator.
+\item We will check the behavior of these on two different platforms, Linux (with AMD) and macOS (with M1).
+% If Mac is the operating system, it is now refered to as macOS. - Mario
 \end{itemize}
 
 We will first generate 40000 chromosomes of size 512, 1024 and 2048, and measure the energy consumption and running time of this operation; every combination is run 15 times. 
-
+% Why so many?  This is a load that can be measured more easily?  - Mario
 <<evostar.zig.gen, echo=F, message=F, fig.pos="h!tb", fig.height=3, fig.cap="Average running time and PKG energy consumption generating 40K chromosomes for the different parametrizations used (represented with different colors); dot shape represents the chromosome size.">>=
 library(ggplot2)
 
@@ -88,8 +96,8 @@ ggplot(generate.chromosomes, aes(x=seconds, y=PKG, color="Baseline", shape=size)
   theme_minimal()
 @
 
-Figure \ref{fig:evostar.zig.gen} represents energy consumption, as well as time taken, for the different configurations taken as baseline. The first thing to notice, in the upper right corner, is that using a bitset in zig will not represent any energy saving, with a big difference in time as well as energy consumption; this is why it has not been even tested for the Mac. Second element that stands out is that consumption as well as time is very different for the Mac, which is a baseline laptop computer, and the AMD desktop computer. This is probably expected, but the fact is that the Mac Air, which is a generation behind current commercial offerings, takes 25\% of the time and 10\% of the energy to do the exact same amount of work. While the increase in energy consumption is quite steep in the AMD architecture the desktop computer uses, that is not the case for the Mac, with a very small increase from the smallest to the largest size.
-
+Figure \ref{fig:evostar.zig.gen} represents energy consumption, as well as time taken, for the different configurations taken as baseline. The first thing to notice, in the upper right corner, is that using a bitset in zig will not represent any energy saving, with a big difference in time as well as energy consumption; this is why it has not even been tested for the Mac. Second element that stands out is that consumption as well as time is very different for the Mac, which is an entry-level laptop computer, and the AMD desktop computer. This is probably expected, but the fact is that the MacBook Air, which is a generation behind current commercial offerings, takes 25\% of the time and 10\% of the energy to do the same amount of work. While the increase in energy consumption is quite steep in the AMD architecture used by the desktop computer, that is not the case for the Mac, with a very small increase from the smallest to the largest size.
+% The first sentence is a little bit confusing. - Mario
 Another observation is that, except for using bitsets as data structures, there does not seem to be a significant difference between using either strings or Boolean arrays in neither architecture, at least for this baseline operation. However, generating chromosomes is done essentially once, so it is not the most significant operation in EAs.
 
 Thus, we will now run an experiment that, after generating the 40K chromosomes, will perform crossover + mutation + ONEMAX operations on chromosomes of size 512, 1024 and 2048 using the strings and Boolean arrays in the two architectures used above.
@@ -165,8 +173,8 @@ ggplot( data = all.combined.ops, aes( x = size, y = diff.PKG, fill=Platform ) ) 
   theme_minimal()
 @
 
-What Figure \ref{fig:evostar.combined.ops.base} shows is a remarkable difference in the consumption of energy in the Mac platform, which goes against the big difference shown in the generation of the chromosomes. This probably reveals a problem in the implementation of some feature used by the evolutionary algorithm. Digging into the code, we found that the main issue was the use of allocation within the crossover operator. A refactoring was in order, yieldong the results shown in Figure \ref{fig:evostar.combined.ops.refactor}. The energy consumption is now more in line with the generation of the chromosomes, and the difference between the different compilation policies is more in line with the previous results.
-
+What Figure \ref{fig:evostar.combined.ops.base} shows is a remarkable difference in energy consumption in the Mac platform, which goes against the big difference shown in the generation of chromosomes. This probably reveals a problem in the implementation of some feature used by the evolutionary algorithm. Digging into the code, we found that the main issue was the use of allocation within the crossover operator. A refactoring was in order, yielding the results shown in Figure \ref{fig:evostar.combined.ops.refactor}. The energy consumption is now more in line with the generation of the chromosomes, and the difference between the different compilation policies is more in line with the previous results.
+% What was the refactoring? - Mario
 <<evostar.combined.ops.refactor, echo=F, message=F, fig.pos="h!tb", fig.height=3, fig.cap="Boxplot of PKG energy consumption processing 40K chromosomes via crossover, mutation and ONEMAX after crossover has been refactored">>=
 
 combined.ops.noalloc <- read.csv("../data/evostar-zig-ops-nx-noalloc-20-Mar-09-46-37.csv")
@@ -206,15 +214,15 @@ ggplot( data = all.combined.ops.noalloc, aes( x = size, y = diff.PKG, fill=Platf
   theme_minimal()
 @
 
-Figure \ref{fig:evostar.combined.ops.refactor} shows the energy consumption after refactoring. Both platforms experiment a considerable improvement, but it is more dramatic in the case of the Mac platform. We can anyway observe that, although there is certain difference between both data structures, string and Boolean array, that difference does not hold across platforms and sizes. Strings seem to best the other option in more ocassions, but when the size is the biggest, it might be at a certain disadvantage. It is probably the case that the amount of memory used by any of them is the same, and the random-access structure is also similar in performance and energy consumption (and unlike bitsets, which probably used more memory for storage, since it internally used structs). On the other hand, eliminating allocation from the crossover operator results in energy savings across the board, although they are much more dramatic in the Mac platform, consuming energy for 40k evaluations that is a fraction of a Joule, and almost two orders of magnitude less of what the desktop computer consumes. 
+Figure \ref{fig:evostar.combined.ops.refactor} shows the energy consumption after refactoring. Both platforms show a considerable improvement, but it is more dramatic in the case of the Mac platform. We can anyway observe that, although there is a certain difference between both data structures, string and Boolean array, that difference does not hold across platforms and sizes. Strings seem to best the other option in more ocassions, but when the size is the biggest, it might be at a certain disadvantage. It is probably the case that the amount of memory used by any of them is the same, and the random-access structure is also similar in performance and energy consumption (and unlike bitsets, which probably used more memory, since they internally used structs). On the other hand, eliminating allocation from the crossover operator results in energy savings across the board, although they are much more dramatic in the Mac platform, consuming energy for 40k evaluations that is a fraction of a Joule, and almost two orders of magnitude less of what the desktop computer consumes. 
 
 
-This leads us to the conclusion, carried over from other papers, that better than taking assumptions on the behavior of implementations based on first principles or on knowledge of the computing platform, we need to always create energy profiles of the implementations, and measure for different data structures and across refactoring of the evolutionary algorithm code.
+This leads us to the conclusion, carried over from other papers, that rather than taking assumptions on the behavior of implementations based on first principles or knowledge of the computing platform, we need to always create energy profiles of the implementations, and measure for different data structures and across refactoring of the evolutionary algorithm code.
 
-It seems clear, anyway, that platforms that emphasize energy savings like the M1 chip used by the MacAir will use much less energy, dramatically so in some cases, than desktop solutions based on AMD. This does not extend to the operating system immplementation itself: operations that depend on it, such as memory allocation, will have a different impact on the energy profile, which might be one of the reasons they should be minimized whenever possible. Fortunately, {\sf zig} is a language and toolchain with very strict control over memory allocation, allowing us to be very conscious over where it could be eliminated, as we have done in this case.
+It seems clear, anyway, that platforms that emphasize energy savings like the M1 chip used by the MacBookAir will use much less energy, dramatically so in some cases, than desktop solutions based on AMD. This does not extend to the operating system implementation itself: operations that depend on it, such as memory allocation, will have a different impact on the energy profile, which might be one of the reasons they should be minimized whenever possible. Fortunately, {\sf zig} is a language and toolchain with very strict control over memory allocation, allowing us to be very conscious over where it could be eliminated, as we have done in this case.
 
 As a final conclusion, implementing an EA in {\sf zig} and running in on a Mac may result in an improvement of several orders of magnitude in consumption of energy over using high-level platforms (like Python or Javascript) and desktop machines. If we strive for greener computing, we should really considere them for our experiments.
-
+% Maybe a comment on the difficulty of the immpementation of the EA in zig? - Mario 
 
 \section*{Acknowledgements and data availability}
 
