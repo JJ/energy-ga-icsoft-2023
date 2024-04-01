@@ -18,7 +18,7 @@ generate.chromosomes.mac.bool <- read.csv("../data/evostar-mac-gen-bool-19-Mar-1
 generate.chromosomes.mac.bool$PKG <- generate.chromosomes.mac.bool$ECPU + generate.chromosomes.mac.bool$PCPU + generate.chromosomes.mac.bool$RAM
 generate.chromosomes.mac.bool$size <- as.factor(generate.chromosomes.mac.bool$size)
 
-ggplot(generate.chromosomes, aes(x=seconds, y=PKG, color="Baseline", shape=size)) +
+ggplot(generate.chromosomes, aes(x=seconds, y=PKG, color="Baseline", shape=size,size=2)) +
   geom_point() +
   geom_point(data=generate.chromosomes.bitset, aes(x=seconds, y=PKG, color="BitSet", shape=size)) +
   geom_point(data=generate.chromosomes.bool, aes(x=seconds, y=PKG, color="Boolean", shape=size)) +
@@ -26,7 +26,8 @@ ggplot(generate.chromosomes, aes(x=seconds, y=PKG, color="Baseline", shape=size)
   geom_point(data=generate.chromosomes.mac.bool, aes(x=seconds, y=PKG, color="Mac Boolean", shape=size)) +
   scale_color_manual(values=c("black", "red", "blue", "green","pink")) +
   labs(title="Running time and PKG energy consumption generating 40K chromosomes",
-       x="Running time", y="PKG (Joules)") +
+       x="Running time (s)", y="PKG (Joules)") +
+  theme(axis.text=element_text(size=14), axis.title=element_text(size=17), legend.text=element_text(size=14))
   theme_minimal()
 
 
@@ -97,7 +98,8 @@ all.combined.ops <- data.frame( Platform = c( combined.ops.mac$Platform, combine
 
 ggplot( data = all.combined.ops, aes( x = size, y = diff.PKG, fill=Platform ) ) +
   geom_boxplot() +
-  labs( title = "Energy consumption difference between different compilation policies for zig", y = "Energy consumption difference (seconds)" ) +
+  labs( title = "Energy consumption difference between different platforms/data structures for zig", y = "Energy consumption difference (seconds)" ) +
+  theme(axis.text=element_text(size=14), axis.title=element_text(size=17), legend.text=element_text(size=14))+
   theme_minimal()
 
 
