@@ -97,9 +97,9 @@ all.combined.ops <- data.frame( Platform = c( combined.ops.mac$Platform, combine
                                 diff.PKG = c( combined.ops.mac$diff.PKG, combined.ops.mac.bool$diff.PKG, combined.ops$diff.PKG, combined.ops.bool$diff.PKG ) )
 
 ggplot( data = all.combined.ops, aes( x = size, y = diff.PKG, fill=Platform ) ) +
-  geom_boxplot() +
-  labs( title = "Energy consumption difference between different platforms/data structures for zig", y = "Energy consumption difference (seconds)" ) +
-  theme(axis.text=element_text(size=14), axis.title=element_text(size=17), legend.text=element_text(size=14))+
+  geom_boxplot()  +
+  theme(axis.text=element_text(size=100), axis.title=element_text(size=90), legend.text=element_text(size=90))+
+  labs( title = "Energy consumption difference between different platforms/data structures for zig", y = "Energy consumption difference (seconds)" )+
   theme_minimal()
 
 
