@@ -144,3 +144,18 @@ alloc.plot <- ggplot( data = all.combined.ops.noalloc, aes( x = size, y = diff.P
   theme_minimal()
 save(all.combined.ops.noalloc, file="zig-evostar-Fig-3-alloc-crossover.RData")
 ggsave("zig-evostar-Fig-3-alloc-crossover.png", width=2400, height=1800, units="px",dpi=300,plot=alloc.plot)
+
+# New for presentation
+
+all.combined.ops <- rbind(all.combined.ops, all.combined.ops.noalloc)
+all.combined.ops <- all.combined.ops[grepl("mac", all.combined.ops$Platform, ignore.case = TRUE),]
+save(all.combined.ops, file="zig-evostar-Fig-4-mac-ops.RData")
+all.combined.ops.plot <- ggplot( data = all.combined.ops, aes( x = size, y = diff.PKG, fill=Platform ) ) + 
+  geom_boxplot(notch=TRUE) +
+  labs( title = "Mac Energy consumption before/after no-alloc refactoring", y = "Energy consumption difference (PKG)" ) +
+  theme(axis.text=element_text(size=100), axis.title=element_text(size=90), legend.text=element_text(size=90))+
+  theme_minimal()
+
+ggsave("zig-evostar-Fig-4-mac-ops.png", width=2400, height=1800, units="px",dpi=300,plot=all.combined.ops.plot)
+
+
