@@ -29,7 +29,7 @@ ggplot(generate.chromosomes, aes(x=seconds, y=PKG, color="Baseline", shape=size,
        x="Running time (s)", y="PKG (Joules)") +
   theme(axis.text=element_text(size=14), axis.title=element_text(size=17), legend.text=element_text(size=14))
   theme_minimal()
-
+save(generate.chromosomes,file="zig-evostar-Fig-1-generate-chromosomes.RData")
 
 ## ----evostar.combined.ops.base, echo=F, message=F, fig.pos="h!tb", fig.height=3, fig.cap="Boxplot of PKG energy consumption processing 40K chromosomes via crossover, mutation and ONEMAX for different combinations of optimization techniques and platforms in Zig"----
 library(dplyr)
@@ -96,12 +96,13 @@ all.combined.ops <- data.frame( Platform = c( combined.ops.mac$Platform, combine
                                 diff.seconds = c( combined.ops.mac$diff.seconds, combined.ops.mac.bool$diff.seconds, combined.ops$diff.seconds, combined.ops.bool$diff.second ),
                                 diff.PKG = c( combined.ops.mac$diff.PKG, combined.ops.mac.bool$diff.PKG, combined.ops$diff.PKG, combined.ops.bool$diff.PKG ) )
 
-ggplot( data = all.combined.ops, aes( x = size, y = diff.PKG, fill=Platform ) ) +
+ds <- ggplot( data = all.combined.ops, aes( x = size, y = diff.PKG, fill=Platform ) ) +
   geom_boxplot()  +
   theme(axis.text=element_text(size=100), axis.title=element_text(size=90), legend.text=element_text(size=90))+
   labs( title = "Energy consumption difference between different platforms/data structures for zig", y = "Energy consumption difference (seconds)" )+
   theme_minimal()
-
+save(all.combined.ops,file="zig-evostar-Fig-2-data-structures.RData")
+ggsave("zig-evostar-Fig-2-data-structures.png", width=2400, height=1800, units="px",dpi=300,plot=ds)
 
 ## ----evostar.combined.ops.refactor, echo=F, message=F, fig.pos="h!tb", fig.height=3, fig.cap="Boxplot of PKG energy consumption processing 40K chromosomes via crossover, mutation and ONEMAX after crossover has been refactored"----
 
@@ -136,8 +137,10 @@ all.combined.ops.noalloc <- data.frame( Platform = c( combined.ops.mac.noalloc$P
                                 diff.seconds = c( combined.ops.mac.noalloc$diff.seconds, combined.ops.mac.noalloc.bool$diff.seconds, combined.ops.noalloc$diff.seconds, combined.ops.noalloc.bool$diff.seconds ),
                                 diff.PKG = c( combined.ops.mac.noalloc$diff.PKG, combined.ops.mac.noalloc.bool$diff.PKG, combined.ops.noalloc$diff.PKG, combined.ops.noalloc.bool$diff.PKG ) )
 
-ggplot( data = all.combined.ops.noalloc, aes( x = size, y = diff.PKG, fill=Platform ) ) + 
+alloc.plot <- ggplot( data = all.combined.ops.noalloc, aes( x = size, y = diff.PKG, fill=Platform ) ) + 
   geom_boxplot() +
-  labs( title = "Energy consumption difference between different compilation policies for zig after refactoring", y = "Energy consumption difference (PKG)" ) +
+  labs( title = "Energy consumption after no-alloc refactoring", y = "Energy consumption difference (PKG)" ) +
+  theme(axis.text=element_text(size=100), axis.title=element_text(size=90), legend.text=element_text(size=90))+
   theme_minimal()
-
+save(all.combined.ops.noalloc, file="zig-evostar-Fig-3-alloc-crossover.RData")
+ggsave("zig-evostar-Fig-3-alloc-crossover.png", width=2400, height=1800, units="px",dpi=300,plot=alloc.plot)
