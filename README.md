@@ -52,3 +52,41 @@ The paper, data and code used for this paper is [tagged with
 `0.99`](https://github.com/JJ/energy-ga-icsoft-2023/releases/tag/v0.99) an you
 can retrieve it via the published tarfile or checking out the tag in the repo
 cloned locally.
+
+### Energy Consumption of Evolutionary Algorithms in JavaScript
+
+In this case, we check different versions of JavaScript runtimes, as well as
+check differences between different computers (and their implementation of RAPL)
+and operating systems. 
+
+This paper was [recently published in the Wivace 2023
+proceedings](https://link.springer.com/chapter/10.1007/978-3-031-57430-6_1);
+here is [the presentation used at the
+conference](https://jj.github.io/energy-ga-icsoft-2023/preso/wivace2023.html)
+(with lots of pictures from Venice).
+
+Please use [this reference](https://citation-needed.springer.com/v2/references/10.1007/978-3-031-57430-6_1?format=bibtex&flavour=citation) when re-using code of papers from this version:
+
+```bibtex
+@InProceedings{10.1007/978-3-031-57430-6_1,
+author="Merelo-Guerv{\'o}s, Juan J.
+and Garc{\'i}a-Valdez, Mario
+and Castillo, Pedro A.",
+editor="Villani, Marco
+and Cagnoni, Stefano
+and Serra, Roberto",
+title="Energy Consumption of Evolutionary Algorithms in JavaScript",
+booktitle="Artificial Life and Evolutionary Computation",
+year="2024",
+publisher="Springer Nature Switzerland",
+address="Cham",
+pages="3--15",
+abstract="Green computing is a methodology for saving energy when implementing algorithms. In environments where the runtime is an integral part of the application, it is essential to measure their energy efficiency so that researchers and practitioners have enough choice. In this paper, we will focus on JavaScript runtime environments for evolutionary algorithms; although not the most popular language for scientific computing, it is the most popular language for developers, and it has been used repeatedly to implement all kinds of evolutionary algorithms almost since its inception. In this paper, we will focus on the importance of measuring different versions of the same runtimes, as well as extending the EA operators that will be measured. We also like to remark on the importance of testing the operators in different architectures to have a more precise picture that tips the balance towards one runtime or another.",
+isbn="978-3-031-57430-6"
+}
+```
+
+This version is tagged
+[v1.0.1ICSoft](https://github.com/JJ/energy-ga-icsoft-2023/releases/tag/v1.0.1ICSoft),
+and you can download the zipped file or checkout from the repo, as usual.
+
