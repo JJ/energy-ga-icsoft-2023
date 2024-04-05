@@ -159,4 +159,7 @@ all.combined.ops.plot <- ggplot( data = all.combined.ops, aes( x = size, y = dif
 ggsave("zig-evostar-Fig-4-mac-ops.png", width=2400, height=1800, units="px",dpi=300,plot=all.combined.ops.plot)
 
 all.combined.ops %>% group_by(Platform, size) %>% summarise(mean=mean(diff.PKG), sd=sd(diff.PKG)) %>% arrange(Platform, size) -> summary.all.combined.ops
-
+save(summary.all.combined.ops, file="zig-evostar-Fig-4-mac-ops-summary.RData")
+library(knitr)
+# 2 precision digits table
+summary.all.combined.ops %>% kable(digits=2)
