@@ -169,7 +169,7 @@ all.combined.ops <- data.frame( Platform = c( combined.ops.mac$Platform, combine
 
 ggplot( data = all.combined.ops, aes( x = size, y = diff.PKG, fill=Platform ) ) +
   geom_boxplot() +
-  labs( title = "Energy consumption difference between different compilation policies for zig", y = "Energy consumption difference (seconds)" ) +
+  labs( title = "Energy consumption difference between different platforms/data structures for zig", y = "Energy consumption difference (seconds)" ) +
   theme_minimal()
 @
 
@@ -210,7 +210,7 @@ all.combined.ops.noalloc <- data.frame( Platform = c( combined.ops.mac.noalloc$P
 
 ggplot( data = all.combined.ops.noalloc, aes( x = size, y = diff.PKG, fill=Platform ) ) + 
   geom_boxplot() +
-  labs( title = "Energy consumption difference between different compilation policies for zig after refactoring", y = "Energy consumption difference (PKG)" ) +
+  labs( title = "Energy consumption after no-alloc refactoring", y = "Energy consumption difference (PKG)" ) +
   theme_minimal()
 @
 

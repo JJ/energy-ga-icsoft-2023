@@ -137,7 +137,7 @@ all.combined.ops.noalloc <- data.frame( Platform = c( combined.ops.mac.noalloc$P
                                 diff.seconds = c( combined.ops.mac.noalloc$diff.seconds, combined.ops.mac.noalloc.bool$diff.seconds, combined.ops.noalloc$diff.seconds, combined.ops.noalloc.bool$diff.seconds ),
                                 diff.PKG = c( combined.ops.mac.noalloc$diff.PKG, combined.ops.mac.noalloc.bool$diff.PKG, combined.ops.noalloc$diff.PKG, combined.ops.noalloc.bool$diff.PKG ) )
 
-alloc.plot <- ggplot( data = all.combined.ops.noalloc, aes( x = size, y = diff.PKG, fill=Platform ) ) + 
+alloc.plot <- ggplot( data = all.combined.ops.noalloc, aes( x = size, y = diff.PKG, fill=Platform ) ) +
   geom_boxplot() +
   labs( title = "Energy consumption after no-alloc refactoring", y = "Energy consumption difference (PKG)" ) +
   theme(axis.text=element_text(size=100), axis.title=element_text(size=90), legend.text=element_text(size=90))+
@@ -150,7 +150,7 @@ ggsave("zig-evostar-Fig-3-alloc-crossover.png", width=2400, height=1800, units="
 all.combined.ops <- rbind(all.combined.ops, all.combined.ops.noalloc)
 all.combined.ops <- all.combined.ops[grepl("mac", all.combined.ops$Platform, ignore.case = TRUE),]
 save(all.combined.ops, file="zig-evostar-Fig-4-mac-ops.RData")
-all.combined.ops.plot <- ggplot( data = all.combined.ops, aes( x = size, y = diff.PKG, fill=Platform ) ) + 
+all.combined.ops.plot <- ggplot( data = all.combined.ops, aes( x = size, y = diff.PKG, fill=Platform ) ) +
   geom_boxplot(notch=TRUE) +
   labs( title = "Mac Energy consumption before/after no-alloc refactoring", y = "Energy consumption difference (PKG)" ) +
   theme(axis.text=element_text(size=100), axis.title=element_text(size=90), legend.text=element_text(size=90))+
