@@ -90,7 +90,7 @@ ggplot(generate.chromosomes, aes(x=seconds, y=PKG, color="Baseline", shape=size)
   geom_point(data=generate.chromosomes.mac, aes(x=seconds, y=PKG, color="Mac Baseline", shape=size)) +
   geom_point(data=generate.chromosomes.mac.bool, aes(x=seconds, y=PKG, color="Mac Boolean", shape=size)) +
   scale_color_manual(values=c("black", "red", "blue", "green","pink")) +
-  labs(title="Running time and PKG energy consumption generating 40K chromosomes",
+  labs(title="Running time/PKG energy consumption generating chromosomes",
        x="Running time", y="PKG (Joules)") +
   theme_minimal()
 @
