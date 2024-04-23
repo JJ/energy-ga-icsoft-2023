@@ -21,7 +21,7 @@
 \maketitle
 
 \begin{abstract}
-Managing energy resources in scientific computing implies needing to be aware of a wide range of engineering techniques that, when applied, are able to minimize the energy footprint of experiments. In the case of evolutionary computation, we are talking about a specific workload that includes generation of chromosomes and operations that change parts of them or access and operate on them to obtain a fitness value. In a low level language such as Zig, we will show how different choices will affect the energy consumption of an experiment.
+Managing energy resources in scientific computing implies awareness of a wide range of software engineering techniques that, when applied, are able to minimize the energy footprint of experiments. In the case of evolutionary computation, we are talking about a specific workload that includes the generation of chromosomes and operations that change parts of them or access and operate on them to obtain a fitness value. In a low-level language such as Zig, we will show how different choices will affect the energy consumption of an experiment.
 \keywords{Green computing, metaheuristics, energy-aware computing, evolutionary algorithms, zig}
 \end{abstract}
 
