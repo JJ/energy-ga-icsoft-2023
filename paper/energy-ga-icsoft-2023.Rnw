@@ -490,7 +490,7 @@ versions:
 \item  \texttt{node.js} version 20.9.0
 \end{itemize}
 
-As in the in the previous cases, we have performed measurements for the OneMax fitness function and the Crossover operator; the platform was a MacBook Air M1 with 16GB of RAM and macOS Ventura 13.2.1. The results are shown in Figure \ref{fig:onemax:mac} and Figure \ref{fig:onemax:mac}.
+As in the previous cases, we have performed measurements for the OneMax fitness function and the Crossover operator; the platform was a MacBook Air M1 with 16GB of RAM and macOS Ventura 13.2.1. The results are shown in Figure \ref{fig:onemax:mac} and Figure \ref{fig:crossover:mac}.
 
 <<onemax.mac, echo=F, fig.pos="h!tbp", fig.show="hold", out.width="32%", fig.cap="Boxplot of energy consumption for the OneMax fitness function: RAM (left), \"efficiency\" CPUs (middle), \"performance CPUs\" (right) vs. time taken for all three sizes and VMs, in a Mac.\\protect\\label{fig:onemax:mac}">>=
 
