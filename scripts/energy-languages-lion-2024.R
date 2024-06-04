@@ -1,6 +1,7 @@
 ## ----lion.setup, echo=F, message=F, fig.pos="h!tb", fig.height=4, fig.cap="Average running time and PKG (CPUs and memory) energy consumption generating 40K chromosomes for the three languages (represented with different colors); dot size is proportional to the logarithm of the chromosome size."----
 library(dplyr)
 library(ggplot2)
+library(ggthemes)
 generate.chromosomes.bun <- read.csv("../data/generate-chromosomes-bun-lion-24.csv")
 generate.chromosomes.bun  %>% group_by( size ) %>% summarise( mean.pkg = mean( PKG ), mean.seconds = mean( seconds ) ) -> generate.chromosomes.bun.avg
 
@@ -10,8 +11,12 @@ generate.chromosomes.zig %>% group_by( size ) %>% summarise( mean.pkg = mean( PK
 generate.chromosomes.kotlin <- read.csv("../data/generate-chromosomes-kotlin-lion-24.csv")
 generate.chromosomes.kotlin %>% group_by( size ) %>% summarise( mean.pkg = mean( PKG ), mean.seconds = mean( seconds ) ) -> generate.chromosomes.kotlin.avg
 
-ggplot(generate.chromosomes.bun.avg, aes(x=mean.seconds,y=mean.pkg,color="Bun"))+ geom_point(data=generate.chromosomes.bun.avg, aes(x=mean.seconds,y=mean.pkg,color="Bun", size=log(size)))+geom_line(linewidth=1)+geom_point(data=generate.chromosomes.zig.avg,aes(x=mean.seconds,y=mean.pkg,color="Zig", size=log(size)))+geom_line(data=generate.chromosomes.zig.avg,aes(x=mean.seconds,y=mean.pkg,color="Zig"),linewidth=1)+geom_point(data=generate.chromosomes.kotlin.avg,aes(x=mean.seconds,y=mean.pkg,color="Kotlin",size=log(size)))+geom_line(data=generate.chromosomes.kotlin.avg,aes(x=mean.seconds,y=mean.pkg,color="Kotlin"), linewidth=1)
-
+# Add labels for x and y axes
+generate.chromosomes.bun.avg$size <- as.factor(generate.chromosomes.bun.avg$size)
+generate.chromosomes.zig.avg$size <- as.factor(generate.chromosomes.zig.avg$size)
+generate.chromosomes.kotlin.avg$size <- as.factor(generate.chromosomes.kotlin.avg$size)
+ggplot(generate.chromosomes.bun.avg, aes(x=mean.seconds,y=mean.pkg,color="Bun"))+ geom_point(data=generate.chromosomes.bun.avg, aes(x=mean.seconds,y=mean.pkg,color="Bun",size=50))+geom_line(linewidth=1)+geom_point(data=generate.chromosomes.zig.avg,aes(x=mean.seconds,y=mean.pkg,color="Zig", size=50))+geom_line(data=generate.chromosomes.zig.avg,aes(x=mean.seconds,y=mean.pkg,color="Zig"),linewidth=1)+geom_point(data=generate.chromosomes.kotlin.avg,aes(x=mean.seconds,y=mean.pkg,color="Kotlin",size=50))+geom_line(data=generate.chromosomes.kotlin.avg,aes(x=mean.seconds,y=mean.pkg,color="Kotlin"), linewidth=1)+ theme_clean()+scale_fill_manual(values=c("blue", "cyan4","pink"))+xlab("Average in seconds")+ylab("Average CPU+Memory consumption (Joules)")+ ggtitle("Baseline:chromosome generation")+theme(panel.background=element_rect(fill="transparent"))
+ggsave("../preso/img/fig5-gen-PKG-vs-seconds.png", width=12, height=8)
 
 ## ----lion.combined.ops, echo=F, message=F, fig.pos="h!tb", fig.height=4, fig.cap="Running time and PKG energy consumption processing 40K chromosomes via crossover, mutation and ONEMAX for the three languages (represented with different colors); dot shape represents the chromosome size."----
 
