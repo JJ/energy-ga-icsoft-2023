@@ -58,6 +58,8 @@
                         last one compiled to native.</aside>
                 </section>
 
+                <section>
+                    
                 <section data-background="https://live.staticflickr.com/65535/53565711642_1e88802ce4_k_d.jpg"><h1>Baseline: chromosome generation</h1>
                     <h2 class="fragment">Also, eliminates overhead from OS
                         background tasks</h2>
@@ -83,6 +85,8 @@ export function generateChromosomes(chromosomeSize, numberOfChromosomes) {
                     <img src="img/fig1-gen-PKG-vs-seconds.png" alt="chromosome generation">
                 </section>
 
+                </section>
+                
                 <section>
 
                 <section><h1>Mutation + crossover + onemax</h1>
@@ -190,6 +194,27 @@ export function generateChromosomes(chromosomeSize, numberOfChromosomes) {
 
 
                 <section>
+
+                    <section data-background="https://live.staticflickr.com/65535/53563278526_e87f3cda0b_k_d.jpg"><h1>Hierarchical-if-and-only-if as a "heavy"
+                        function</h1>
+                        <pre><code data-line-numbers="1,9-11|2,4,6">pub fn HIFF(stringChr: []const u8) usize {
+    if (std.mem.eql(u8, stringChr, "0") or std.mem.eql(u8, stringChr, "1")) {
+        return 1;
+    } else if (std.mem.eql(u8, stringChr, "00") or std.mem.eql(u8, stringChr, "11")) {
+        return 4;
+    } else if (std.mem.eql(u8, stringChr, "01") or std.mem.eql(u8, stringChr, "10")) {
+        return 2;
+    } else {
+        return (stringChr.len * f(T(stringChr)) +
+            HIFF(stringChr[0 .. stringChr.len / 2]) +
+            HIFF(stringChr[stringChr.len / 2 .. stringChr.len]));
+    }
+}</code></pre>
+                        <aside class="notes">Always trying to make
+                        implementations as close as possible; they follow the
+                            same pattern and use the closest data structures.</aside>
+                    </section>
+                    
                 <section>
                     <img src="img/fig3-HIFF-PKG-vs-seconds.png" alt="plotting energy consumption">
                 </section>
