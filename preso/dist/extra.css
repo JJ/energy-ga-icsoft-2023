@@ -69,7 +69,8 @@ section[data-background] table {
        background-color:rgba(255,255,143,0.7);
        padding: 15px;
        margin: 6px;
-       border-radius: 10px
+       border-radius: 10px;
+       font-size: 1.75em;
 }
 
 section[data-background] caption {

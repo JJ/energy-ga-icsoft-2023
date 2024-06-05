@@ -61,8 +61,8 @@ combined.ops.kotlin %>% group_by( size ) %>% summarise( mean.pkg = mean( diff.PK
 ggplot(combined.ops.bun, aes(x=diff.seconds, y=diff.PKG, shape=size, color="bun")) +
   geom_point() +
   geom_point(data=combined.ops.zig, aes(x=diff.seconds, y=diff.PKG, shape=size, color="zig")) +
-  geom_point(data=combined.ops.kotlin, aes(x=diff.seconds, y=diff.PKG, shape=size, color="kotlin"))
-  
+  geom_point(data=combined.ops.kotlin, aes(x=diff.seconds, y=diff.PKG, shape=size, color="kotlin"))+theme_economist()+xlab("Difference in seconds")+ylab("Difference in PKG, Joules")+ggtitle("Time/energy consumption combined ops")+scale_shape_manual(values=c(1,2,3))+scale_color_manual(values=c("bun"="red","zig"="blue","kotlin"="green"))+theme(legend.position="none")
+ggsave("../preso/img/fig2-ops-PKG-vs-seconds.png", width=6, height=4.5)
 
 
 ## ----lion.combined.ops.joules, echo=F, message=F--------------------------------------
@@ -97,6 +97,7 @@ ggplot(hiff.bun.delta, aes(x=delta.seconds, y=delta.pkg, shape=size,color="bun")
   labs(title="HIFF", x="Seconds", y="PKG") +
   theme_minimal()
 
+ggsave("../preso/img/fig3-HIFF-PKG-vs-seconds.png", width=6, height=4.5)
 
 
 ## ----lion.hiff.boxplot, echo=F, message=F, warning=F, fig.pos="h!tb", fig.height=4, fig.cap="Boxplot of the energy consumption of the HIFF fitness function for 40K chromosomes for Kotlin and {\\protect\\sf zig}"----
@@ -106,6 +107,8 @@ kotlin.zig.hiff <- data.frame(
   size=as.factor(c(hiff.kotlin.delta$size, hiff.zig.delta$size)) 
   )
 ggplot(kotlin.zig.hiff, aes(x=size, y=delta.pkg, fill=language)) + geom_boxplot() + labs(title="HIFF", x="Size", y="PKG") + theme_minimal()
+ggsave("../preso/img/fig4-HIFF-PKG-vs-size.png", width=6, height=4.5)
+
 # wilcox.test(delta.pkg ~ language, data=kotlin.zig.hiff[kotlin.zig.hiff$size=="512",])
 # wilcox.test(delta.pkg ~ language, data=kotlin.zig.hiff[kotlin.zig.hiff$size=="1024",])
 # wilcox.test(delta.pkg ~ language, data=kotlin.zig.hiff[kotlin.zig.hiff$size=="2048",])
