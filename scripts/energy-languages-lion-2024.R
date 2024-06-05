@@ -61,7 +61,7 @@ combined.ops.kotlin %>% group_by( size ) %>% summarise( mean.pkg = mean( diff.PK
 ggplot(combined.ops.bun, aes(x=diff.seconds, y=diff.PKG, shape=size, color="bun")) +
   geom_point() +
   geom_point(data=combined.ops.zig, aes(x=diff.seconds, y=diff.PKG, shape=size, color="zig")) +
-  geom_point(data=combined.ops.kotlin, aes(x=diff.seconds, y=diff.PKG, shape=size, color="kotlin"))+theme_economist()+xlab("Difference in seconds")+ylab("Difference in PKG, Joules")+ggtitle("Time/energy consumption combined ops")+scale_shape_manual(values=c(1,2,3))+scale_color_manual(values=c("bun"="red","zig"="blue","kotlin"="green"))+theme(legend.position="none")
+  geom_point(data=combined.ops.kotlin, aes(x=diff.seconds, y=diff.PKG, shape=size, color="kotlin"))+theme_economist()+xlab("Difference in seconds")+ylab("Difference in PKG, Joules")+ggtitle("Time/energy consumption combined ops")+scale_shape_manual(values=c(1,2,3))+scale_color_manual(values=c("bun"="red","zig"="blue","kotlin"="green"))
 ggsave("../preso/img/fig2-ops-PKG-vs-seconds.png", width=6, height=4.5)
 
 
