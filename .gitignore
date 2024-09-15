@@ -129,3 +129,6 @@ auto/
 
 #VSCode
 .vscode/
+
+# zig
+.zig-cache
