@@ -99,6 +99,14 @@ ggplot(hiff.bun.delta, aes(x=delta.seconds, y=delta.pkg, shape=size,color="bun")
 
 ggsave("../preso/img/fig3-HIFF-PKG-vs-seconds.png", width=6, height=4.5)
 
+ggplot(hiff.bun.delta, aes(x=delta.seconds, y=delta.pkg, shape=size,color="bun")) +
+  geom_point() + geom_point(data=hiff.zig.delta, aes(x=delta.seconds, y=delta.pkg, shape=size, color="zig")) + geom_point(data=hiff.kotlin.delta, aes(x=delta.seconds, y=delta.pkg, shape=size, color="kotlin")) +
+  labs(title="HIFF", x="Seconds", y="PKG") + theme(axis.text.x = element_text(size = 14, color="green"), axis.title.x = element_text(size = 16, color="green"),
+                                                   axis.text.y = element_text(size = 14, color="green"), axis.title.y = element_text(size = 16),
+                                                   plot.title = element_text(size = 20, face = "bold", color = "darkgreen"),
+                                                   legend.title=element_text(size=14, color="green"), legend.text=element_text(size=14, color="green"))
+
+ggsave("../preso/img/HIFF-PKG-vs-seconds-green.png", width=9, height=4.5)
 
 ## ----lion.hiff.boxplot, echo=F, message=F, warning=F, fig.pos="h!tb", fig.height=4, fig.cap="Boxplot of the energy consumption of the HIFF fitness function for 40K chromosomes for Kotlin and {\\protect\\sf zig}"----
 kotlin.zig.hiff <- data.frame(
