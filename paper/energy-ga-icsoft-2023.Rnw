@@ -5,7 +5,6 @@
 \usepackage{amssymb}
 
 \newcommand{\pinp}{\texttt{pinpoint}}
-\newcommand{\lik}{\texttt{likwid}}
 
 \begin{document}
 
